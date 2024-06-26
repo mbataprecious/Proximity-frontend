@@ -2,32 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full text-[#354052] py-[.875rem] px-[1.25rem] leading-6 bg-white rounded-[0.50rem] border border-[#DFE1E6] focus:outline-none focus:ring-1 focus:border-[#008DFB] placeholder:text-[#7A869A] placeholder:font-normal placeholder:text-sm;
+  }
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .label {
+    @apply block text-base py-2;
+  }
+  .control {
+    @apply block my-1;
+  }
+  .errorControl {
+    @apply border-[#DC4437] border border-solid;
+  }
+  .errorText {
+    @apply text-[#DC4437] text-sm leading-5 items-center mt-1;
+  }
+  .selected {
+    @apply border-2 border-[#0E64E6] bg-[#EEF5FF];
+  }
+  .notSelected {
+    @apply border border-[#DADEE4] bg-white;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+[type="tel"].PhoneInputInput {
+  @apply w-full p-[0.4rem] !rounded-none !border-none focus:outline-none focus:ring-0 focus:border-none placeholder:text-[#7A869A] !text-[1rem] leading-6;
+}
+[type="text"].custom-select__input {
+  @apply p-0 !rounded-none !border-none focus:outline-none focus:ring-0 focus:border-none placeholder:text-[#7A869A] !text-[1rem] leading-6;
+}
+.custom-select__indicator-separator {
+  @apply hidden;
+}
+
+.custom-select__placeholder {
+  @apply !text-[#7A869A];
+}
+
+.rotation-animation {
+  animation: rotation 15s infinite linear;
+}
+
+.rotation-animation-reverse {
+  animation: rotation 15s infinite reverse linear;
 }
