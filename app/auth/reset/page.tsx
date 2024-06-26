@@ -3,7 +3,7 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import React from "react";
 
 export const metadata = {
-  title: "Proximity - Forgot Password",
+  title: "Proximity - Reset Password",
 };
 
 const ResetPassword = () => {
