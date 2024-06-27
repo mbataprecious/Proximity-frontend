@@ -84,7 +84,7 @@ const LoginForm = () => {
           </form>
         </FormProvider>
         <p className="text-[#667479] text-center text-sm mt-6">
-          Don't have an account yet?{" "}
+          Don&apos;t have an account yet?{" "}
           <Link
             href={"/signup"}
             className="text-center text-sm text-primary hover:underline"
