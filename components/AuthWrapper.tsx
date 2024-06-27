@@ -3,8 +3,8 @@ import Image from "next/image";
 
 const AuthWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="md:flex w-full h-screen bg-[#EEF2F8]">
-      <div className="relative hidden md:flex flex-1 justify-center items-center h-full bg-[linear-gradient(180deg,#0575E6_0%,#0D5CC7_54.8%,#0F3CA8_100%)]">
+    <div className="md:flex w-full min-h-screen bg-[#EEF2F8]">
+      <div className="relative hidden md:flex flex-1 justify-center items-center bg-[linear-gradient(180deg,#0575E6_0%,#0D5CC7_54.8%,#0F3CA8_100%)]">
         <div className=" max-w-[556px] px-4">
           <div className="w-full mb-[100px]">
             <Image
