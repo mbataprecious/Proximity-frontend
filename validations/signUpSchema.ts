@@ -8,6 +8,10 @@ export const SignupSchema = object({
   first_name,
   last_name,
   email,
+  acceptedTermsAndConditions: boolean().oneOf(
+    [true],
+    "Must Accept Terms and Conditions"
+  ),
   role: object().shape({
     value: string().required().label("role"),
     label: string().required().label("label"),

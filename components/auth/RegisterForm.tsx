@@ -7,6 +7,8 @@ import { yupResolver } from "@/utils/helpers";
 import { SignupSchema, SignupSchemaType } from "@/validations/signUpSchema";
 import { CustomSelect } from "../formControls/CustomReactSelect";
 import SvgIconStyle from "../SvgIconStyle";
+import Link from "next/link";
+import { Checkbox2 } from "../formControls/checkboxes/checkbox2";
 
 const RegisterForm = () => {
   const defaultValues = {
@@ -128,11 +130,35 @@ const RegisterForm = () => {
                 required={true}
               />
             </div>
+            <div>
+              <Checkbox2
+                name="acceptedTermsAndConditions"
+                extraCSS="text-sm text-primary"
+                label={"I accept Proximity's"}
+                subtitle={
+                  <span
+                    className=" hover:underline cursor-pointer"
+                    onClick={() => {}}
+                  >
+                    Terms of use and Privacy Policy
+                  </span>
+                }
+              />
+            </div>
             <Button className="w-full" type="submit">
               Create Account
             </Button>
           </form>
         </FormProvider>
+        <p className="text-[#667479] text-center text-sm mt-6">
+          Already have an account?{" "}
+          <Link
+            href={"/login"}
+            className="text-center text-sm text-primary hover:underline"
+          >
+            Login
+          </Link>{" "}
+        </p>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 interface Props {
   name: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   label?: string;
   extraCSS?: string;
   onclick?: () => void;
@@ -27,18 +28,18 @@ const Checkbox2 = ({
         }`}
       >
         <input
-          className="rounded-sm checked:bg-[#439EDE]"
+          className="rounded-sm w-4 h-4 checked:bg-primary"
           type="checkbox"
           id={name}
           disabled={disabled}
           {...register(name)}
           {...rest}
         />
-        <span className="ml-2 text-xs text-[#727891]">{label}</span>
+        <span className="ml-2 text-sm text-[#727891]">{label}</span>
       </label>
       {subtitle && (
         <span
-          className={`${extraCSS ? extraCSS : "text-[#4388C8] text-xs"}`}
+          className={`${extraCSS ? extraCSS : "text-[#4388C8] text-sm"}`}
           onClick={onclick}
         >
           {subtitle}

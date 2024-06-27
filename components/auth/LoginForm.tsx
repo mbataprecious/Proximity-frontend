@@ -73,7 +73,7 @@ const LoginForm = () => {
               />
               <Link
                 href={"/auth/forgot"}
-                className="text-[#667479] block text-right text-sm hover:text-primary hover:underline"
+                className=" block text-right text-sm text-primary hover:underline"
               >
                 Forgot Password?
               </Link>
@@ -83,6 +83,15 @@ const LoginForm = () => {
             </Button>
           </form>
         </FormProvider>
+        <p className="text-[#667479] text-center text-sm mt-6">
+          Don't have an account yet?{" "}
+          <Link
+            href={"/signup"}
+            className="text-center text-sm text-primary hover:underline"
+          >
+            Sign up
+          </Link>{" "}
+        </p>
       </div>
     </div>
   );
