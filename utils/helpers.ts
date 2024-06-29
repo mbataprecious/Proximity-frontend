@@ -63,4 +63,9 @@ const passwordConditions = {
 const url = (endpoint: string) =>
   `${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`;
 
+export function classNames(
+  ...classes: (string | false | null | undefined)[]
+): string {
+  return classes.filter(Boolean).join(" ");
+}
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

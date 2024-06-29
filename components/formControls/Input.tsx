@@ -11,6 +11,7 @@ interface Props {
   label?: string;
   miniLabel?: string;
   name: string;
+  dark?: boolean;
   dontShowError?: boolean;
   disabled?: boolean;
   required?: boolean;
@@ -28,6 +29,7 @@ const Input = ({
   disabled,
   dontShowError,
   required,
+  dark,
   icon,
   type,
   placeholder,
@@ -53,7 +55,9 @@ const Input = ({
         disabled={disabled}
         className={`${
           formState?.errors[name] && !dontShowError && "errorControl"
-        } ${fieldType === "password" && ""} ${icon ? "pl-10" : ""} `}
+        } ${fieldType === "password" && ""} ${icon ? "pl-10" : ""} ${
+          !!dark && "bg-[#F9FAFB]"
+        }`}
         type={
           fieldType === "password" ? (open ? "text" : fieldType) : fieldType
         }
@@ -92,7 +96,7 @@ const Input = ({
           {icon}
         </span>
       )}
-      <div className="errorText text-xs flex items-start">
+      <div className="errorText text-xs flex items-center">
         {!!getErrObject(name, formState?.errors) && !dontShowError && (
           <>
             <span className=" ">

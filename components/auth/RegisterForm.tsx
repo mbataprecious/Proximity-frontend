@@ -72,7 +72,7 @@ const RegisterForm = () => {
                   />
                 }
                 name="lastname"
-                placeholder="First Name"
+                placeholder="Last Name"
                 required={true}
               />
             </div>

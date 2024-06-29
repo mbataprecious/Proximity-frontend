@@ -105,7 +105,7 @@ const CustomSelect = ({
           />
         )}
       />
-      <div className="errorText text-xs flex items-start">
+      <div className="errorText text-xs flex items-center">
         {!!getErrObject(name, formState?.errors) && (
           <>
             <span className=" ">

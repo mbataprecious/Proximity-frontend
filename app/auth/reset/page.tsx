@@ -1,4 +1,4 @@
-import AuthWrapper from "@/components/AuthWrapper";
+import AuthWrapper from "@/components/Layouts/AuthWrapper";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import React from "react";
 

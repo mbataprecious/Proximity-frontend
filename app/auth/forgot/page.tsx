@@ -1,4 +1,4 @@
-import AuthWrapper from "@/components/AuthWrapper";
+import AuthWrapper from "@/components/Layouts/AuthWrapper";
 import ForgotForm from "@/components/auth/ForgotForm";
 import React from "react";
 

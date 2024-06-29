@@ -1,4 +1,4 @@
-import AuthWrapper from "@/components/AuthWrapper";
+import AuthWrapper from "@/components/Layouts/AuthWrapper";
 import RegisterForm from "@/components/auth/RegisterForm";
 import React from "react";
 
