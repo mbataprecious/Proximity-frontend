@@ -6,7 +6,7 @@ import ReactSelect, {
   MultiValue,
   SingleValue,
 } from "react-select";
-import { getErrObject } from "../../utils/helpers";
+import { getErrObject, selectStyle } from "../../utils/helpers";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 interface Props {
   label: string;
@@ -20,37 +20,6 @@ interface Props {
   disabled?: boolean;
 }
 
-const selectStyle = {
-  control: (baseStyles: CSSObjectWithLabel, state: ControlProps) => ({
-    ...baseStyles,
-    paddingTop: 8,
-    paddingBottom: 8,
-    borderRadius: 8,
-    background: "white",
-    boxShadow: "none",
-    borderColor: "#EEEEEE",
-    ...(state.isFocused ? { borderColor: "#008DFB" } : {}),
-    // "&:hover": {
-    //   // Additional hover styling
-    //   borderColor: "#EEEEEE",
-    //   boxShadow: "none",
-    // },
-    "&:focus": {
-      // Additional hover styling
-      borderColor: "#008DFB",
-      boxShadow: "none",
-    },
-  }),
-  menu: (provided: CSSObjectWithLabel) => ({
-    ...provided,
-    border: "1px solid #CCD1D2",
-    borderRadius: 8,
-    fontSize: 14,
-    color: "#667479",
-    // margin: "0",
-    boxShadow: "none",
-  }),
-};
 const CustomSelect = ({
   label,
   name,
@@ -90,7 +59,7 @@ const CustomSelect = ({
             className={`border-0 w-full focus:outline-none focus:ring focus:border-blue-300
                             ${formState.errors[name] && "errorControl"}`}
             onBlur={onBlur}
-            value={value?.value ? value : null}
+            value={value?.length || value?.value ? value : null}
             onChange={(
               newValue:
                 | MultiValue<

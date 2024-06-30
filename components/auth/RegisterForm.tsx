@@ -136,12 +136,12 @@ const RegisterForm = () => {
                 extraCSS="text-sm text-primary"
                 label={"I accept Proximity's"}
                 subtitle={
-                  <span
+                  <Link
+                    href={"/terms-and-conditions"}
                     className=" hover:underline cursor-pointer"
-                    onClick={() => {}}
                   >
                     Terms of use and Privacy Policy
-                  </span>
+                  </Link>
                 }
               />
             </div>

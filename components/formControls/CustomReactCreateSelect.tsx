@@ -2,7 +2,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { MultiValue, SingleValue } from "react-select";
 import ReactSelect from "react-select/creatable";
-import { getErrObject } from "../../utils/helpers";
+import { getErrObject, selectStyle } from "../../utils/helpers";
 interface Props {
   label: string;
   name: string;
@@ -13,7 +13,7 @@ interface Props {
   isClearable?: boolean;
   placeholder?: string;
   isMulti?: boolean;
-  required: boolean;
+  required?: boolean;
   disabled?: boolean;
 }
 const CustomCreateSelect = ({
@@ -42,6 +42,8 @@ const CustomCreateSelect = ({
         name={name}
         render={({ field: { onBlur, onChange, value, ref } }) => (
           <ReactSelect
+            classNamePrefix="custom-select"
+            styles={selectStyle}
             id={name}
             isDisabled={disabled}
             ref={ref}
@@ -62,7 +64,7 @@ const CustomCreateSelect = ({
                 | SingleValue<{
                     value: string;
                     label: string;
-                  }>,
+                  }>
             ) => onChange(newValue)}
             // loadOptions={loadOptions}
           />

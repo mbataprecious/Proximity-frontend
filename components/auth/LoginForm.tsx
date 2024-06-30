@@ -7,8 +7,10 @@ import { yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { LoginSchemaType, loginSchema } from "@/validations/loginSchema";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
+  const router = useRouter();
   const defaultValues = {
     email: "",
     password: "",
@@ -20,6 +22,7 @@ const LoginForm = () => {
   });
   const onSubmit = async (data: LoginSchemaType) => {
     try {
+      router.push("/admin/module");
       console.log({ data });
     } catch (error) {
       console.error(error);

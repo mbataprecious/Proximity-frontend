@@ -1,6 +1,8 @@
 import { yupResolver as yupResolvers } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
+import { ReadonlyURLSearchParams } from "next/navigation";
 import { FieldValues } from "react-hook-form";
+import { CSSObjectWithLabel, ControlProps } from "react-select";
 
 const isClient = () => typeof window === "object";
 
@@ -68,4 +70,47 @@ export function classNames(
 ): string {
   return classes.filter(Boolean).join(" ");
 }
+
+export const selectStyle = {
+  control: (baseStyles: CSSObjectWithLabel, state: ControlProps) => ({
+    ...baseStyles,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 8,
+    background: "white",
+    boxShadow: "none",
+    borderColor: "#EEEEEE",
+    ...(state.isFocused ? { borderColor: "#008DFB" } : {}),
+    // "&:hover": {
+    //   // Additional hover styling
+    //   borderColor: "#EEEEEE",
+    //   boxShadow: "none",
+    // },
+    "&:focus": {
+      // Additional hover styling
+      borderColor: "#008DFB",
+      boxShadow: "none",
+    },
+  }),
+  menu: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    border: "1px solid #CCD1D2",
+    borderRadius: 8,
+    fontSize: 14,
+    color: "#667479",
+    // margin: "0",
+    boxShadow: "none",
+  }),
+};
+
+export const getSearchParamsObject = (
+  searchParams: ReadonlyURLSearchParams
+) => {
+  const query = {} as { [key: string]: string };
+  for (const [key, value] of searchParams.entries()) {
+    query[key] = value;
+  }
+  return query;
+};
+
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

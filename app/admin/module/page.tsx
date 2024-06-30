@@ -22,6 +22,7 @@ const Module = () => {
           <h3 className=" text-xl font-semibold text-center">No Modules</h3>
           <p className=" text-center">Start creating your Modules</p>
         </div>
+        <Button className=" mt-[54px]">Create a new Module</Button>
       </div>
     </div>
   );
