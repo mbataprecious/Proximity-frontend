@@ -20,16 +20,14 @@ const tabList = [
 ];
 export default function () {
   const router = useRouter();
-
-  const mounted = useRef(true);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [open, setOpen] = useState(searchParams.get("addState") === "true");
   //   const params = useParams<{ moduleId: string }>();
   const tab = searchParams.get("tab") ?? tabList[0].value;
-  const addState = searchParams.get("addState");
 
   useEffect(() => {
+    const addState = searchParams.get("addState");
     setOpen(addState === "true");
   }, [pathname, searchParams]);
 

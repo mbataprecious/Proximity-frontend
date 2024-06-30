@@ -4,9 +4,9 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "Terms and Conditions Data2Bots: Innovating with AI & BI for Sustainable Growth",
+    "Terms and Conditions Proximity: Taking attendance systems a notch higher.",
   description:
-    "Terms, Conditions, Terms and Conditions, Learn about Data2Bots, a leading IT consulting company dedicated to driving business productivity through innovative AI and BI solutions. Explore our mission, vision, and core values.",
+    "Terms, Conditions, Terms and Conditions, Learn about Proximity.",
   robots: "index, follow",
 };
 
@@ -21,12 +21,12 @@ export default function Terms() {
           <h2 className="text-2xl font-semibold text-[#181818]">
             Introduction
           </h2>
-          Proximity ("we," "us," or "our") is dedicated to maintaining the
-          privacy and protection of your personal information. This Privacy
-          Policy outlines how we collect, use, and protect your information when
-          you use our application, which employs geofencing technology to ensure
-          attendance integrity by recording attendance only for students within
-          a specified geofenced area.
+          Proximity (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is
+          dedicated to maintaining the privacy and protection of your personal
+          information. This Privacy Policy outlines how we collect, use, and
+          protect your information when you use our application, which employs
+          geofencing technology to ensure attendance integrity by recording
+          attendance only for students within a specified geofenced area.
           <br />
           <br />
           <h2 className="text-2xl font-semibold text-[#181818]">
