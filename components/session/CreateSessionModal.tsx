@@ -92,7 +92,7 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
           value: "",
           label: "",
         },
-        radius: 0,
+        radius: "",
       });
     } else {
       reset({
