@@ -12,70 +12,15 @@ import Button from "../Button";
 import SortDropdown from "../SortDropdown";
 import SearchInput from "../SearchInput";
 import SvgIconStyle from "../SvgIconStyle";
-import {
-  ArrowTopRightOnSquareIcon,
-  EllipsisHorizontalIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from "@heroicons/react/24/solid";
+import { EllipsisHorizontalIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { classNames } from "@/utils/helpers";
 import Pagination from "../Pagination";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { people } from "@/utils/mocks";
 
 const headers = ["First Name", "Last Name ", "Email"];
-const people = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-  },
-  {
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@example.com",
-  },
-  {
-    firstName: "Alice",
-    lastName: "Johnson",
-    email: "alice.johnson@example.com",
-  },
-  {
-    firstName: "Bob",
-    lastName: "Brown",
-    email: "bob.brown@example.com",
-  },
-  {
-    firstName: "Charlie",
-    lastName: "Davis",
-    email: "charlie.davis@example.com",
-  },
-  {
-    firstName: "Eve",
-    lastName: "Martinez",
-    email: "eve.martinez@example.com",
-  },
-  {
-    firstName: "Frank",
-    lastName: "Wilson",
-    email: "frank.wilson@example.com",
-  },
-  {
-    firstName: "Grace",
-    lastName: "Taylor",
-    email: "grace.taylor@example.com",
-  },
-  {
-    firstName: "Henry",
-    lastName: "Anderson",
-    email: "henry.anderson@example.com",
-  },
-  {
-    firstName: "Isabel",
-    lastName: "Thomas",
-    email: "isabel.thomas@example.com",
-  },
-];
+
 const sortOptions = ["Newest", "Oldest", "Alphabetical"];
 const StudentsList = () => {
   const checkbox = useRef<HTMLInputElement | null>(null);
@@ -197,7 +142,7 @@ const StudentsList = () => {
             <tr
               key={index}
               className={`${
-                selectedPeople.includes(person) ? "bg-blue-100" : undefined
+                selectedPeople.includes(person) ? "bg-blue-50" : undefined
               } hover:bg-blue-50`}
             >
               <td className="relative px-7 sm:w-32 sm:px-12">

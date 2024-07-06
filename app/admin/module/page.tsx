@@ -30,7 +30,7 @@ const Module = () => {
     <LecturerLayout
       sideContent={
         <Link href={"module/create"}>
-          <Button className=" mx-3 my-2.5 flex items-center">
+          <Button size={"sm"} className=" my-2.5 flex items-center">
             <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
             Create New Module
           </Button>

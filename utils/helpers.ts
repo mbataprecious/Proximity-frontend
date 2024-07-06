@@ -72,7 +72,7 @@ export function classNames(
 }
 
 export const selectStyle = {
-  control: (baseStyles: CSSObjectWithLabel, state: ControlProps) => ({
+  control: (baseStyles: CSSObjectWithLabel, state: any) => ({
     ...baseStyles,
     paddingTop: 8,
     paddingBottom: 8,

@@ -12,6 +12,7 @@ const buttonStyles = cva("py-[10px] rounded-lg font-semibold transition-all", {
       primary: "bg-primary text-white",
       secondary: "bg-secondary text-white",
       info: "bg-[#E5E7EB] text-[#1F2A37]",
+      danger: "bg-[#FF3838] text-white",
       // danger: "bg-red-500 text-white focus:ring-red-500",
     },
     fullWidth: {
@@ -36,17 +37,22 @@ const buttonStyles = cva("py-[10px] rounded-lg font-semibold transition-all", {
     {
       variant: "primary",
       isOutlined: true,
-      class: "text-primary border-primary",
+      class: "!text-primary border-primary",
     },
     {
       variant: "secondary",
       isOutlined: true,
-      class: "text-secondary border-secondary",
+      class: "!text-secondary border-secondary",
     },
     {
       variant: "info",
       isOutlined: true,
-      class: "text-[#1F304C] border-[##E1E3EA] ",
+      class: "!text-[#1F304C] border-[##E1E3EA] ",
+    },
+    {
+      variant: "danger",
+      isOutlined: true,
+      class: "text-[#FF3838] border-[#FF3838]",
     },
   ],
 });

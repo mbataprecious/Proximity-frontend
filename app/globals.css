@@ -65,7 +65,15 @@ input[type="number"] {
 .custom-select__placeholder {
   @apply !text-[#7A869A];
 }
-
+.myselect .custom-select__value-container {
+  @apply pl-9 pr-6;
+}
+.myselect .custom-select__control {
+  @apply bg-[#F9FAFB];
+}
+.myselect-2 .custom-select__control {
+  @apply rounded-r-none bg-[#F9FAFB];
+}
 .rotation-animation {
   animation: rotation 15s infinite linear;
 }

@@ -84,7 +84,7 @@ export default function AddStudentModal({ open, setOpen }: Props) {
               >
                 <DialogPanel className="relative transform overflow-hidden rounded-[8px] bg-white text-left shadow-xl transition-all sm:my-2 sm:w-full sm:max-w-[506px]">
                   <div className=" flex justify-between p-[29px] w-full items-center border-b border-b-[#E5E7EB]">
-                    <p className=" text-[#4A4A4A] text-[21px] font-medium">
+                    <p className=" text-[#4A4A4A] text-[21px] font-semibold">
                       Add New Student
                     </p>
 
@@ -109,7 +109,7 @@ export default function AddStudentModal({ open, setOpen }: Props) {
                       </form>
                     </FormProvider>
                   </div>
-                  <div className=" rounded-[18px] w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
+                  <div className=" w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
                     <Button variant={"info"} size={"sm"} className="">
                       Add
                     </Button>

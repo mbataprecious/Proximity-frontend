@@ -11,14 +11,15 @@ import {
   ArrowTopRightOnSquareIcon,
   EllipsisHorizontalIcon,
   PencilSquareIcon,
-  TrashIcon,
 } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/helpers";
 import Pagination from "@/components/Pagination";
 import SortDropdown from "@/components/SortDropdown";
 import SearchInput from "@/components/SearchInput";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Button from "@/components/Button";
 const headers = ["Module Title", "Module Code", "Description"];
 const modules = [
   {
@@ -107,13 +108,35 @@ export default function () {
       <div className=" p-[36px] flex justify-between items-center">
         <h2 className=" text-4xl font-bold">Modules</h2>
         <div className=" flex space-x-4 items-start">
-          <SortDropdown
-            options={sortOptions}
-            value={sort}
-            onChange={(val) => setSort(val)}
-          />
+          {!selectedPeople.length ? (
+            <>
+              <SortDropdown
+                options={sortOptions}
+                value={sort}
+                onChange={(val) => setSort(val)}
+              />
 
-          <SearchInput />
+              <SearchInput />
+            </>
+          ) : (
+            <>
+              <Button
+                size={"sm"}
+                isOutlined
+                className=" border-none !bg-blue-100"
+              >
+                Select All 234 modules
+              </Button>
+              <Button
+                size={"sm"}
+                variant={"danger"}
+                className=" flex items-center"
+              >
+                <TrashIcon className=" w-6 mr-2" />
+                Delete Selected
+              </Button>
+            </>
+          )}
         </div>
       </div>
       {/* module list table */}
@@ -149,7 +172,7 @@ export default function () {
             <tr
               key={index}
               className={`${
-                selectedPeople.includes(module) ? "bg-blue-100" : undefined
+                selectedPeople.includes(module) ? "bg-blue-50" : undefined
               } hover:bg-blue-50`}
             >
               <td className="relative px-7 sm:w-32 sm:px-12">
