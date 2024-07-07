@@ -45,7 +45,7 @@ const StudentLayout = ({ children, sideContent }: Props) => {
         </Container>
       </div>
       <div>
-        <Container className=" px-0 sm:px-0 md:max-w-[85rem]">
+        <Container className=" !px-0 sm:px-0 md:!px-4 md:max-w-[85rem]">
           <div className=" bg-white min-h-screen  md:min-h-[70vh]">
             {children}
           </div>
