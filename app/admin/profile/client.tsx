@@ -34,7 +34,7 @@ export default function () {
   };
 
   return (
-    <div className=" flex flex-col items-center md:justify-center h-screen md:h-[70vh] px-6 m-auto max-w-[325px]">
+    <div className=" flex flex-col items-center md:justify-center min-h-screen md:min-h-[70vh] px-6 m-auto max-w-[325px]">
       <div className=" flex md:hidden text-[#4A4A4A] w-full justify-center p-5 mb-16">
         {/* <ArrowLeftIcon
           className=" w-6 h-6 cursor-pointer"
@@ -43,7 +43,7 @@ export default function () {
         <h3 className=" font-bold text-xl ">Profile</h3>
         <p />
       </div>
-      <div className="">
+      <div className=" md:py-8">
         <FormProvider {...methods}>
           <form
             method="post"
