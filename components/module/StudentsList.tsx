@@ -92,18 +92,18 @@ const StudentsList = () => {
             <>
               <Button
                 size={"sm"}
-                isOutlined
-                className=" border-none !bg-blue-100"
-              >
-                Select All 234 modules
-              </Button>
-              <Button
-                size={"sm"}
                 variant={"danger"}
                 className=" flex items-center"
               >
                 <TrashIcon className=" w-6 mr-2" />
                 Delete Selected
+              </Button>
+              <Button
+                size={"sm"}
+                isOutlined
+                className=" border-none !bg-blue-100"
+              >
+                Select All 234 modules
               </Button>
             </>
           )}
