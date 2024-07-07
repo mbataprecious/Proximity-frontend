@@ -1,10 +1,12 @@
 "use client";
 import Button from "@/components/Button";
+import ModuleDetailBox from "@/components/ModuleDetailBox";
 import SvgIconStyle from "@/components/SvgIconStyle";
 import AddStudentModal from "@/components/module/AddStudentModal";
 import SessionList from "@/components/module/SessionList";
 import StudentsList from "@/components/module/StudentsList";
 import { getSearchParamsObject } from "@/utils/helpers";
+import { modules } from "@/utils/mocks";
 import Link from "next/link";
 import {
   useParams,
@@ -44,21 +46,7 @@ export default function () {
           </h2>
         </div>
 
-        <div className=" bg-[#E2F1FE] border border-[#096DD9] rounded-[10px] p-5 space-y-4 max-w-[431px]">
-          <p className=" text-[#202224]">
-            <span className=" font-semibold">Module Code : &nbsp;</span>UX101
-          </p>
-          <p className=" text-[#202224]">
-            <span className=" font-semibold">Module Title : &nbsp;</span>
-            Introduction to UX Design
-          </p>
-          <p className=" text-[#202224] flex">
-            <span className=" font-semibold">Description : &nbsp;</span>
-            <span className=" line-clamp-2">
-              A beginner course on UX Design
-            </span>
-          </p>
-        </div>
+        <ModuleDetailBox details={modules[0]} />
       </div>
       <div className=" px-2">
         <div className="pl-[98px] flex pt-4 border-b-2 border-[#E5E7EB]">

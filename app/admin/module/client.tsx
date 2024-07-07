@@ -20,65 +20,10 @@ import SearchInput from "@/components/SearchInput";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { modules } from "@/utils/mocks";
 const headers = ["Module Title", "Module Code", "Description"];
-const modules = [
-  {
-    title: "Introduction to Computer Science",
-    code: "CSC101",
-    description: "A beginner course on Computer Science",
-  },
-  {
-    title: "Introduction to UX Design",
-    code: "UX101",
-    description: "A beginner course on UX Design",
-  },
-  {
-    title: "Data Structures and Algorithms",
-    code: "CSC102",
-    description: "An intermediate course on Data Structures and Algorithms",
-  },
-  {
-    title: "Human-Computer Interaction",
-    code: "HCI101",
-    description: "A course on the principles of Human-Computer Interaction",
-  },
-  {
-    title: "Introduction to Databases",
-    code: "DB101",
-    description: "A beginner course on Database Management Systems",
-  },
-  {
-    title: "Advanced Web Development",
-    code: "WEB201",
-    description: "An advanced course on web development techniques",
-  },
-  {
-    title: "Mobile Application Development",
-    code: "MOB101",
-    description:
-      "A course on developing mobile applications for various platforms",
-  },
-  {
-    title: "Introduction to Artificial Intelligence",
-    code: "AI101",
-    description:
-      "A beginner course on Artificial Intelligence concepts and applications",
-  },
-  {
-    title: "Cybersecurity Fundamentals",
-    code: "CYB101",
-    description:
-      "A course on the basics of cybersecurity and how to protect systems",
-  },
-  {
-    title: "Software Engineering Principles",
-    code: "SE101",
-    description:
-      "A course on the principles and practices of software engineering",
-  },
-];
-
 const sortOptions = ["Newest", "Oldest", "Alphabetical"];
+
 export default function () {
   const checkbox = useRef<HTMLInputElement | null>(null);
   const [sort, setSort] = useState("newest");

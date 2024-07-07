@@ -78,13 +78,35 @@ const StudentsList = () => {
     <div>
       <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9">
         <div className=" flex items-center space-x-2">
-          <SortDropdown
-            options={sortOptions}
-            value={sort}
-            onChange={(val) => setSort(val)}
-          />
+          {!selectedPeople.length ? (
+            <>
+              <SortDropdown
+                options={sortOptions}
+                value={sort}
+                onChange={(val) => setSort(val)}
+              />
 
-          <SearchInput />
+              <SearchInput />
+            </>
+          ) : (
+            <>
+              <Button
+                size={"sm"}
+                isOutlined
+                className=" border-none !bg-blue-100"
+              >
+                Select All 234 modules
+              </Button>
+              <Button
+                size={"sm"}
+                variant={"danger"}
+                className=" flex items-center"
+              >
+                <TrashIcon className=" w-6 mr-2" />
+                Delete Selected
+              </Button>
+            </>
+          )}
         </div>
         <div className=" space-x-3 flex items-center">
           <Button

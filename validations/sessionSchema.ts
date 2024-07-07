@@ -1,4 +1,4 @@
-import Yup, { array, boolean, number, object, string } from "yup";
+import Yup, { array, boolean, number, object, string, mixed } from "yup";
 
 export const sessionSchema = object().shape({
   hour: number().positive().label("hour").required("hour is required"),
@@ -6,7 +6,19 @@ export const sessionSchema = object().shape({
     value: string().required().label("minute"),
     label: string().required().label("label"),
   }),
-  radius: number().positive().label("radius").required("radius is required"),
+  radius: mixed()
+    .test(
+      "radius-test",
+      "Radius must be a positive number or a string",
+      function (text) {
+        const value = Number(text);
+        if (typeof value === "number") {
+          return value > 0;
+        }
+        return typeof value === "string";
+      }
+    )
+    .required("radius is required"),
   geofencing: boolean().required(),
   location: object().shape({
     value: string().required().label("location"),
