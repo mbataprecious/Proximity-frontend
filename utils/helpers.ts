@@ -113,4 +113,9 @@ export const getSearchParamsObject = (
   return query;
 };
 
+export const userTypeToPathMap = {
+  lecturer: { name: "lecturer", path: "/admin" },
+  student: { name: "student", path: "/student" },
+};
+
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

@@ -1,6 +1,7 @@
 import { Container } from "@/components/Container";
 import SideBar from "@/components/SideBar";
 import SvgIconStyle from "@/components/SvgIconStyle";
+import UserDropdownView from "@/components/UserDropdownView";
 import { studentNavItems } from "@/utils/navItems";
 import Image from "next/image";
 import React, { SVGProps } from "react";
@@ -88,13 +89,7 @@ const layout = ({
                 className="w-[26px] h-[26px] text-white m-auto"
               />
             </div>
-            <div className="flex items-center ml-4">
-              <p className=" font-semibold text-[17px] ml-4">Hello, Michael</p>
-              <SvgIconStyle
-                src="/Assets/svg/keyboard_arrow_down.svg"
-                className=" text-white"
-              />
-            </div>
+            <UserDropdownView />
           </div>
         </Container>
       </div>

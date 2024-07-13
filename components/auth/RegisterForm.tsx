@@ -34,10 +34,10 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className=" mx-auto px-6 md:max-w-[436px]">
-      <div className="text-[#242B33] mb-12 w-full">
+    <div className=" mx-auto px-6 py-6 md:max-w-[436px]">
+      <div className="text-[#242B33] mb-9 w-full">
         <h3 className="font-bold text-[1.75rem]">Welcome to Proximity !</h3>
-        <p className=" text-xs mt-2">
+        <p className=" text-xs mt-1">
           Your journey to better attendance management starts here.
         </p>
       </div>
@@ -150,7 +150,7 @@ const RegisterForm = () => {
             </Button>
           </form>
         </FormProvider>
-        <p className="text-[#667479] text-center text-sm mt-6">
+        <p className="text-[#667479] text-center text-sm mt-3">
           Already have an account?{" "}
           <Link
             href={"/login"}
