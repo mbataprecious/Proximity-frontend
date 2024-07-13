@@ -34,7 +34,7 @@ const LoginForm = () => {
     <div className=" mx-auto px-6 md:max-w-[436px]">
       <div className="text-[#242B33] mb-12 w-full">
         <h3 className="font-bold text-2xl md:text-[1.75rem]">
-          Welcome Back to Proximity !
+          Welcome Back to Proximity!
         </h3>
         <p className=" text-xs mt-2">
           Ready to mark your presence? Log in to continue.

@@ -11,6 +11,7 @@ import SvgIconStyle from "./SvgIconStyle";
 
 import { classNames } from "@/utils/helpers";
 import useClientSession from "@/hooks/useClientSession";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 
 const UserDropdownView = () => {
   const { logout, session } = useClientSession();
@@ -35,17 +36,18 @@ const UserDropdownView = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute z-10 mt-1 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute z-10 mt-1 w-[143px] origin-top-left rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <MenuItem as="div" className={"cursor-pointer"} onClick={logout}>
               {({ focus }) => (
                 <p
                   className={classNames(
                     focus ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    "block px-4 py-2 text-sm"
+                    " px-4 py-2 text-sm flex space-x-2"
                   )}
                 >
-                  Logout
+                  <ArrowUpTrayIcon className=" w-5 h-5 -rotate-90 " />
+                  <span>Logout</span>
                 </p>
               )}
             </MenuItem>

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import SvgIconStyle from "./SvgIconStyle";
 import Link from "next/link";
 import { ArrowLeftIcon, Bars3Icon } from "@heroicons/react/24/solid";
+import useClientSession from "@/hooks/useClientSession";
 
 interface Props {
   navItems: {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function SideBar({ navItems }: Props) {
+  const { logout } = useClientSession();
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -82,6 +84,21 @@ export default function SideBar({ navItems }: Props) {
                             </Link>
                           );
                         })}
+                      </div>
+                    </div>
+                    <div className="relative border-t mt-6 flex-1 px-2">
+                      <div className=" space-y-5 pt-4">
+                        <div
+                          onClick={logout}
+                          className={`rounded-md overflow-hidden block px-3 py-1.5 bg-none text-white`}
+                        >
+                          <div className="flex items-center bg-none">
+                            <SvgIconStyle src={"/Assets/svg/logout-icon.svg"} />
+                            <span className=" ml-4 font-semibold text-xl">
+                              logout
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
