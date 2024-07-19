@@ -9,8 +9,14 @@ import { CustomSelect } from "../formControls/CustomReactSelect";
 import SvgIconStyle from "../SvgIconStyle";
 import Link from "next/link";
 import { Checkbox2 } from "../formControls/checkboxes/checkbox2";
+import useAuthRequest from "@/hooks/useAuthRequest";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+  const router = useRouter();
+  const { request } = useAuthRequest();
   const defaultValues = {
     first_name: "",
     last_name: "",
@@ -24,10 +30,33 @@ const RegisterForm = () => {
     resolver: yupResolver ? yupResolver(SignupSchema) : undefined,
     defaultValues,
   });
+
+  const {
+    formState: { isSubmitting, errors },
+  } = methods;
+  console.log({ errors });
   const onSubmit = async (data: SignupSchemaType) => {
     try {
+      const response = await request.post("/auth/register", {
+        firstName: data.first_name,
+        lastName: data.last_name,
+        email: data.email,
+        role: data.role.value,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
+      if (response) {
+        router.push("/check-mail");
+        toast.success("Successfully created!");
+      }
+
       console.log({ data });
     } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        toast.error(error.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
       console.error(error);
     } finally {
     }
@@ -57,7 +86,7 @@ const RegisterForm = () => {
                     className=" text-[#667479]"
                   />
                 }
-                name="firstname"
+                name="first_name"
                 placeholder="First Name"
                 required={true}
               />
@@ -71,7 +100,7 @@ const RegisterForm = () => {
                     className=" text-[#667479]"
                   />
                 }
-                name="lastname"
+                name="last_name"
                 placeholder="Last Name"
                 required={true}
               />
@@ -145,7 +174,12 @@ const RegisterForm = () => {
                 }
               />
             </div>
-            <Button className="w-full" type="submit">
+            <Button
+              className="w-full"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              type="submit"
+            >
               Create Account
             </Button>
           </form>

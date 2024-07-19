@@ -118,4 +118,16 @@ export const userTypeToPathMap = {
   student: { name: "student", path: "/student" },
 };
 
+function getRandomDigit(): number {
+  return Math.floor(Math.random() * 10);
+}
+
+export function generatePhoneNumber(): string {
+  const areaCode = Array.from({ length: 3 }, getRandomDigit).join("");
+  const centralOfficeCode = Array.from({ length: 3 }, getRandomDigit).join("");
+  const lineNumber = Array.from({ length: 4 }, getRandomDigit).join("");
+
+  return `${areaCode}-${centralOfficeCode}-${lineNumber}`;
+}
+
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

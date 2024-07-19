@@ -8,9 +8,14 @@ import SvgIconStyle from "../SvgIconStyle";
 import { LoginSchemaType, loginSchema } from "@/validations/loginSchema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import useAuthRequest from "@/hooks/useAuthRequest";
+// import { setSession } from "@/utils/authsession";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { request } = useAuthRequest();
   const defaultValues = {
     email: "",
     password: "",
@@ -20,11 +25,30 @@ const LoginForm = () => {
     resolver: yupResolver ? yupResolver(loginSchema) : undefined,
     defaultValues,
   });
+  const {
+    formState: { isSubmitting },
+  } = methods;
   const onSubmit = async (data: LoginSchemaType) => {
     try {
-      router.push("/admin/module");
+      const response = await request.post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      if (response) {
+        console.log(response.data.data);
+        // setSession(response.data.data)
+        toast.success("Successfully logged in");
+        router.push("/admin/module");
+      }
+
       console.log({ data });
     } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        toast.error(error.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
       console.error(error);
     } finally {
     }
@@ -81,19 +105,24 @@ const LoginForm = () => {
                 Forgot Password?
               </Link>
             </div>
-            <Button className="w-full" type="submit">
+            <Button
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              className="w-full"
+              type="submit"
+            >
               Login
             </Button>
           </form>
         </FormProvider>
         <p className="text-[#667479] text-center text-sm mt-6">
-          Don&apos;t have an account yet?{" "}
+          Don&apos;t have an account yet?&nbsp;
           <Link
             href={"/signup"}
             className="text-center text-sm text-primary hover:underline"
           >
             Sign up
-          </Link>{" "}
+          </Link>
         </p>
       </div>
     </div>

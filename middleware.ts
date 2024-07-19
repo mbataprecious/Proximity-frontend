@@ -5,24 +5,33 @@ import { userTypeToPathMap } from "./utils/helpers";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(req: NextRequest) {
-  const res = NextResponse.next();
+  // Store current request url in a custom header, which you can read later
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-url", req.url);
+  const res = NextResponse.next({
+    request: {
+      // Apply new request headers
+      headers: requestHeaders,
+    },
+  });
   const session: IAuthData = getSession({ res, req }) || {};
 
   if (req.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
-  // //check for session validation
-  // if (!isValidSession(session)) {
-  //   const redirect_url = `/login?redirect_url=${req?.nextUrl?.pathname}`;
-  //   return NextResponse.redirect(new URL(redirect_url, req.url).toString());
-  // }
-  // const userPath =
-  //   userTypeToPathMap?.[session?.user?.role as keyof typeof userTypeToPathMap];
 
-  // if (!req.nextUrl.pathname.includes(userPath?.path)) {
-  //   const proposed_url = userPath?.name ? `${userPath.path}` : "/login";
-  //   return NextResponse.redirect(new URL(proposed_url, req.url).toString());
-  // }
+  // check for session validation
+  if (!isValidSession(session)) {
+    const redirect_url = `/login?redirect_url=${req?.nextUrl?.pathname}`;
+    return NextResponse.redirect(new URL(redirect_url, req.url).toString());
+  }
+  const userPath =
+    userTypeToPathMap?.[session?.user?.role as keyof typeof userTypeToPathMap];
+
+  if (!req.nextUrl.pathname.includes(userPath?.path)) {
+    const proposed_url = userPath?.name ? `${userPath.path}` : "/login";
+    return NextResponse.redirect(new URL(proposed_url, req.url).toString());
+  }
 
   return res;
 }
