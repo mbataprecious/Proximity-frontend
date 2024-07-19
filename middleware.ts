@@ -15,7 +15,7 @@ export function middleware(req: NextRequest) {
     },
   });
   const session: IAuthData = getSession({ res, req }) || {};
-
+  console.log({ session });
   if (req.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
@@ -25,6 +25,11 @@ export function middleware(req: NextRequest) {
     const redirect_url = `/login?redirect_url=${req?.nextUrl?.pathname}`;
     return NextResponse.redirect(new URL(redirect_url, req.url).toString());
   }
+  // check for admin
+  if (req.nextUrl.pathname === "/admin") {
+    return NextResponse.redirect(new URL("/admin/module", req.url).toString());
+  }
+  //   check for user path
   const userPath =
     userTypeToPathMap?.[session?.user?.role as keyof typeof userTypeToPathMap];
 

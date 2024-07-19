@@ -16,7 +16,7 @@ import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 const UserDropdownView = () => {
   const { logout, session } = useClientSession();
   return (
-    <Menu as="div">
+    <Menu as="div" className={"relative inline-block"}>
       <MenuButton className="flex items-center ml-4">
         <p className=" font-semibold text-[17px] ml-4">
           {session?.user?.firstName
@@ -36,7 +36,7 @@ const UserDropdownView = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute z-10 mt-1 w-[143px] origin-top-left rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute z-10 mt-1 w-full origin-top rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <MenuItem as="div" className={"cursor-pointer"} onClick={logout}>
               {({ focus }) => (

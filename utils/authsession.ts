@@ -27,10 +27,11 @@ export const setSession = (
   let prevAuth: IAuthData = getSession(options) || {};
   const updatedAuth = { ...prevAuth, ...data };
   const decodedToken = jwtDecode(updatedAuth.token);
+  console.log({ decodedToken });
   const expiry = Number(decodedToken.exp) * 1000;
   updatedAuth.expires = expiry;
   setCookie(SESSION_KEY, JSON.stringify(updatedAuth), {
-    httpOnly: true,
+    // httpOnly: true,
     // secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     ...options,

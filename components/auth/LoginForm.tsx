@@ -3,18 +3,20 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Input } from "../formControls/Input";
 import Button from "../Button";
-import { yupResolver } from "@/utils/helpers";
+import { userTypeToPathMap, yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { LoginSchemaType, loginSchema } from "@/validations/loginSchema";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
-// import { setSession } from "@/utils/authsession";
+import { setSession } from "@/utils/authsession";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect_url");
   const { request } = useAuthRequest();
   const defaultValues = {
     email: "",
@@ -36,10 +38,15 @@ const LoginForm = () => {
       });
 
       if (response) {
-        console.log(response.data.data);
-        // setSession(response.data.data)
+        const userAuth: IAuthData = response.data.data;
+        console.log(userAuth);
+        setSession(userAuth);
+        const userPath =
+          userTypeToPathMap?.[
+            userAuth?.user?.role as keyof typeof userTypeToPathMap
+          ];
         toast.success("Successfully logged in");
-        router.push("/admin/module");
+        router.push(redirectTo || userPath.path);
       }
 
       console.log({ data });
