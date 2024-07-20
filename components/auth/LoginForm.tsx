@@ -7,7 +7,7 @@ import { userTypeToPathMap, yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { LoginSchemaType, loginSchema } from "@/validations/loginSchema";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { setSession } from "@/utils/authsession";
 import axios from "axios";
@@ -15,8 +15,6 @@ import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect_url");
   const { request } = useAuthRequest();
   const defaultValues = {
     email: "",
@@ -32,6 +30,8 @@ const LoginForm = () => {
   } = methods;
   const onSubmit = async (data: LoginSchemaType) => {
     try {
+      const params = new URLSearchParams(document.location.search);
+      const redirectTo = params.get("redirect_url");
       const response = await request.post("/auth/login", {
         email: data.email,
         password: data.password,
