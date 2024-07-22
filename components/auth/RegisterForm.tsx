@@ -10,9 +10,9 @@ import SvgIconStyle from "../SvgIconStyle";
 import Link from "next/link";
 import { Checkbox2 } from "../formControls/checkboxes/checkbox2";
 import useAuthRequest from "@/hooks/useAuthRequest";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { XiorError } from "xior";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -52,8 +52,8 @@ const RegisterForm = () => {
 
       console.log({ data });
     } catch (error) {
-      if (axios.isAxiosError<{ message: string }>(error)) {
-        toast.error(error.response?.data.message as string);
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
       } else {
         toast.error((error as { message: string })?.message);
       }

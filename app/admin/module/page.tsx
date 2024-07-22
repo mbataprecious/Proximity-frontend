@@ -5,7 +5,17 @@ import Button from "@/components/Button";
 import SvgIconStyle from "@/components/SvgIconStyle";
 import Link from "next/link";
 import Client from "./client";
-const Module = () => {
+import { getModuleList } from "@/data/fetchers";
+const Module = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+  const moduleListDetails = await getModuleList({
+    limit: 10,
+    page: searchParams?.page ? parseInt(searchParams?.page as string) : 1,
+  });
+  console.log({ moduleListDetails, searchParams });
   const Empty = (
     <div className="flex justify-center items-center min-h-[70vh]">
       <div className="  ">
@@ -22,7 +32,9 @@ const Module = () => {
           <h3 className=" text-xl font-semibold text-center">No Modules</h3>
           <p className=" text-center">Start creating your Modules</p>
         </div>
-        <Button className=" mt-[54px]">Create a new Module</Button>
+        <Link href={"module/create"}>
+          <Button className=" mt-[54px]">Create a new Module</Button>
+        </Link>
       </div>
     </div>
   );
@@ -37,7 +49,11 @@ const Module = () => {
         </Link>
       }
     >
-      <Client />
+      {moduleListDetails.metadata.totalDocuments === 0 ? (
+        Empty
+      ) : (
+        <Client moduleList={moduleListDetails} />
+      )}
     </LecturerLayout>
   );
 };

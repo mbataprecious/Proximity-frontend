@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getSession, isValidSession } from "./utils/authsession";
+import { deleteSession, getSession, isValidSession } from "./utils/authsession";
 import { userTypeToPathMap } from "./utils/helpers";
 
 // This function can be marked `async` if using `await` inside
@@ -21,10 +21,17 @@ export function middleware(req: NextRequest) {
   }
 
   // check for session validation
-  if (!isValidSession(session)) {
+  if (!isValidSession(session) || Date.now() > session?.expires) {
     const redirect_url = `/login?redirect_url=${req?.nextUrl?.pathname}`;
+    console.log(redirect_url);
+    // check if session is expired
+    const isExpired = Date.now() > session?.expires;
+    if (isExpired) {
+      deleteSession({ res, req });
+    }
     return NextResponse.redirect(new URL(redirect_url, req.url).toString());
   }
+
   // check for admin
   if (req.nextUrl.pathname === "/admin") {
     return NextResponse.redirect(new URL("/admin/module", req.url).toString());

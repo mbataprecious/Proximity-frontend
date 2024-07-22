@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { setSession } from "@/utils/authsession";
-import axios from "axios";
 import toast from "react-hot-toast";
+import { XiorError } from "xior";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -30,6 +30,7 @@ const LoginForm = () => {
   } = methods;
   const onSubmit = async (data: LoginSchemaType) => {
     try {
+      //throw Error("Not implemented");
       const params = new URLSearchParams(document.location.search);
       const redirectTo = params.get("redirect_url");
       const response = await request.post("/auth/login", {
@@ -51,8 +52,8 @@ const LoginForm = () => {
 
       console.log({ data });
     } catch (error) {
-      if (axios.isAxiosError<{ message: string }>(error)) {
-        toast.error(error.response?.data.message as string);
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
       } else {
         toast.error((error as { message: string })?.message);
       }

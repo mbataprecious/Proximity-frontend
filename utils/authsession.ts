@@ -1,4 +1,4 @@
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
 
 export const SESSION_KEY = "auth-session";
@@ -19,6 +19,12 @@ export const getSession = (options?: { [key: string]: any }) => {
   const sessionCookie = getCookie(SESSION_KEY, options);
   return sessionCookie ? JSON.parse(sessionCookie) : null;
 };
+
+// Utility function to delete a session
+export const deleteSession = (options?: { [key: string]: any }) => {
+  deleteCookie(SESSION_KEY, options);
+};
+
 // Utility function to set a session
 export const setSession = (
   data: Partial<IAuthData>,

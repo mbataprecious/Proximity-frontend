@@ -1,5 +1,5 @@
 "use client";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -17,20 +17,32 @@ import { classNames } from "@/utils/helpers";
 import Pagination from "@/components/Pagination";
 import SortDropdown from "@/components/SortDropdown";
 import SearchInput from "@/components/SearchInput";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
-import { modules } from "@/utils/mocks";
+import DeleteModuleModal from "@/components/DeleteModuleModal";
 const headers = ["Module Title", "Module Code", "Description"];
 const sortOptions = ["Newest", "Oldest", "Alphabetical"];
 
-export default function () {
+export default function ({ moduleList }: { moduleList: IModuleList }) {
   const checkbox = useRef<HTMLInputElement | null>(null);
   const [sort, setSort] = useState("newest");
+  const searchParams = useSearchParams();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
+  const [select, setSelect] = useState<IModule>();
+  const [selectOne, setSelectOne] = useState(false);
+  const [deleteSelected, setDeleteSelected] = useState(false);
+  const [deleteAll, setDeleteAll] = useState(false);
+  const [modules, setModules] = useState<IModuleList["modules"]>(
+    moduleList?.modules ?? []
+  );
   const [selectedPeople, setSelectedPeople] = useState<typeof modules>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    setModules(moduleList?.modules ?? []);
+  }, [moduleList]);
 
   useLayoutEffect(() => {
     const isIndeterminate =
@@ -48,6 +60,13 @@ export default function () {
     setIndeterminate(false);
   }
 
+  const onDeleteClose = () => {
+    setDeleteSelected(false);
+    setSelectedPeople([]);
+    setDeleteAll(false);
+    setSelectOne(false);
+    setSelect(undefined);
+  };
   return (
     <div>
       <div className=" p-[36px] flex justify-between items-center">
@@ -65,16 +84,21 @@ export default function () {
             </>
           ) : (
             <>
-              <Button
-                size={"sm"}
-                isOutlined
-                className=" border-none !bg-blue-100"
-              >
-                Select All 234 modules
-              </Button>
+              {moduleList?.metadata?.totalDocuments > 1 && (
+                <Button
+                  size={"sm"}
+                  isOutlined
+                  className=" border-none !bg-blue-100"
+                >
+                  Select All {moduleList?.metadata?.totalDocuments} modules
+                </Button>
+              )}
               <Button
                 size={"sm"}
                 variant={"danger"}
+                onClick={() => {
+                  setDeleteSelected(true);
+                }}
                 className=" flex items-center"
               >
                 <TrashIcon className=" w-6 mr-2" />
@@ -175,7 +199,7 @@ export default function () {
                         <MenuItem>
                           {({ focus }) => (
                             <Link
-                              href={`module/000${index}`}
+                              href={`module/${module._id}`}
                               className={classNames(
                                 "flex items-center cursor-pointer",
                                 focus
@@ -184,8 +208,25 @@ export default function () {
                                 "block px-4 py-2 text-sm"
                               )}
                             >
-                              <ArrowTopRightOnSquareIcon className=" w-6 h-6 mr-2" />{" "}
+                              <ArrowTopRightOnSquareIcon className=" w-6 h-6 mr-2" />
                               View
+                            </Link>
+                          )}
+                        </MenuItem>
+                        <MenuItem>
+                          {({ focus }) => (
+                            <Link
+                              href={`module/${module._id}/edit`}
+                              className={classNames(
+                                "flex items-center cursor-pointer",
+                                focus
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              <PencilSquareIcon className=" w-6 h-6 mr-2" />
+                              Edit
                             </Link>
                           )}
                         </MenuItem>
@@ -199,22 +240,11 @@ export default function () {
                                   : "text-gray-700",
                                 "block px-4 py-2 text-sm"
                               )}
-                            >
-                              <PencilSquareIcon className=" w-6 h-6 mr-2" />{" "}
-                              Edit
-                            </div>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ focus }) => (
-                            <div
-                              className={classNames(
-                                "flex items-center cursor-pointer",
-                                focus
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-gray-700",
-                                "block px-4 py-2 text-sm"
-                              )}
+                              onClick={() => {
+                                setSelect(module);
+                                setSelectOne(true);
+                                setDeleteSelected(false);
+                              }}
                             >
                               <TrashIcon className=" w-6 h-6 mr-2" /> Delete
                             </div>
@@ -235,12 +265,25 @@ export default function () {
         }`}
       >
         <Pagination
-          pageCount={20}
-          pageRangeDisplayed={5}
+          pageCount={moduleList?.metadata?.totalPages}
+          pageRangeDisplayed={3}
+          currentPage={moduleList?.metadata?.currentPage}
           marginPagesDisplayed={2}
-          onPageChange={() => {}}
+          onPageChange={(page) => {
+            router.push(`/admin/module?page=${page}`);
+            router.refresh();
+            setChecked(false);
+          }}
         />
       </div>
+      <DeleteModuleModal
+        deleteAll={deleteAll}
+        selectedModules={selectedPeople}
+        isSingle={selectOne}
+        singleModule={select}
+        onClose={onDeleteClose}
+        open={selectOne || deleteSelected}
+      />
     </div>
   );
 }
