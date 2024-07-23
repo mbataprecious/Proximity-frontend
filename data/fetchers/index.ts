@@ -1,5 +1,6 @@
 "use server";
 
+import { XiorRequestConfig } from "xior";
 import { authRequest } from "../authRequest";
 
 export const verifyToken = async (token: string) => {
@@ -46,6 +47,29 @@ export const getSingleModule = async (id: string) => {
       }
     );
     return data.data.module;
+  } catch (error) {
+    console.log(error);
+    throw Error("Error while fetching modules");
+  }
+};
+
+export const getStudentAndSession = async (id: string) => {
+  const request = authRequest();
+  const option: XiorRequestConfig<any> = {
+    params: { module: id, limit: 10, page: 1 },
+    cache: "no-store",
+  };
+  try {
+    const { data: studentsData } = await request.get<{ data: IStudentList }>(
+      "/students",
+      option
+    );
+    const { data: sessionData } = await request.get<{ data: ISessionList }>(
+      "/sessions",
+      option
+    );
+
+    return { studentsList: studentsData.data, sessionsList: sessionData.data };
   } catch (error) {
     console.log(error);
     throw Error("Error while fetching modules");

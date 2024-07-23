@@ -20,7 +20,14 @@ const tabList = [
   { label: "Student List", value: "student" },
   { label: "Sessions", value: "session" },
 ];
-export default function () {
+
+interface Props {
+  moduleDetails: IModule;
+  studentsList: IStudentList;
+  sessionsList: ISessionList;
+}
+
+export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -39,14 +46,14 @@ export default function () {
       <div className=" p-[36px] flex justify-between items-center">
         <div>
           <p className=" py-1 px-2 text-xs bg-[#F0F3F9] rounded-[6px] inline leading-[20px] font-medium text-[rgba(74,74,74,0.8)] ">
-            0 Students
+            {studentsList?.metadata?.totalDocuments} Students
           </p>
           <h2 className=" text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px]">
-            Introduction to computer science
+            {moduleDetails.title}
           </h2>
         </div>
 
-        <ModuleDetailBox details={modules[0]} />
+        <ModuleDetailBox details={moduleDetails} />
       </div>
       <div className=" px-2">
         <div className="pl-[98px] flex pt-4 border-b-2 border-[#E5E7EB]">
@@ -73,9 +80,9 @@ export default function () {
         </div>
       </div>
       {tab === "student" ? (
-        <StudentsList />
+        <StudentsList studentsList={studentsList} />
       ) : tab === "session" ? (
-        <SessionList />
+        <SessionList sessionsList={sessionsList} />
       ) : null}
       <AddStudentModal open={open} setOpen={setOpen} />
     </div>

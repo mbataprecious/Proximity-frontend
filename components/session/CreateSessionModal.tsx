@@ -22,11 +22,19 @@ import {
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { CustomCreateSelect } from "../formControls/CustomReactCreateSelect";
 import Button from "../Button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import SvgIconStyle from "../SvgIconStyle";
 import { Input } from "../formControls/Input";
 import ReactSelect from "react-select";
 import { SessionType, sessionSchema } from "@/validations/sessionSchema";
+import { XiorError } from "xior";
+import useAuthRequest from "@/hooks/useAuthRequest";
+import toast from "react-hot-toast";
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -40,7 +48,9 @@ const minutesOptions = [
   { value: "45", label: "45" },
 ];
 const CreateSessionModal = ({ open, setOpen }: Props) => {
+  const { request } = useAuthRequest();
   const searchParams = useSearchParams();
+  const { moduleId } = useParams<{ moduleId: string }>();
   const pathname = usePathname();
   const router = useRouter();
   const defaultValues: SessionType = {
@@ -58,13 +68,13 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
   };
   const onClose = () => {
     setOpen(false);
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
-    current.delete("addState");
+    //const current = new URLSearchParams(Array.from(searchParams.entries()));
+    //current.delete("addState");
     // cast to string
-    const search = current.toString();
-    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
-    const query = search ? `?${search}` : "";
-    router.push(`${pathname}${query}`);
+    //const search = current.toString();
+    // // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+    // const query = search ? `?${search}` : "";
+    // router.push(`${pathname}${query}`);
   };
 
   const methods = useForm({
@@ -78,8 +88,9 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
     handleSubmit,
     reset,
     getValues,
+    setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const geofencing = watch("geofencing");
@@ -106,10 +117,47 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
     }
   }, [geofencing, reset, getValues]);
 
+  const handleLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setValue("location", {
+          label: "current location",
+          value: `${position.coords.latitude},${position.coords.longitude}`,
+        });
+      },
+      (error) => {
+        toast.error(error.message);
+        console.error(error);
+      }
+    );
+  };
+
   const onSubmit = async (data: SessionType) => {
     try {
-      console.log({ data });
+      const response = await request.post(
+        "/sessions",
+        {
+          duration: (Number(data.hour) * 60 + Number(data.minute.value)) * 60,
+          geofencing: data.geofencing,
+          ...(data?.geofencing && {
+            lattitude: parseFloat(data.location.value.split(",")[0]),
+            longitude: parseFloat(data.location.value.split(",")[1]),
+            buffer: parseFloat(data.radius as string),
+          }),
+        },
+        {
+          params: {
+            module: moduleId,
+          },
+        }
+      );
+      console.log({ response });
     } catch (error) {
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
       console.error(error);
     } finally {
     }
@@ -141,214 +189,234 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <DialogPanel className="relative transform overflow-hidden rounded-[8px] bg-white text-left shadow-xl transition-all sm:my-2 sm:w-full sm:max-w-[506px]">
-                  <div className=" flex justify-between p-[29px] w-full items-center border-b border-b-[#E5E7EB]">
-                    <p className=" text-[#4A4A4A] text-[21px] font-semibold">
-                      Start Session
-                    </p>
+                  <FormProvider {...methods}>
+                    <form
+                      method="post"
+                      className=" w-full"
+                      onSubmit={handleSubmit(onSubmit)}
+                    >
+                      <div className=" flex justify-between p-[29px] w-full items-center border-b border-b-[#E5E7EB]">
+                        <p className=" text-[#4A4A4A] text-[21px] font-semibold">
+                          Start Session
+                        </p>
 
-                    <button className="  text-[#9CA3AF]" onClick={onClose}>
-                      <XMarkIcon className=" w-6 h-6" />
-                    </button>
-                  </div>
-                  <div className=" p-[30px]">
-                    <p className=" text-[#6B7280] mb-4">
-                      Fill in the necessary information to start a new session{" "}
-                    </p>
-                    <FormProvider {...methods}>
-                      <form
-                        method="post"
-                        className=" w-full"
-                        onSubmit={handleSubmit(onSubmit)}
-                      >
-                        <div className=" flex space-x-3.5 mt-2">
-                          <div className="flex-1">
-                            <div className="relative rounded-md shadow-sm">
-                              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <SvgIconStyle
-                                  src="/Assets/svg/time-icons.svg"
-                                  className=" text-[#4A4A4A]"
+                        <button
+                          type="button"
+                          className="  text-[#9CA3AF]"
+                          onClick={onClose}
+                        >
+                          <XMarkIcon className=" w-6 h-6" />
+                        </button>
+                      </div>
+                      <div className=" p-[30px]">
+                        <p className=" text-[#6B7280] mb-4">
+                          Fill in the necessary information to start a new
+                          session{" "}
+                        </p>
+
+                        <div className=" w-full">
+                          <div className=" flex space-x-3.5 mt-2">
+                            <div className="flex-1">
+                              <div className="relative rounded-md shadow-sm">
+                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                  <SvgIconStyle
+                                    src="/Assets/svg/time-icons.svg"
+                                    className=" text-[#4A4A4A]"
+                                  />
+                                </div>
+                                <input
+                                  type="number"
+                                  {...register("hour")}
+                                  className="block w-full bg-[#F9FAFB] border border-[#DFE1E6] pl-10 pr-12 text-[#354052] focus:ring-1 ring-inset ring-[#D1D5DB] placeholder:text-[#7A869A] focus:outline-none focus:ring-inset focus:ring-blue-400"
+                                  placeholder="00"
                                 />
-                              </div>
-                              <input
-                                type="number"
-                                {...register("hour")}
-                                className="block w-full bg-[#F9FAFB] border border-[#DFE1E6] pl-10 pr-12 text-[#354052] focus:ring-1 ring-inset ring-[#D1D5DB] placeholder:text-[#7A869A] focus:outline-none focus:ring-inset focus:ring-blue-400"
-                                placeholder="00"
-                              />
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                <span className="text-gray-500 font-semibold">
-                                  Hr
-                                </span>
-                              </div>
-                            </div>
-                            <p className=" text-red-500 text-xs">
-                              {!!getErrObject("hour", errors) && (
-                                <>
-                                  <span>
-                                    <InformationCircleIcon className="w-4 h-4 mr-1 inline" />
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                  <span className="text-gray-500 font-semibold">
+                                    Hr
                                   </span>
-                                  {getErrObject("hour", errors)?.message}
-                                </>
-                              )}
-                            </p>
-                          </div>
-                          <div className="flex-1">
-                            <div className="relative">
-                              <div className="pointer-events-none absolute inset-y-0 z-20 left-0 flex items-center pl-3">
-                                <SvgIconStyle
-                                  src="/Assets/svg/time-icons.svg"
-                                  className=" text-[#4A4A4A]"
-                                />
+                                </div>
                               </div>
-                              <Controller
-                                control={control}
-                                name={"minute"}
-                                render={({
-                                  field: { onBlur, onChange, value, ref },
-                                }) => (
-                                  <ReactSelect
-                                    classNamePrefix="custom-select"
-                                    styles={selectStyle}
-                                    ref={ref}
-                                    id={"minute"}
-                                    placeholder={"00"}
-                                    options={minutesOptions}
-                                    isClearable={false}
-                                    isSearchable={false}
-                                    className={`myselect bg-[#F9FAFB]  w-full focus:outline-none focus:ring focus:border-blue-300
+                              <p className=" text-red-500 text-xs">
+                                {!!getErrObject("hour", errors) && (
+                                  <>
+                                    <span>
+                                      <InformationCircleIcon className="w-4 h-4 mr-1 inline" />
+                                    </span>
+                                    {getErrObject("hour", errors)?.message}
+                                  </>
+                                )}
+                              </p>
+                            </div>
+                            <div className="flex-1">
+                              <div className="relative">
+                                <div className="pointer-events-none absolute inset-y-0 z-20 left-0 flex items-center pl-3">
+                                  <SvgIconStyle
+                                    src="/Assets/svg/time-icons.svg"
+                                    className=" text-[#4A4A4A]"
+                                  />
+                                </div>
+                                <Controller
+                                  control={control}
+                                  name={"minute"}
+                                  render={({
+                                    field: { onBlur, onChange, value, ref },
+                                  }) => (
+                                    <ReactSelect
+                                      classNamePrefix="custom-select"
+                                      styles={selectStyle}
+                                      ref={ref}
+                                      id={"minute"}
+                                      placeholder={"00"}
+                                      options={minutesOptions}
+                                      isClearable={false}
+                                      isSearchable={false}
+                                      className={`myselect bg-[#F9FAFB]  w-full focus:outline-none focus:ring focus:border-blue-300
                             ${errors?.["minute"] && "errorControl"}`}
-                                    onBlur={onBlur}
-                                    value={
-                                      (
-                                        value as unknown as typeof minutesOptions
-                                      )?.length ||
-                                      (value as (typeof minutesOptions)[0])
-                                        ?.value
-                                        ? value
-                                        : null
-                                    }
-                                    onChange={(newValue) => onChange(newValue)}
-                                  />
-                                )}
-                              />
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-8">
-                                <span className="text-gray-500 font-semibold">
-                                  Min
-                                </span>
-                              </div>
-                            </div>
-                            <p className=" text-red-500 text-xs">
-                              {!!getErrObject("minute", errors) && (
-                                <>
-                                  <span className=" ">
-                                    <InformationCircleIcon className="w-4 h-4 mr-1 inline" />
+                                      onBlur={onBlur}
+                                      value={
+                                        (
+                                          value as unknown as typeof minutesOptions
+                                        )?.length ||
+                                        (value as (typeof minutesOptions)[0])
+                                          ?.value
+                                          ? value
+                                          : null
+                                      }
+                                      onChange={(newValue) =>
+                                        onChange(newValue)
+                                      }
+                                    />
+                                  )}
+                                />
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-8">
+                                  <span className="text-gray-500 font-semibold">
+                                    Min
                                   </span>
-                                  {
-                                    getErrObject("minute", errors)?.value
-                                      .message
-                                  }
-                                </>
+                                </div>
+                              </div>
+                              <p className=" text-red-500 text-xs">
+                                {!!getErrObject("minute", errors) && (
+                                  <>
+                                    <span className=" ">
+                                      <InformationCircleIcon className="w-4 h-4 mr-1 inline" />
+                                    </span>
+                                    {
+                                      getErrObject("minute", errors)?.value
+                                        .message
+                                    }
+                                  </>
+                                )}
+                              </p>
+                            </div>
+                          </div>
+
+                          {geofencing && (
+                            <>
+                              <div className="flex w-full mt-3.5">
+                                <Controller
+                                  control={control}
+                                  name={"location"}
+                                  render={({
+                                    field: { onBlur, onChange, value, ref },
+                                  }) => (
+                                    <ReactSelect
+                                      classNamePrefix="custom-select"
+                                      styles={selectStyle}
+                                      ref={ref}
+                                      id={"location"}
+                                      placeholder={"Location"}
+                                      options={[]}
+                                      isClearable={false}
+                                      isSearchable={false}
+                                      className={`myselect-2 w-[85%] bg-[#F9FAFB] focus:outline-none focus:ring focus:border-blue-300
+                            ${errors?.["location"] && "errorControl"}`}
+                                      onBlur={onBlur}
+                                      value={
+                                        (
+                                          value as unknown as typeof minutesOptions
+                                        )?.length ||
+                                        (value as (typeof minutesOptions)[0])
+                                          ?.value
+                                          ? value
+                                          : null
+                                      }
+                                      onChange={(newValue) =>
+                                        onChange(newValue)
+                                      }
+                                    />
+                                  )}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={handleLocation}
+                                  className="relative w-[15%] -ml-px bg-[#096DD9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#096DD9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 focus:z-10 rounded-r-[8px]"
+                                >
+                                  <SvgIconStyle
+                                    src="/Assets/svg/location-icons.svg"
+                                    className=" text-white"
+                                  />
+                                </button>
+                              </div>
+                              <div className=" w-full mt-3.5">
+                                <Input
+                                  type="number"
+                                  name="radius"
+                                  dark
+                                  placeholder="Radius in meters"
+                                />
+                              </div>
+                            </>
+                          )}
+                          <div className=" w-full mt-5">
+                            <Controller
+                              control={control}
+                              name={"geofencing"}
+                              render={({
+                                field: { onBlur, onChange, value, ref },
+                              }) => (
+                                <label className=" w-fit flex space-x-2">
+                                  <Switch
+                                    checked={value}
+                                    onChange={onChange}
+                                    ref={ref}
+                                    onBlur={onBlur}
+                                    className={classNames(
+                                      value ? "bg-[#096DD9]" : "bg-gray-200",
+                                      "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    )}
+                                  >
+                                    <span className="sr-only">Use setting</span>
+                                    <span
+                                      aria-hidden="true"
+                                      className={classNames(
+                                        value
+                                          ? "translate-x-5"
+                                          : "translate-x-0",
+                                        "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                      )}
+                                    />
+                                  </Switch>
+                                  <span className=" text-[17px] font-medium text-[#111928]">
+                                    Geo fencing
+                                  </span>
+                                </label>
                               )}
-                            </p>
+                            />
                           </div>
                         </div>
-
-                        {geofencing && (
-                          <>
-                            <div className="flex w-full mt-3.5">
-                              <Controller
-                                control={control}
-                                name={"location"}
-                                render={({
-                                  field: { onBlur, onChange, value, ref },
-                                }) => (
-                                  <ReactSelect
-                                    classNamePrefix="custom-select"
-                                    styles={selectStyle}
-                                    ref={ref}
-                                    id={"location"}
-                                    placeholder={"Location"}
-                                    options={[]}
-                                    isClearable={false}
-                                    isSearchable={false}
-                                    className={`myselect-2 w-[85%] bg-[#F9FAFB] focus:outline-none focus:ring focus:border-blue-300
-                            ${errors?.["location"] && "errorControl"}`}
-                                    onBlur={onBlur}
-                                    value={
-                                      (
-                                        value as unknown as typeof minutesOptions
-                                      )?.length ||
-                                      (value as (typeof minutesOptions)[0])
-                                        ?.value
-                                        ? value
-                                        : null
-                                    }
-                                    onChange={(newValue) => onChange(newValue)}
-                                  />
-                                )}
-                              />
-                              <button
-                                type="button"
-                                className="relative w-[15%] -ml-px bg-[#096DD9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#096DD9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 focus:z-10 rounded-r-[8px]"
-                              >
-                                <SvgIconStyle
-                                  src="/Assets/svg/location-icons.svg"
-                                  className=" text-white"
-                                />
-                              </button>
-                            </div>
-                            <div className=" w-full mt-3.5">
-                              <Input
-                                type="number"
-                                name="radius"
-                                dark
-                                placeholder="Radius in meters"
-                              />
-                            </div>
-                          </>
-                        )}
-                        <div className=" w-full mt-5">
-                          <Controller
-                            control={control}
-                            name={"geofencing"}
-                            render={({
-                              field: { onBlur, onChange, value, ref },
-                            }) => (
-                              <label className=" w-fit flex space-x-2">
-                                <Switch
-                                  checked={value}
-                                  onChange={onChange}
-                                  ref={ref}
-                                  onBlur={onBlur}
-                                  className={classNames(
-                                    value ? "bg-[#096DD9]" : "bg-gray-200",
-                                    "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                  )}
-                                >
-                                  <span className="sr-only">Use setting</span>
-                                  <span
-                                    aria-hidden="true"
-                                    className={classNames(
-                                      value ? "translate-x-5" : "translate-x-0",
-                                      "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                                    )}
-                                  />
-                                </Switch>
-                                <span className=" text-[17px] font-medium text-[#111928]">
-                                  Geo fencing
-                                </span>
-                              </label>
-                            )}
-                          />
-                        </div>
-                      </form>
-                    </FormProvider>
-                  </div>
-                  <div className=" w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
-                    <Button size={"sm"} className="">
-                      Start
-                    </Button>
-                  </div>
+                      </div>
+                      <div className=" w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
+                        <Button
+                          size={"sm"}
+                          loading={isSubmitting}
+                          disabled={isSubmitting}
+                          className=""
+                        >
+                          Start
+                        </Button>
+                      </div>
+                    </form>
+                  </FormProvider>
                 </DialogPanel>
               </TransitionChild>
             </div>

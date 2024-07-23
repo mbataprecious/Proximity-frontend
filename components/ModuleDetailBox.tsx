@@ -2,7 +2,7 @@ import { modules } from "@/utils/mocks";
 import React from "react";
 
 interface Props {
-  details: (typeof modules)[0];
+  details: IModule;
 }
 
 const ModuleDetailBox = ({ details }: Props) => {

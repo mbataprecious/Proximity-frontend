@@ -117,3 +117,76 @@ export const modules = [
     time: "07:15 PM",
   },
 ];
+
+const sessions = [
+  {
+    id: "1244356",
+    date: "06/16/2024",
+    startTime: "10:30 AM",
+    endTime: "12:30 PM",
+    geoFencing: true,
+  },
+  {
+    id: "1244357",
+    date: "06/17/2024",
+    startTime: "11:00 AM",
+    endTime: "01:00 PM",
+    geoFencing: false,
+  },
+  {
+    id: "1244358",
+    date: "06/18/2024",
+    startTime: "09:00 AM",
+    endTime: "11:00 AM",
+    geoFencing: true,
+  },
+  {
+    id: "1244359",
+    date: "06/19/2024",
+    startTime: "02:00 PM",
+    endTime: "04:00 PM",
+    geoFencing: false,
+  },
+  {
+    id: "1244360",
+    date: "06/20/2024",
+    startTime: "08:00 AM",
+    endTime: "10:00 AM",
+    geoFencing: true,
+  },
+  {
+    id: "1244361",
+    date: "06/21/2024",
+    startTime: "03:00 PM",
+    endTime: "05:00 PM",
+    geoFencing: false,
+  },
+  {
+    id: "1244362",
+    date: "06/22/2024",
+    startTime: "07:00 AM",
+    endTime: "09:00 AM",
+    geoFencing: true,
+  },
+  {
+    id: "1244363",
+    date: "06/23/2024",
+    startTime: "04:00 PM",
+    endTime: "06:00 PM",
+    geoFencing: false,
+  },
+  {
+    id: "1244364",
+    date: "06/24/2024",
+    startTime: "01:00 PM",
+    endTime: "03:00 PM",
+    geoFencing: true,
+  },
+  {
+    id: "1244365",
+    date: "06/25/2024",
+    startTime: "05:00 PM",
+    endTime: "07:00 PM",
+    geoFencing: false,
+  },
+];
