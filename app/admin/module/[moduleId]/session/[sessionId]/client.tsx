@@ -62,7 +62,7 @@ export default function () {
           </div>
         </div>
 
-        <ModuleDetailBox details={modules[0]} />
+        <ModuleDetailBox details={{ _id: "sample_id", ...modules[0] }} />
       </div>
       <div className="p-[36px] flex justify-between ">
         <div className=" flex flex-col md:flex-row items-center space-y-3 md:space-y-0  md:space-x-6">
