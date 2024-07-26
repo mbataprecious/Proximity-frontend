@@ -13,7 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.log(error.message);
+    console.log(error.digest);
   }, [error]);
 
   return (
@@ -21,7 +21,7 @@ export default function Error({
       <Container className="flex justify-center items-center h-full">
         <div>
           <h3 className=" font-bold text-3xl md:text-5xl text-white text-center">
-            Reset Failed : {error.message}
+            Reset Failed : Invalid or Expired.
           </h3>
           <Link href={"/login"}>
             <Button variant={"danger"} className=" mt-4 w-full !text-white">
