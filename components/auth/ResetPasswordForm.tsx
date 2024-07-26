@@ -35,8 +35,8 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
         "password": data.password,
         "confirmPassword": data.confirmPassword
       }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+        params: {
+          token
         }
       }
       );

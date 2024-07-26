@@ -37,15 +37,18 @@ export default function DeleteModuleModal({
     try {
       //throw Error("Not implemented");
       const params = new URLSearchParams(document.location.search);
-      if (singleModule?._id) {
-        const response = await request.delete(`/modules/${singleModule?._id}`);
-        if (response) {
-          toast.success("Successfully deleted module");
-          onClose();
-          router.push(`/admin/module?${params.toString()}`);
-          router.refresh();
+      const response = await (deleteAll ? request.delete(`modules/all`) : isSingle ? request.delete(`/modules/${singleModule?._id}`) : request.delete(`/modules/`, {
+        params: {
+          modules: selectedModules.map(({ _id }) => _id).join(",")
         }
+      }));
+      if (response) {
+        toast.success(response?.data?.message);
+        onClose();
+        router.push(`/admin/module?${params.toString()}`);
+        router.refresh();
       }
+
     } catch (error) {
       if (error instanceof XiorError) {
         toast.error(error?.response?.data.message as string);
@@ -96,19 +99,18 @@ export default function DeleteModuleModal({
                     >
                       {deleteAll
                         ? "Delete All Modules"
-                        : isSingle
-                        ? "Delete Module"
-                        : "Delete Selected Modules"}
+                        : singleModule?.title
+                          ? "Delete Module"
+                          : "Delete Selected Modules"}
                     </DialogTitle>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        {`Are you sure you want to ${
-                          deleteAll
-                            ? "delete all modules"
-                            : isSingle
+                        {`Are you sure you want to ${deleteAll
+                          ? "delete all modules"
+                          : singleModule?.title
                             ? `delete "${singleModule?.title}" module`
                             : "delete selected modules"
-                        }? This action cannot be undone.`}
+                          }? This action cannot be undone.`}
                       </p>
                     </div>
                   </div>
@@ -125,8 +127,8 @@ export default function DeleteModuleModal({
                     {deleteAll
                       ? "Delete modules"
                       : isSingle
-                      ? "Delete module"
-                      : "Delete modules"}
+                        ? "Delete module"
+                        : "Delete modules"}
                   </Button>
                   <button
                     type="button"

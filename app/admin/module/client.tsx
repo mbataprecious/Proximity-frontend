@@ -57,6 +57,9 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
     const isIndeterminate =
       selectedPeople.length > 0 && selectedPeople.length < modules.length;
     setChecked(selectedPeople.length === modules.length);
+    if (!(selectedPeople.length === modules.length)) {
+      setDeleteAll(false)
+    }
     setIndeterminate(isIndeterminate);
     if (checkbox.current) {
       checkbox.current.indeterminate = isIndeterminate;
@@ -70,11 +73,8 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
   }
 
   const onDeleteClose = () => {
-    setDeleteSelected(false);
-    setSelectedPeople([]);
-    setDeleteAll(false);
     setSelectOne(false);
-    setSelect(undefined);
+    setDeleteSelected(false);
   };
   return (
     <div>
@@ -108,10 +108,11 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
             </>
           ) : (
             <>
-              {moduleList?.metadata?.totalDocuments > 1 && (
+              {moduleList?.metadata?.totalDocuments > 1 && selectedPeople.length === modules.length && !deleteAll && (
                 <Button
                   size={"sm"}
                   isOutlined
+                  onClick={() => setDeleteAll(true)}
                   className=" border-none !bg-blue-100"
                 >
                   Select All {moduleList?.metadata?.totalDocuments} modules
@@ -122,11 +123,13 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                 variant={"danger"}
                 onClick={() => {
                   setDeleteSelected(true);
+                  setSelectOne(false)
+                  setSelect(undefined)
                 }}
                 className=" flex items-center"
               >
                 <TrashIcon className=" w-6 mr-2" />
-                Delete Selected
+                {deleteAll ? "Delete All Modules" : "Delete Selected"}
               </Button>
             </>
           )}
@@ -293,8 +296,8 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           marginPagesDisplayed={2}
           onPageChange={(page) => {
             router.push(
-              `/admin/module?page=${page}&${searchParams.get("sort")
-                ? `sort=${sortMap[sort as keyof typeof sortMap]}`
+              `/admin/module?page=${page}${searchParams.get("sort")
+                ? `&sort=${sortMap[sort as keyof typeof sortMap]}`
                 : ""
               }`
             );
