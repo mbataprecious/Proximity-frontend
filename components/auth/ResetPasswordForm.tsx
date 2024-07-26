@@ -31,7 +31,7 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-      const response = await request.put("/users/password", {
+      const response = await request.put("/auth/password", {
         "password": data.password,
         "confirmPassword": data.confirmPassword
       }, {
