@@ -21,14 +21,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
 import DeleteModuleModal from "@/components/DeleteModuleModal";
+import { off } from "process";
 const headers = ["Module Title", "Module Code", "Description"];
-const sortOptions = ["Newest", "Oldest", "Alphabetical"];
-
+const sortMap = {
+  Newest: "DSC",
+  Oldest: "ASC",
+};
 export default function ({ moduleList }: { moduleList: IModuleList }) {
-  const checkbox = useRef<HTMLInputElement | null>(null);
-  const [sort, setSort] = useState("newest");
   const searchParams = useSearchParams();
+  const checkbox = useRef<HTMLInputElement | null>(null);
+  const [sort, setSort] = useState(
+    Object.keys(sortMap).find(
+      (val) => sortMap[val as keyof typeof sortMap] === searchParams.get("sort")
+    ) || "newest"
+  );
   const [checked, setChecked] = useState(false);
+  const [keyword, setKeyword] = useState("")
   const [indeterminate, setIndeterminate] = useState(false);
   const [select, setSelect] = useState<IModule>();
   const [selectOne, setSelectOne] = useState(false);
@@ -42,6 +50,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
 
   useEffect(() => {
     setModules(moduleList?.modules ?? []);
+    setKeyword(searchParams.get("keyword") || "")
   }, [moduleList]);
 
   useLayoutEffect(() => {
@@ -75,12 +84,27 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           {!selectedPeople.length ? (
             <>
               <SortDropdown
-                options={sortOptions}
+                options={Object.keys(sortMap)}
                 value={sort}
-                onChange={(val) => setSort(val)}
+                onChange={(val) => {
+                  setSort(val);
+                  router.push(
+                    `/admin/module?page=1&sort=${sortMap[val as keyof typeof sortMap]
+                    }`
+                  );
+                  router.refresh();
+                }}
               />
 
-              <SearchInput />
+              <SearchInput onSearchClick={() => {
+                if (keyword) {
+                  router.push(
+                    `/admin/module?page=1&${sort ? `sort=${sortMap[sort as keyof typeof sortMap]}&` : ``}${!!keyword && `keyword=${keyword}`}`
+                  );
+                  router.refresh();
+                }
+
+              }} onChange={(e) => setKeyword(e.target.value)} />
             </>
           ) : (
             <>
@@ -140,9 +164,8 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           {modules.map((module, index) => (
             <tr
               key={index}
-              className={`${
-                selectedPeople.includes(module) ? "bg-blue-50" : undefined
-              } hover:bg-blue-50`}
+              className={`${selectedPeople.includes(module) ? "bg-blue-50" : undefined
+                } hover:bg-blue-50`}
             >
               <td className="relative px-7 sm:w-32 sm:px-12">
                 {selectedPeople.includes(module) && (
@@ -260,9 +283,8 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
         </tbody>
       </table>
       <div
-        className={`flex justify-center mt-14 pb-10 ${
-          modules.length < 5 && "mt-28"
-        }`}
+        className={`flex justify-center mt-14 pb-10 ${modules.length < 5 && "mt-28"
+          }`}
       >
         <Pagination
           pageCount={moduleList?.metadata?.totalPages}
@@ -270,7 +292,12 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           currentPage={moduleList?.metadata?.currentPage}
           marginPagesDisplayed={2}
           onPageChange={(page) => {
-            router.push(`/admin/module?page=${page}`);
+            router.push(
+              `/admin/module?page=${page}&${searchParams.get("sort")
+                ? `sort=${sortMap[sort as keyof typeof sortMap]}`
+                : ""
+              }`
+            );
             router.refresh();
             setChecked(false);
           }}

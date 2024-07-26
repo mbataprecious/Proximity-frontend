@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const CheckMail = () => {
+const CheckMail = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+
   return (
     <div className=" h-screen bg-primary">
       <Container className="flex justify-center items-center h-full">
@@ -20,7 +25,7 @@ const CheckMail = () => {
             Check Your Mail
           </h3>
           <p className=" text-white text-center mt-4">
-            We have sent a verification link to your email
+            We have sent a {searchParams?.reset ? "reset" : "verification"} link to your email
           </p>
           <Link href={"/login"}>
             <Button

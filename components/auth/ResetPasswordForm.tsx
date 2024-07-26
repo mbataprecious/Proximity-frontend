@@ -6,8 +6,14 @@ import Button from "../Button";
 import { yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { newPasswordSchema } from "@/validations/forgotpasswordSchema";
+import { useRouter } from "next/navigation";
+import useAuthRequest from "@/hooks/useAuthRequest";
+import toast from "react-hot-toast";
+import { XiorError } from "xior";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ token }: { token: string }) => {
+  const router = useRouter();
+  const { request } = useAuthRequest();
   const defaultValues = {
     password: "",
     confirmPassword: "",
@@ -17,10 +23,33 @@ const ResetPasswordForm = () => {
     resolver: yupResolver ? yupResolver(newPasswordSchema) : undefined,
     defaultValues,
   });
+
+  const {
+    formState: { isSubmitting, },
+  } = methods;
+
+
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-      console.log({ data });
+      const response = await request.put("/users/password", {
+        "password": data.password,
+        "confirmPassword": data.confirmPassword
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+      );
+      if (response) {
+        toast.success(response?.data?.message || "reset successful");
+        router.push("/login");
+      }
     } catch (error) {
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
       console.error(error);
     } finally {
     }
@@ -69,8 +98,11 @@ const ResetPasswordForm = () => {
                 required={true}
               />
             </div>
-            <Button className="w-full" type="submit">
-              Create Account
+            <Button
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              className="w-full" type="submit">
+              Reset Password
             </Button>
           </form>
         </FormProvider>

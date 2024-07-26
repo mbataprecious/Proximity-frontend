@@ -20,17 +20,25 @@ export const verifyToken = async (token: string) => {
 export const getModuleList = async ({
   limit = 10,
   page = 1,
+  sort = "DSC",
+  keyword = "",
 }: {
   limit: number;
   page: number;
+  sort: string;
+  keyword?: string;
 }) => {
   console.log({ limit, page });
+  const searchObj = keyword ? { keyword, orderBy: sort } : { sort };
   const request = authRequest();
   try {
-    const { data } = await request.get<{ data: IModuleList }>("/modules", {
-      params: { limit, page },
-      cache: "no-store",
-    });
+    const { data } = await request.get<{ data: IModuleList }>(
+      keyword ? "/modules/search" : "/modules",
+      {
+        params: { limit, page, ...searchObj },
+        cache: "no-store",
+      }
+    );
     return data.data;
   } catch (error) {
     console.log(error);

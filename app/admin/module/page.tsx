@@ -14,6 +14,8 @@ const Module = async ({
   const moduleListDetails = await getModuleList({
     limit: 10,
     page: searchParams?.page ? parseInt(searchParams?.page as string) : 1,
+    sort: searchParams?.sort as string,
+    keyword: searchParams?.keyword as string
   });
   console.log({ moduleListDetails, searchParams });
   const Empty = (

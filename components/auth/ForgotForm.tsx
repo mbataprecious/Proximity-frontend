@@ -6,11 +6,17 @@ import Button from "../Button";
 import { yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { object, string } from "yup";
+import useAuthRequest from "@/hooks/useAuthRequest";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { XiorError } from "xior";
 
 const forgotSchema = object().shape({
   email: string().label("Email address").email().required("Email is required"),
 });
 const ForgotForm = () => {
+  const router = useRouter();
+  const { request } = useAuthRequest();
   const defaultValues = {
     email: "",
   };
@@ -19,10 +25,26 @@ const ForgotForm = () => {
     resolver: yupResolver ? yupResolver(forgotSchema) : undefined,
     defaultValues,
   });
+
+  const {
+    formState: { isSubmitting, },
+  } = methods;
   const onSubmit = async (data: typeof defaultValues) => {
     try {
+      const response = await request.post("/auth/reset", {
+        email: data.email,
+      });
+      if (response) {
+        router.push("/check-mail?reset=true");
+        toast.success("reset sent!");
+      }
       console.log({ data });
     } catch (error) {
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
       console.error(error);
     } finally {
     }
@@ -59,7 +81,10 @@ const ForgotForm = () => {
                 required={true}
               />
             </div>
-            <Button className="w-full" type="submit">
+            <Button
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              className="w-full" type="submit">
               Recover Password
             </Button>
           </form>
