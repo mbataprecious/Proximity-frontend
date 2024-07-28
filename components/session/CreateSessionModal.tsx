@@ -31,9 +31,12 @@ import { XiorError } from "xior";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
 import { useRouter } from "next-nprogress-bar";
+import { set } from "date-fns";
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
+  setSession?: (session: ISession) => void;
+  setSuccessOpen?: (value: boolean) => void;
   //   formTarget: FormTarget;
 }
 
@@ -43,7 +46,12 @@ const minutesOptions = [
   { value: "30", label: "30" },
   { value: "45", label: "45" },
 ];
-const CreateSessionModal = ({ open, setOpen }: Props) => {
+const CreateSessionModal = ({
+  setSuccessOpen,
+  setSession,
+  open,
+  setOpen,
+}: Props) => {
   const { request } = useAuthRequest();
   const searchParams = useSearchParams();
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -149,6 +157,13 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
     }
   };
   const onSubmit = async (data: SessionType) => {
+    const totalDuration =
+      (Number(data.hour) * 60 + Number(data.minute.value)) * 60 * 1000;
+
+    if (!totalDuration) {
+      toast.error("Duration cannot be zero");
+      return;
+    }
     try {
       const response = await request.post(
         "/sessions",
@@ -169,6 +184,8 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
         }
       );
       if (response) {
+        setSession?.(response.data?.data?.session);
+        setSuccessOpen?.(true);
         toast.success("Session created successfully");
         router.push(`${pathname}?${searchParams.toString()}`);
         router.refresh();

@@ -9,14 +9,17 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Button from "../Button";
 import SvgIconStyle from "../SvgIconStyle";
+import { copyTextToClipboard } from "@/utils/helpers";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
+  session?: ISession;
   //   formTarget: FormTarget;
 }
 
-const SessionSuccessModal = ({ open, setOpen }: Props) => {
+const SessionSuccessModal = ({ session, open, setOpen }: Props) => {
   return (
     <Transition show={open}>
       <Dialog className="relative z-30" onClose={() => undefined}>
@@ -43,9 +46,10 @@ const SessionSuccessModal = ({ open, setOpen }: Props) => {
               <DialogPanel className="relative transform overflow-hidden rounded-[8px] bg-white text-left shadow-xl transition-all sm:my-2 sm:w-full sm:max-w-[506px]">
                 <div className="relative flex justify-center p-[29px] w-full items-center border-b border-b-[#E5E7EB]">
                   <p className=" text-[#4A4A4A] text-[21px] font-semibold">
-                    Add New Student
+                    Session Created Successfully
                   </p>
                   <button
+                    type="button"
                     className=" absolute right-[20px] top-[30px]  text-[#9CA3AF]"
                     onClick={() => setOpen(false)}
                   >
@@ -54,7 +58,7 @@ const SessionSuccessModal = ({ open, setOpen }: Props) => {
                 </div>
                 <div className=" p-[30px]">
                   <h4 className=" text-4xl font-medium text-center text-[#4A4A4A] text-[54px]">
-                    4096
+                    {session?.code}
                   </h4>
                   <p className=" text-xs font-medium text-[#6B7280] mt-5 text-center">
                     Copy Session Code
@@ -64,6 +68,10 @@ const SessionSuccessModal = ({ open, setOpen }: Props) => {
                   <Button
                     fullWidth
                     size={"sm"}
+                    onClick={() => {
+                      copyTextToClipboard(session?.code ?? "");
+                      toast.success("copied to clipboard");
+                    }}
                     className=" flex justify-center"
                   >
                     Copy&nbsp;&nbsp;

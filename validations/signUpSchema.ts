@@ -71,10 +71,6 @@ export const ChangePasswordSchema = object({
       passwordConditions.minOneSpecialRegex,
       "Password must have at least one special character"
     ),
-  confirmPassword: string()
-    .label("Confirm password")
-    .required()
-    .oneOf([ref("password"), ""], "Passwords must be identical"),
 });
 
 export type ChangePasswordSchemaType = Yup.InferType<

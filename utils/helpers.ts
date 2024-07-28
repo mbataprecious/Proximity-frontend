@@ -164,4 +164,22 @@ function errorCallback(error: GeolocationPositionError) {
   }
 }
 
+export const copyTextToClipboard = async (text: string) => {
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Text copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  } else {
+    // Fallback for older browsers
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+  }
+};
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

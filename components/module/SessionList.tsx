@@ -18,6 +18,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
   const router = useRouter();
   const { request } = useAuthRequest();
   const [open, setOpen] = useState(false);
+  const [recentSession, setRecentSession] = useState<ISession>();
   const [successOpen, setSuccessOpen] = useState(false);
   const [metadata, setMetadata] = useState(sessionsList?.metadata ?? {});
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -166,8 +167,17 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
       ) : (
         Empty
       )}
-      <CreateSessionModal open={open} setOpen={setOpen} />
-      <SessionSuccessModal open={successOpen} setOpen={setSuccessOpen} />
+      <CreateSessionModal
+        setSession={setRecentSession}
+        open={open}
+        setSuccessOpen={setSuccessOpen}
+        setOpen={setOpen}
+      />
+      <SessionSuccessModal
+        session={recentSession}
+        open={successOpen}
+        setOpen={setSuccessOpen}
+      />
     </>
   );
 };

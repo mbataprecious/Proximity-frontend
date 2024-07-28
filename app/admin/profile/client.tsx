@@ -3,7 +3,12 @@ import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button";
 import { yupResolver } from "@/utils/helpers";
-import { SignupSchema, SignupSchemaType } from "@/validations/signUpSchema";
+import {
+  ChangePasswordSchema,
+  ChangePasswordSchemaType,
+  SignupSchema,
+  SignupSchemaType,
+} from "@/validations/signUpSchema";
 import SvgIconStyle from "../../../components/SvgIconStyle";
 import { Input } from "@/components/formControls/Input";
 import { useRouter } from "next-nprogress-bar";
@@ -28,12 +33,10 @@ export default function () {
   });
   const methodsPass = useForm({
     mode: "onChange",
-    resolver: yupResolver
-      ? yupResolver(SignupSchema.pick(["password", "confirmPassword"]))
-      : undefined,
+    resolver: yupResolver ? yupResolver(ChangePasswordSchema) : undefined,
     defaultValues: {
       password: "",
-      confirmPassword: "",
+      oldPassword: "",
     },
   });
 
@@ -80,13 +83,11 @@ export default function () {
     } finally {
     }
   };
-  const onSubmit = async (
-    data: Pick<SignupSchemaType, "password" | "confirmPassword">
-  ) => {
+  const onSubmit = async (data: ChangePasswordSchemaType) => {
     try {
       const response = await request.put("/users/password", {
+        oldPassword: data.oldPassword,
         password: data.password,
-        confirmPassword: data.confirmPassword,
       });
       if (response) {
         toast.success(response?.data?.message || "reset successful");
@@ -176,7 +177,7 @@ export default function () {
                     className=" text-[#667479]"
                   />
                 }
-                name="password"
+                name="oldPassword"
                 placeholder="Current Password"
                 required={true}
               />
@@ -190,7 +191,7 @@ export default function () {
                     className=" text-[#667479]"
                   />
                 }
-                name="confirmPassword"
+                name="password"
                 placeholder="New Password"
                 required={true}
               />

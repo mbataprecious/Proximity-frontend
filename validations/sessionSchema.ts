@@ -1,7 +1,7 @@
 import Yup, { array, boolean, number, object, string, mixed } from "yup";
 
 export const sessionSchema = object().shape({
-  hour: number().positive().label("hour").required("hour is required"),
+  hour: number().min(0).label("hour").required("hour is required"),
   minute: object().shape({
     value: string().required().label("minute"),
     label: string().required().label("label"),
