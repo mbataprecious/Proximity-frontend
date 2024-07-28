@@ -210,13 +210,7 @@ export default function ({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {sessionAttendance.attendance.map((person, index) => {
-            const studentStatus = person.flagged
-              ? "flagged"
-              : person.present
-              ? "present"
-              : "absent";
-
+          {sessionAttendance.attendance.map((person) => {
             return (
               <tr key={person.userId} className={"hover:bg-blue-50"}>
                 <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
@@ -270,7 +264,7 @@ export default function ({
                       <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="py-1">
                           {sortOptions
-                            .filter((opt) => opt !== studentStatus)
+                            .filter((opt) => opt !== person.status)
                             .map((status) => (
                               <MenuItem key={status}>
                                 {({ focus }) => (
