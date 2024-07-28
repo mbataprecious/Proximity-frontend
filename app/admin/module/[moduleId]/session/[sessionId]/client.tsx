@@ -265,6 +265,7 @@ export default function ({
                         <div className="py-1">
                           {sortOptions
                             .filter((opt) => opt !== person.status)
+                            .filter((opt) => opt !== "flagged")
                             .map((status) => (
                               <MenuItem key={status}>
                                 {({ focus }) => (
