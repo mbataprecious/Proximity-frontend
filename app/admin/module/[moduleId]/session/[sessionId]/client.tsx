@@ -58,17 +58,12 @@ export default function ({
   }, [moduleData, sessionData, sessionAttendance]);
 
   const handleStatusUpdate = async (studentId: string, status: string) => {
-    const data =
-      status === "present"
-        ? { present: true }
-        : status === "absent"
-        ? { present: false }
-        : { flagged: true };
-
     try {
       const response = await request.put(
         "attendance/students/" + studentId,
-        data,
+        {
+          status,
+        },
         {
           params: {
             session: sessionData._id,
@@ -242,20 +237,14 @@ export default function ({
                 >
                   <Label
                     variant={
-                      person.flagged
+                      person.status === "flagged"
                         ? "warning"
-                        : person.present
+                        : person.status === "present"
                         ? "success"
                         : "danger"
                     }
                   >
-                    {capitalCase(
-                      person.flagged
-                        ? "flagged"
-                        : person.present
-                        ? "present"
-                        : "absent"
-                    )}
+                    {capitalCase(person?.status as string)}
                   </Label>
                 </td>
                 <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
