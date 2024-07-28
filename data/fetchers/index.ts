@@ -139,7 +139,12 @@ export const getStudentAttendance = async () => {
   const request = authRequest();
   try {
     const { data } = await request.get<{ data: IAttendanceList }>(
-      "/attendance"
+      "/attendance",
+      {
+        params: {
+          limit: 10,
+        },
+      }
     );
     return data.data;
   } catch (error) {

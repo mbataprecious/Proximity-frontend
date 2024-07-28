@@ -4,6 +4,7 @@ import SvgIconStyle from "../SvgIconStyle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Container } from "../Container";
+import NextBreadcrumb from "../BreadCrumb";
 
 const navItems = [
   {
@@ -27,7 +28,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
   const pathname = usePathname();
   return (
     <div className="">
-      <div className=" bg-white mb-[3.875rem]">
+      <div className=" bg-white mb-[1.875rem]">
         <Container className="max-w-[85rem] flex justify-between">
           <div className=" flex pt-4">
             {navItems.map(({ title, href, icon }) => {
@@ -50,10 +51,19 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
               );
             })}
           </div>
-
           <div>{sideContent}</div>
         </Container>
       </div>
+      <Container className="max-w-[85rem] flex justify-between">
+        <NextBreadcrumb
+          separator={<span className=" text-[#98A2B3]"> / </span>}
+          activeClasses=" text-[#096DD9] font-medium"
+          containerClasses="flex items-center py-6"
+          listClasses="hover:underline mx-2 text-sm text-[#98A2B3]"
+          capitalizeLinks
+        />
+      </Container>
+
       <div>
         <Container className="max-w-[85rem]">
           <div className=" bg-white min-h-[70vh]">{children}</div>
