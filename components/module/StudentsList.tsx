@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -19,35 +19,69 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getStudentsAndSessionsByMetadata } from "@/data/fetchers/clientFetchers";
+import DeletStudentModal from "../DeleteStudentModal";
 
 const headers = ["First Name", "Last Name ", "Email"];
-
+const sortMap = {
+  Newest: "DSC",
+  Oldest: "ASC",
+};
 const sortOptions = ["Newest", "Oldest", "Alphabetical"];
-const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
+
+interface Props {
+  setTotal: React.Dispatch<React.SetStateAction<number>>
+  studentsList: IStudentList
+}
+
+const StudentsList = ({ studentsList, setTotal }: Props) => {
   const checkbox = useRef<HTMLInputElement | null>(null);
   const { request } = useAuthRequest();
   const pathname = usePathname();
-  const [sort, setSort] = useState("newest");
+  const [sort, setSort] = useState("Newest");
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState(studentsList?.students ?? []);
   const [checked, setChecked] = useState(false);
   const { moduleId } = useParams<{ moduleId: string }>();
   const [metadata, setMetadata] = useState(studentsList?.metadata ?? {});
-  const [page, setPage] = useState<number>();
+  const [page, setPage] = useState<number>(1);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState<typeof students>([]);
+  const [select, setSelect] = useState<IStudent>();
+  const [selectOne, setSelectOne] = useState(false);
+  const [deleteSelected, setDeleteSelected] = useState(false);
+  const [deleteAll, setDeleteAll] = useState(false);
   console.log(studentsList);
-  const handleFetch = async (page: number) => {
+  const handleFetch = async ({ page, sort, search }: { page: number, sort?: string, search?: string }) => {
+    setLoading(true);
     const data = await getStudentsAndSessionsByMetadata({
       request,
       type: "students",
       moduleId,
       page,
+      sort,
+      keyword: search
+    }).finally(() => {
+      setLoading(false)
     });
     console.log(data);
     setStudents((data as IStudentList).students);
     setMetadata((data as IStudentList).metadata);
     setPage((data as IStudentList).metadata.currentPage);
+    setTotal((data as IStudentList).metadata.totalDocuments);
   };
+  const onDeleteClose = () => {
+    setSelectOne(false);
+    setDeleteSelected(false);
+  };
+  useEffect(() => {
+    setStudents(studentsList?.students ?? [])
+    setMetadata(studentsList?.metadata ?? {})
+    setPage(studentsList?.metadata?.currentPage ?? 1)
+    setTotal(studentsList?.metadata?.totalDocuments ?? 0)
+    setSearch("");
+  }, [studentsList])
+
   useLayoutEffect(() => {
     const isIndeterminate =
       selectedStudents.length > 0 && selectedStudents.length < students.length;
@@ -63,6 +97,8 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
   }
+
+
   const Empty = (
     <div className="flex justify-center items-center min-h-[70vh]">
       <div className="  ">
@@ -96,18 +132,33 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
   return (
     <>
       {students.length ? (
-        <div>
+        <div className=" relative">
+          {loading && <div className="absolute inset-0 flex justify-center items-center">
+            <div className="p-4 bg-blue-500 text-white italic">Loading...</div>
+          </div>}
           <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9">
             <div className=" flex items-center space-x-2">
               {!selectedStudents.length ? (
                 <>
                   <SortDropdown
-                    options={sortOptions}
+                    options={Object.keys(sortMap)}
                     value={sort}
-                    onChange={(val) => setSort(val)}
+                    onChange={(val) => {
+                      setSort(val);
+                      handleFetch({ page: 1, sort: sortMap[val as keyof typeof sortMap], });
+                      setSearch("");
+                    }
+                    }
                   />
 
-                  <SearchInput />
+                  <SearchInput
+                    value={search}
+                    onSearchClick={() => {
+                      if (search) {
+                        handleFetch({ page: 1, search })
+                      }
+                    }}
+                    onChange={(e) => setSearch(e.target.value)} />
                 </>
               ) : (
                 <>
@@ -115,17 +166,25 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
                     size={"sm"}
                     variant={"danger"}
                     className=" flex items-center"
+                    onClick={() => {
+                      setDeleteSelected(true);
+                      setSelectOne(false)
+                      setSelect(undefined)
+                    }}
                   >
                     <TrashIcon className=" w-6 mr-2" />
                     Delete Selected
                   </Button>
-                  <Button
-                    size={"sm"}
-                    isOutlined
-                    className=" border-none !bg-blue-100"
-                  >
-                    Select All {metadata.totalDocuments} modules
-                  </Button>
+                  {metadata?.totalDocuments > 1 && selectedStudents.length === students.length && !deleteAll && (
+                    <Button
+                      size={"sm"}
+                      isOutlined
+                      onClick={() => setDeleteAll(true)}
+                      className=" border-none !bg-blue-100"
+                    >
+                      Select All {metadata?.totalDocuments} modules
+                    </Button>
+                  )}
                 </>
               )}
             </div>
@@ -187,9 +246,8 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
               {students.map((person, index) => (
                 <tr
                   key={index}
-                  className={`${
-                    selectedStudents.includes(person) ? "bg-blue-50" : undefined
-                  } hover:bg-blue-50`}
+                  className={`${selectedStudents.includes(person) ? "bg-blue-50" : undefined
+                    } hover:bg-blue-50`}
                 >
                   <td className="relative px-7 sm:w-32 sm:px-12">
                     {selectedStudents.includes(person) && (
@@ -253,6 +311,11 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
                                       : "text-gray-700",
                                     "block px-4 py-2 text-sm"
                                   )}
+                                  onClick={() => {
+                                    setSelect(person);
+                                    setSelectOne(true);
+                                    setDeleteSelected(false);
+                                  }}
                                 >
                                   <TrashIcon className=" w-6 h-6 mr-2" /> Remove
                                 </div>
@@ -268,9 +331,8 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
             </tbody>
           </table>
           <div
-            className={`flex justify-center mt-14 pb-10 ${
-              students.length < 5 && "mt-28"
-            }`}
+            className={`flex justify-center mt-14 pb-10 ${students.length < 5 && "mt-28"
+              }`}
           >
             <Pagination
               pageCount={metadata?.totalPages}
@@ -278,7 +340,18 @@ const StudentsList = ({ studentsList }: { studentsList: IStudentList }) => {
               currentPage={page || 1}
               marginPagesDisplayed={2}
               onPageChange={(page) => {
-                handleFetch(page);
+                handleFetch({ page, sort });
+              }}
+            />
+            <DeletStudentModal
+              deleteAll={deleteAll}
+              selectedStudents={selectedStudents}
+              isSingle={selectOne}
+              singleStudent={select}
+              onClose={onDeleteClose}
+              open={selectOne || deleteSelected}
+              refresh={() => {
+                handleFetch({ page, sort });
               }}
             />
           </div>

@@ -17,11 +17,12 @@ import { classNames } from "@/utils/helpers";
 import Pagination from "@/components/Pagination";
 import SortDropdown from "@/components/SortDropdown";
 import SearchInput from "@/components/SearchInput";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
 import DeleteModuleModal from "@/components/DeleteModuleModal";
-import { off } from "process";
+import { useRouter } from "next-nprogress-bar";
+
 const headers = ["Module Title", "Module Code", "Description"];
 const sortMap = {
   Newest: "DSC",
@@ -33,10 +34,10 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
   const [sort, setSort] = useState(
     Object.keys(sortMap).find(
       (val) => sortMap[val as keyof typeof sortMap] === searchParams.get("sort")
-    ) || "newest"
+    ) || "Newest"
   );
   const [checked, setChecked] = useState(false);
-  const [keyword, setKeyword] = useState("")
+  const [keyword, setKeyword] = useState("");
   const [indeterminate, setIndeterminate] = useState(false);
   const [select, setSelect] = useState<IModule>();
   const [selectOne, setSelectOne] = useState(false);
@@ -50,7 +51,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
 
   useEffect(() => {
     setModules(moduleList?.modules ?? []);
-    setKeyword(searchParams.get("keyword") || "")
+    setKeyword(searchParams.get("keyword") || "");
   }, [moduleList]);
 
   useLayoutEffect(() => {
@@ -58,7 +59,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
       selectedPeople.length > 0 && selectedPeople.length < modules.length;
     setChecked(selectedPeople.length === modules.length);
     if (!(selectedPeople.length === modules.length)) {
-      setDeleteAll(false)
+      setDeleteAll(false);
     }
     setIndeterminate(isIndeterminate);
     if (checkbox.current) {
@@ -89,42 +90,52 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                 onChange={(val) => {
                   setSort(val);
                   router.push(
-                    `/admin/module?page=1&sort=${sortMap[val as keyof typeof sortMap]
+                    `/admin/module?page=1&sort=${
+                      sortMap[val as keyof typeof sortMap]
                     }`
                   );
                   router.refresh();
                 }}
               />
 
-              <SearchInput onSearchClick={() => {
-                if (keyword) {
-                  router.push(
-                    `/admin/module?page=1&${sort ? `sort=${sortMap[sort as keyof typeof sortMap]}&` : ``}${!!keyword && `keyword=${keyword}`}`
-                  );
-                  router.refresh();
-                }
-
-              }} onChange={(e) => setKeyword(e.target.value)} />
+              <SearchInput
+                value={keyword}
+                onSearchClick={() => {
+                  if (keyword) {
+                    router.push(
+                      `/admin/module?page=1&${
+                        sort
+                          ? `sort=${sortMap[sort as keyof typeof sortMap]}&`
+                          : ``
+                      }${!!keyword && `keyword=${keyword}`}`
+                    );
+                    router.refresh();
+                  }
+                }}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
             </>
           ) : (
             <>
-              {moduleList?.metadata?.totalDocuments > 1 && selectedPeople.length === modules.length && !deleteAll && (
-                <Button
-                  size={"sm"}
-                  isOutlined
-                  onClick={() => setDeleteAll(true)}
-                  className=" border-none !bg-blue-100"
-                >
-                  Select All {moduleList?.metadata?.totalDocuments} modules
-                </Button>
-              )}
+              {moduleList?.metadata?.totalDocuments > 1 &&
+                selectedPeople.length === modules.length &&
+                !deleteAll && (
+                  <Button
+                    size={"sm"}
+                    isOutlined
+                    onClick={() => setDeleteAll(true)}
+                    className=" border-none !bg-blue-100"
+                  >
+                    Select All {moduleList?.metadata?.totalDocuments} modules
+                  </Button>
+                )}
               <Button
                 size={"sm"}
                 variant={"danger"}
                 onClick={() => {
                   setDeleteSelected(true);
-                  setSelectOne(false)
-                  setSelect(undefined)
+                  setSelectOne(false);
+                  setSelect(undefined);
                 }}
                 className=" flex items-center"
               >
@@ -167,8 +178,9 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           {modules.map((module, index) => (
             <tr
               key={index}
-              className={`${selectedPeople.includes(module) ? "bg-blue-50" : undefined
-                } hover:bg-blue-50`}
+              className={`${
+                selectedPeople.includes(module) ? "bg-blue-50" : undefined
+              } hover:bg-blue-50`}
             >
               <td className="relative px-7 sm:w-32 sm:px-12">
                 {selectedPeople.includes(module) && (
@@ -225,6 +237,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                         <MenuItem>
                           {({ focus }) => (
                             <Link
+                              prefetch={false}
                               href={`module/${module._id}`}
                               className={classNames(
                                 "flex items-center cursor-pointer",
@@ -286,8 +299,9 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
         </tbody>
       </table>
       <div
-        className={`flex justify-center mt-14 pb-10 ${modules.length < 5 && "mt-28"
-          }`}
+        className={`flex justify-center mt-14 pb-10 ${
+          modules.length < 5 && "mt-28"
+        }`}
       >
         <Pagination
           pageCount={moduleList?.metadata?.totalPages}
@@ -296,9 +310,10 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
           marginPagesDisplayed={2}
           onPageChange={(page) => {
             router.push(
-              `/admin/module?page=${page}${searchParams.get("sort")
-                ? `&sort=${sortMap[sort as keyof typeof sortMap]}`
-                : ""
+              `/admin/module?page=${page}${
+                searchParams.get("sort")
+                  ? `&sort=${sortMap[sort as keyof typeof sortMap]}`
+                  : ""
               }`
             );
             router.refresh();

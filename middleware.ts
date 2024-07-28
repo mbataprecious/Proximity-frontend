@@ -29,6 +29,9 @@ export function middleware(req: NextRequest) {
     if (isExpired) {
       deleteSession({ res, req });
     }
+    if (req.nextUrl.pathname === "/login") {
+      return res;
+    }
     return NextResponse.redirect(new URL(redirect_url, req.url).toString());
   }
 
@@ -39,7 +42,11 @@ export function middleware(req: NextRequest) {
   //   check for user path
   const userPath =
     userTypeToPathMap?.[session?.user?.role as keyof typeof userTypeToPathMap];
+  console.log({ userPath, pathname: req.nextUrl.pathname });
 
+  if (req.nextUrl.pathname === "/login" && userPath) {
+    return NextResponse.redirect(new URL(userPath.path, req.url).toString());
+  }
   if (!req.nextUrl.pathname.includes(userPath?.path)) {
     const proposed_url = userPath?.name ? `${userPath.path}` : "/login";
     return NextResponse.redirect(new URL(proposed_url, req.url).toString());
@@ -50,5 +57,5 @@ export function middleware(req: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/admin/:path*", "/student/:path*"],
+  matcher: ["/login", "/admin/:path*", "/student/:path*"],
 };

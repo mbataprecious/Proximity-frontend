@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Checkbox2 } from "../formControls/checkboxes/checkbox2";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { XiorError } from "xior";
 
 const RegisterForm = () => {

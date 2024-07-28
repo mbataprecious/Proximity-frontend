@@ -20,21 +20,17 @@ import {
   yupResolver,
 } from "@/utils/helpers";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { CustomCreateSelect } from "../formControls/CustomReactCreateSelect";
 import Button from "../Button";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import SvgIconStyle from "../SvgIconStyle";
 import { Input } from "../formControls/Input";
-import ReactSelect from "react-select";
+import ReactSelect, { GroupBase, OptionsOrGroups } from "react-select";
+import ReactSelectAsync from "react-select/async";
 import { SessionType, sessionSchema } from "@/validations/sessionSchema";
 import { XiorError } from "xior";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
+import { useRouter } from "next-nprogress-bar";
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -53,6 +49,7 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
   const { moduleId } = useParams<{ moduleId: string }>();
   const pathname = usePathname();
   const router = useRouter();
+
   const defaultValues: SessionType = {
     hour: 0,
     minute: {
@@ -68,13 +65,6 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
   };
   const onClose = () => {
     setOpen(false);
-    //const current = new URLSearchParams(Array.from(searchParams.entries()));
-    //current.delete("addState");
-    // cast to string
-    //const search = current.toString();
-    // // or const query = `${'?'.repeat(search.length && 1)}${search}`;
-    // const query = search ? `?${search}` : "";
-    // router.push(`${pathname}${query}`);
   };
 
   const methods = useForm({
@@ -92,6 +82,7 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
     watch,
     formState: { errors, isSubmitting },
   } = methods;
+  console.log(errors);
 
   const geofencing = watch("geofencing");
 
@@ -112,7 +103,7 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
           value: "no-location",
           label: "no-location",
         },
-        radius: 0,
+        radius: "",
       });
     }
   }, [geofencing, reset, getValues]);
@@ -132,12 +123,38 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
     );
   };
 
+  const loadOptions = async (
+    inputValue: string
+  ): Promise<
+    OptionsOrGroups<
+      { value: string; label: string },
+      GroupBase<{ value: string; label: string }>
+    >
+  > => {
+    if (inputValue.length > 2) {
+      try {
+        const { data } = await request.get("places", {
+          params: {
+            keyword: inputValue,
+          },
+        });
+        const options = data?.data?.places ?? [];
+        return options;
+      } catch (error) {
+        console.error("Error fetching data", error);
+        return [];
+      }
+    } else {
+      return [];
+    }
+  };
   const onSubmit = async (data: SessionType) => {
     try {
       const response = await request.post(
         "/sessions",
         {
-          duration: (Number(data.hour) * 60 + Number(data.minute.value)) * 60,
+          duration:
+            (Number(data.hour) * 60 + Number(data.minute.value)) * 60 * 1000,
           geofencing: data.geofencing,
           ...(data?.geofencing && {
             lattitude: parseFloat(data.location.value.split(",")[0]),
@@ -151,7 +168,13 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
           },
         }
       );
-      console.log({ response });
+      if (response) {
+        toast.success("Session created successfully");
+        router.push(`${pathname}?${searchParams.toString()}`);
+        router.refresh();
+        reset(defaultValues);
+        onClose();
+      }
     } catch (error) {
       if (error instanceof XiorError) {
         toast.error(error?.response?.data.message as string);
@@ -211,7 +234,7 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
                       <div className=" p-[30px]">
                         <p className=" text-[#6B7280] mb-4">
                           Fill in the necessary information to start a new
-                          session{" "}
+                          session
                         </p>
 
                         <div className=" w-full">
@@ -319,15 +342,16 @@ const CreateSessionModal = ({ open, setOpen }: Props) => {
                                   render={({
                                     field: { onBlur, onChange, value, ref },
                                   }) => (
-                                    <ReactSelect
+                                    <ReactSelectAsync
                                       classNamePrefix="custom-select"
                                       styles={selectStyle}
                                       ref={ref}
                                       id={"location"}
                                       placeholder={"Location"}
                                       options={[]}
+                                      loadOptions={loadOptions}
                                       isClearable={false}
-                                      isSearchable={false}
+                                      isSearchable={true}
                                       className={`myselect-2 w-[85%] bg-[#F9FAFB] focus:outline-none focus:ring focus:border-blue-300
                             ${errors?.["location"] && "errorControl"}`}
                                       onBlur={onBlur}

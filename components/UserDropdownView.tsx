@@ -21,7 +21,7 @@ const UserDropdownView = () => {
         <p className=" font-semibold text-[17px] ml-4">
           {session?.user?.firstName
             ? `Hello, ${session.user.firstName}`
-            : "Hello, Michael"}
+            : ""}
         </p>
         <SvgIconStyle
           src="/Assets/svg/keyboard_arrow_down.svg"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { MultiValue, SingleValue } from "react-select";
 import ReactSelect from "react-select/creatable";
@@ -15,6 +15,8 @@ interface Props {
   isMulti?: boolean;
   required?: boolean;
   disabled?: boolean;
+  onCreateOption?: (inputValue: string) => void;
+  prefixCreateLebel?: string
 }
 const CustomCreateSelect = ({
   label,
@@ -22,7 +24,8 @@ const CustomCreateSelect = ({
   placeholder,
   options,
   // loadOptions,
-  // onCreateOption,
+  onCreateOption,
+  prefixCreateLebel,
   isMulti,
   required,
   disabled,
@@ -58,15 +61,17 @@ const CustomCreateSelect = ({
             onChange={(
               newValue:
                 | MultiValue<
-                    | { value: string; label: string }[]
-                    | { value: string; label: string }
-                  >
+                  | { value: string; label: string }[]
+                  | { value: string; label: string }
+                >
                 | SingleValue<{
-                    value: string;
-                    label: string;
-                  }>
+                  value: string;
+                  label: string;
+                }>
             ) => onChange(newValue)}
-            // loadOptions={loadOptions}
+            onCreateOption={onCreateOption}
+            formatCreateLabel={(inputValue: string) => `${prefixCreateLebel ?? "Create"} "${inputValue}"`}
+          // loadOptions={loadOptions}
           />
         )}
       />

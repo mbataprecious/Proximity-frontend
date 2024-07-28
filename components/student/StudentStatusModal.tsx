@@ -11,15 +11,16 @@ import Image from "next/image";
 
 interface Props {
   open: boolean;
-  setOpen: (value: boolean) => void;
+  onClose: () => void;
+  status?: string;
   //   formTarget: FormTarget;
 }
 
-export default function StudentStatusModal({ open, setOpen }: Props) {
+export default function StudentStatusModal({ status, open, onClose }: Props) {
   return (
     <>
       <Transition show={open}>
-        <Dialog className="relative z-30" onClose={setOpen}>
+        <Dialog className="relative z-30" onClose={onClose}>
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -44,24 +45,32 @@ export default function StudentStatusModal({ open, setOpen }: Props) {
                 <DialogPanel className="relative transform overflow-hidden rounded-[8px] bg-white text-left shadow-xl transition-all sm:my-2 sm:w-full sm:max-w-[506px]">
                   <div className=" flex justify-center p-[29px] w-full items-center border-b border-b-[#E5E7EB]">
                     <p className=" text-[#4A4A4A] text-base font-bold md:text-xl text-center md:font-semibold">
-                      your attendance has been marked successfully
+                      {status === "flagged" ? "Your attendance has been flagged, contact your module lecturer" : "your attendance has been marked successfully"}
                     </p>
                   </div>
                   <div className=" p-[30px] flex justify-center items-center">
-                    <Image
-                      src={"/Assets/svg/icons8-success.svg"}
-                      className=" w-[77px] h-[77px] md:w-[242px] md:h-[242px]"
-                      height={242}
-                      width={242}
-                      alt=""
-                    />
+                    {status === "flagged" ?
+                      <Image
+                        src={"/Assets/svg/flagged-icon.svg"}
+                        className=" w-[77px] h-[77px] md:w-[242px] md:h-[242px]"
+                        height={242}
+                        width={242}
+                        alt=""
+                      /> :
+                      <Image
+                        src={"/Assets/svg/icons8-success.svg"}
+                        className=" w-[77px] h-[77px] md:w-[242px] md:h-[242px]"
+                        height={242}
+                        width={242}
+                        alt=""
+                      />}
                   </div>
                   <div className=" w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
                     <Button
                       fullWidth
                       size={"sm"}
                       className=""
-                      onClick={() => setOpen(false)}
+                      onClick={onClose}
                     >
                       back
                     </Button>

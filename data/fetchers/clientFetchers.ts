@@ -6,12 +6,18 @@ export const getStudentsAndSessionsByMetadata = async ({
   type,
   limit = 10,
   page = 1,
+  sort = "",
+  orderBy = "firstName",
+  keyword,
 }: {
   request: Xior;
   moduleId: string;
   type: "students" | "sessions";
   limit?: number;
+  orderBy?: string;
   page?: number;
+  sort?: string;
+  keyword?: string;
 }) => {
   console.log({ limit, page });
 
@@ -19,7 +25,7 @@ export const getStudentsAndSessionsByMetadata = async ({
     const { data } = await request.get<{ data: IStudentList | ISessionList }>(
       "/" + type,
       {
-        params: { module: moduleId, limit, page },
+        params: { module: moduleId, limit, page, sort, orderBy, keyword },
         cache: "no-store",
       }
     );

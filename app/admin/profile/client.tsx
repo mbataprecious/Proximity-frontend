@@ -1,31 +1,98 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../../components/Button";
 import { yupResolver } from "@/utils/helpers";
 import { SignupSchema, SignupSchemaType } from "@/validations/signUpSchema";
 import SvgIconStyle from "../../../components/SvgIconStyle";
 import { Input } from "@/components/formControls/Input";
-import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next-nprogress-bar";
+import useClientSession from "@/hooks/useClientSession";
+import useAuthRequest from "@/hooks/useAuthRequest";
+import toast from "react-hot-toast";
+import { setSession } from "@/utils/authsession";
 
 export default function () {
+  const { logout, session } = useClientSession();
   const router = useRouter();
-  const defaultValues = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    role: { label: "", value: "" },
-    password: "",
-    confirmPassword: "",
-  };
-  const methods = useForm({
+  const { request } = useAuthRequest();
+  const methodsName = useForm({
     mode: "onChange",
-    resolver: yupResolver ? yupResolver(SignupSchema) : undefined,
-    defaultValues,
+    resolver: yupResolver
+      ? yupResolver(SignupSchema.pick(["first_name", "last_name"]))
+      : undefined,
+    defaultValues: {
+      first_name: session.user.firstName ?? "",
+      last_name: session.user.lastName ?? "",
+    },
   });
-  const onSubmit = async (data: SignupSchemaType) => {
+  const methodsPass = useForm({
+    mode: "onChange",
+    resolver: yupResolver
+      ? yupResolver(SignupSchema.pick(["password", "confirmPassword"]))
+      : undefined,
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const {
+    reset: resetName,
+    formState: { isSubmitting: loadingProfile },
+  } = methodsName;
+  const {
+    reset: resetPass,
+    formState: { isSubmitting: loadingPass },
+  } = methodsPass;
+
+  useEffect(() => {
+    resetName({
+      first_name: session.user.firstName ?? "",
+      last_name: session.user.lastName ?? "",
+    });
+  }, [session]);
+
+  const onSubmitName = async (
+    data: Pick<SignupSchemaType, "first_name" | "last_name">
+  ) => {
     try {
+      const response = await request.put("/users", {
+        firstName: data.first_name,
+        lastName: data.last_name,
+      });
+      if (response) {
+        console.log("from profile", { response });
+
+        toast.success(response?.data?.message || "update successful");
+        setSession({
+          ...session,
+          user: {
+            ...session.user,
+            firstName: data.first_name,
+            lastName: data.last_name,
+          },
+        });
+        location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
+  const onSubmit = async (
+    data: Pick<SignupSchemaType, "password" | "confirmPassword">
+  ) => {
+    try {
+      const response = await request.put("/users/password", {
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
+      if (response) {
+        toast.success(response?.data?.message || "reset successful");
+        logout();
+        router.push("/login");
+      }
       console.log({ data });
     } catch (error) {
       console.error(error);
@@ -44,11 +111,11 @@ export default function () {
         <p />
       </div>
       <div className=" md:py-8">
-        <FormProvider {...methods}>
+        <FormProvider {...methodsName}>
           <form
             method="post"
             className=" grid grid-cols-1 gap-y-3"
-            onSubmit={methods.handleSubmit(onSubmit)}
+            onSubmit={methodsName.handleSubmit(onSubmitName)}
           >
             <p className=" text-xl font-semibold text-[#242B33]">
               Personal Information
@@ -62,7 +129,7 @@ export default function () {
                     className=" text-[#667479]"
                   />
                 }
-                name="firstname"
+                name="first_name"
                 placeholder="First Name"
                 required={true}
               />
@@ -76,11 +143,27 @@ export default function () {
                     className=" text-[#667479]"
                   />
                 }
-                name="lastname"
+                name="last_name"
                 placeholder="Last Name"
                 required={true}
               />
             </div>
+            <Button
+              loading={loadingProfile}
+              disabled={loadingProfile}
+              className="w-full"
+              type="submit"
+            >
+              Update Profile
+            </Button>
+          </form>
+        </FormProvider>
+        <FormProvider {...methodsPass}>
+          <form
+            method="post"
+            className=" grid grid-cols-1 mt-5 gap-y-3"
+            onSubmit={methodsPass.handleSubmit(onSubmit)}
+          >
             <p className=" text-xl font-semibold text-[#242B33]">
               Update Password
             </p>
@@ -112,8 +195,13 @@ export default function () {
                 required={true}
               />
             </div>
-            <Button className="w-full" type="submit">
-              Update
+            <Button
+              loading={loadingPass}
+              disabled={loadingPass}
+              className="w-full"
+              type="submit"
+            >
+              Update Password
             </Button>
           </form>
         </FormProvider>

@@ -9,6 +9,10 @@ interface ISession {
   createdAt: string;
   endTime: string;
   _id: string;
+  active: boolean;
+  absent: number;
+  present: number;
+  flagged: number;
 }
 
 interface ISessionList {

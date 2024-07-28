@@ -1,11 +1,34 @@
 import LecturerLayout from "@/components/Layouts/LecturerLayout";
 import React from "react";
 import Client from "./client";
+import {
+  getAttendanceBySession,
+  getSingleModule,
+  getSingleSession,
+} from "@/data/fetchers";
 
-const page = () => {
+const page = async ({
+  params,
+  searchParams,
+}: {
+  params: { sessionId: string; moduleId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+  const moduleData = await getSingleModule(params.moduleId);
+  const sessionData = await getSingleSession(params.moduleId, params.sessionId);
+  const sessionAttendance = await getAttendanceBySession({
+    sessionId: params.sessionId,
+    filterBy: searchParams?.filterBy as string,
+    keyword: searchParams.keyword as string,
+    page: searchParams?.page ? parseInt(searchParams?.page as string) : 1,
+  });
   return (
     <LecturerLayout>
-      <Client />
+      <Client
+        moduleData={moduleData}
+        sessionData={sessionData}
+        sessionAttendance={sessionAttendance}
+      />
     </LecturerLayout>
   );
 };

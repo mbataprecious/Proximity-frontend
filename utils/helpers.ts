@@ -2,6 +2,7 @@ import { yupResolver as yupResolvers } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { FieldValues } from "react-hook-form";
+import toast from "react-hot-toast";
 import { CSSObjectWithLabel, ControlProps } from "react-select";
 
 const isClient = () => typeof window === "object";
@@ -128,6 +129,39 @@ export function generatePhoneNumber(): string {
   const lineNumber = Array.from({ length: 4 }, getRandomDigit).join("");
 
   return `${areaCode}-${centralOfficeCode}-${lineNumber}`;
+}
+
+export const validateEmail = (email: string): boolean => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+export const getGeoLocation = (
+  successCallback: (position: GeolocationPosition) => void
+) => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+    toast.error("Geolocation is not supported by this browser.");
+  }
+};
+
+function errorCallback(error: GeolocationPositionError) {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      console.error("User denied the request for Geolocation.");
+      toast.error("Please allow geolocation access to use this feature.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      console.error("Location information is unavailable.");
+      toast.error("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      console.error("The request to get user location timed out.");
+      toast.error("The request to get user location timed out.");
+      break;
+  }
 }
 
 export { isClient, yupResolver, passwordConditions, scrollToTop, url };

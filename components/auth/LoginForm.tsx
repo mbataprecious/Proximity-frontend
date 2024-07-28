@@ -7,7 +7,7 @@ import { userTypeToPathMap, yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { LoginSchemaType, loginSchema } from "@/validations/loginSchema";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { setSession } from "@/utils/authsession";
 import toast from "react-hot-toast";
@@ -47,7 +47,7 @@ const LoginForm = () => {
             userAuth?.user?.role as keyof typeof userTypeToPathMap
           ];
         toast.success("Successfully logged in");
-        router.push(redirectTo || userPath.path);
+        router.replace(redirectTo || userPath.path);
       }
 
       console.log({ data });

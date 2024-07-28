@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Button from "../Button";
 import SvgIconStyle from "../SvgIconStyle";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Label from "../Label";
 import Pagination from "../Pagination";
 import CreateSessionModal from "../session/CreateSessionModal";
@@ -10,6 +10,8 @@ import SessionSuccessModal from "../session/SessionSuccessModal";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getStudentsAndSessionsByMetadata } from "@/data/fetchers/clientFetchers";
 import { format, parseISO } from "date-fns";
+import { useRouter } from "next-nprogress-bar";
+
 const headers = ["Session ID", "Date", "Start Time", "End Time", "Geo fencing"];
 
 const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
@@ -19,23 +21,35 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
   const [successOpen, setSuccessOpen] = useState(false);
   const [metadata, setMetadata] = useState(sessionsList?.metadata ?? {});
   const { moduleId } = useParams<{ moduleId: string }>();
+  const [loading, setLoading] = useState(false);
   const [sessions, setSessions] = useState<ISessionList["sessions"]>(
     sessionsList?.sessions ?? []
   );
   const pathname = usePathname();
-  const [page, setPage] = useState<number>();
+  const [page, setPage] = useState<number>(
+    sessionsList?.metadata?.currentPage ?? 1
+  );
 
   const handleFetch = async (page: number) => {
+    setLoading(true);
     const data = await getStudentsAndSessionsByMetadata({
       request,
       type: "sessions",
       moduleId,
       page,
+    }).finally(() => {
+      setLoading(false);
     });
     console.log(data);
     setSessions((data as ISessionList).sessions);
+    setMetadata((data as ISessionList).metadata);
     setPage((data as ISessionList).metadata.currentPage);
   };
+  useEffect(() => {
+    setSessions(sessionsList.sessions);
+    setMetadata(sessionsList.metadata);
+    setPage(sessionsList.metadata.currentPage);
+  }, [sessionsList]);
 
   const Empty = (
     <div className="flex justify-center items-center min-h-[70vh]">
@@ -61,7 +75,14 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
   return (
     <>
       {sessions.length > 0 ? (
-        <div>
+        <div className="relative">
+          {loading && (
+            <div className="absolute inset-0 flex justify-center items-center">
+              <div className="p-4 bg-blue-500 text-white italic">
+                Loading...
+              </div>
+            </div>
+          )}
           <div className=" flex justify-end items-center py-[22px] px-9">
             <Button
               variant={"info"}
@@ -100,8 +121,11 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
                   }
                   className={`hover:bg-blue-50 cursor-pointer`}
                 >
-                  <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
-                    {session._id.substring(0, 5)}
+                  <td
+                    title={session._id}
+                    className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700"
+                  >
+                    {session._id.substring(0, 5) + "...."}
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
                     {format(parseISO(session.createdAt), "MM/dd/yyyy")}

@@ -5,7 +5,6 @@ import { yupResolver } from "@/utils/helpers";
 import { ModuleType, moduleSchema } from "@/validations/moduleSchema";
 import { Input } from "@/components/formControls/Input";
 import { Textarea } from "@/components/formControls/Textarea";
-import { XMarkIcon } from "@heroicons/react/24/solid";
 import { FileRejection, useDropzone } from "react-dropzone";
 import SvgIconStyle from "@/components/SvgIconStyle";
 import Button from "@/components/Button";
@@ -13,8 +12,8 @@ import Link from "next/link";
 import * as XLSX from "xlsx";
 import toast from "react-hot-toast";
 import useAuthRequest from "@/hooks/useAuthRequest";
-import { useRouter } from "next/navigation";
 import { XiorError } from "xior";
+import { useRouter } from "next-nprogress-bar";
 
 const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
   const defaultValues: ModuleType = {
@@ -98,7 +97,7 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
     []
   );
 
-  const { getRootProps, getInputProps, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
       "text/csv": [".csv"],

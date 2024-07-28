@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SvgIconStyle from "./SvgIconStyle";
 import Link from "next/link";
 import { ArrowLeftIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import useClientSession from "@/hooks/useClientSession";
+import { useRouter } from "next-nprogress-bar";
 
 interface Props {
   navItems: {

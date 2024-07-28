@@ -5,7 +5,7 @@ import {
   isValidSession,
 } from "@/utils/authsession";
 import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { useLayoutEffect, useState } from "react";
 
 const useClientSession = (): IGetSession => {

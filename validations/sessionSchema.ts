@@ -13,7 +13,7 @@ export const sessionSchema = object().shape({
       function (text) {
         const value = Number(text);
         if (typeof value === "number") {
-          return value > 0;
+          return value >= 0;
         }
         return typeof value === "string";
       }

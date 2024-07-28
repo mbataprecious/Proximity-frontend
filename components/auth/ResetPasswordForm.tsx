@@ -6,7 +6,7 @@ import Button from "../Button";
 import { yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { newPasswordSchema } from "@/validations/forgotpasswordSchema";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
 import { XiorError } from "xior";
@@ -25,20 +25,22 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
   });
 
   const {
-    formState: { isSubmitting, },
+    formState: { isSubmitting },
   } = methods;
-
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-      const response = await request.put("/auth/password", {
-        "password": data.password,
-        "confirmPassword": data.confirmPassword
-      }, {
-        params: {
-          token
+      const response = await request.put(
+        "/auth/password",
+        {
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        },
+        {
+          params: {
+            token,
+          },
         }
-      }
       );
       if (response) {
         toast.success(response?.data?.message || "reset successful");
@@ -101,7 +103,9 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
             <Button
               loading={isSubmitting}
               disabled={isSubmitting}
-              className="w-full" type="submit">
+              className="w-full"
+              type="submit"
+            >
               Reset Password
             </Button>
           </form>

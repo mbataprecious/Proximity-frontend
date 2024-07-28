@@ -45,6 +45,7 @@ export const getModuleList = async ({
     throw Error("Error while fetching modules");
   }
 };
+
 export const getSingleModule = async (id: string) => {
   const request = authRequest();
   try {
@@ -81,5 +82,68 @@ export const getStudentAndSession = async (id: string) => {
   } catch (error) {
     console.log(error);
     throw Error("Error while fetching modules");
+  }
+};
+
+export const getSingleSession = async (moduleId: string, id: string) => {
+  const request = authRequest();
+  try {
+    const { data } = await request.get<{ data: { session: ISession } }>(
+      "/sessions/" + id,
+      {
+        params: { module: moduleId },
+        cache: "no-store",
+      }
+    );
+    return data.data.session;
+  } catch (error) {
+    console.log(error);
+    throw Error("Error while fetching session with id: " + id);
+  }
+};
+
+export const getAttendanceBySession = async ({
+  limit = 10,
+  page = 1,
+  filterBy,
+  keyword = "",
+  sessionId,
+}: {
+  limit?: number;
+  page?: number;
+  filterBy?: string;
+  keyword?: string;
+  sessionId: string;
+}) => {
+  console.log({ limit, page });
+  const searchObj = { keyword, filterBy };
+  const request = authRequest();
+  try {
+    const { data } = await request.get<{ data: IAttendanceList }>(
+      "attendance/sessions/" + sessionId,
+      {
+        params: { limit, page, ...searchObj },
+        cache: "no-store",
+      }
+    );
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw Error(
+      "Error while fetching Attendance List of session: " + sessionId
+    );
+  }
+};
+
+export const getStudentAttendance = async () => {
+  const request = authRequest();
+  try {
+    const { data } = await request.get<{ data: IAttendanceList }>(
+      "/attendance"
+    );
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw Error("Error while fetching student attendance");
   }
 };

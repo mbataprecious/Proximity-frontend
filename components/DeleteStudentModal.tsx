@@ -9,48 +9,52 @@ import {
 } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import useAuthRequest from "@/hooks/useAuthRequest";
-import { useRouter } from "next-nprogress-bar";
+import { useParams } from "next/navigation";
 import { XiorError } from "xior";
 import toast from "react-hot-toast";
 import Button from "./Button";
+import { useRouter } from "next-nprogress-bar";
 
-export default function DeleteModuleModal({
+export default function DeletStudentModal({
   deleteAll = false,
   isSingle = false,
-  singleModule,
-  selectedModules,
+  singleStudent,
+  selectedStudents,
   open,
   onClose,
+  refresh,
 }: {
   deleteAll?: boolean;
   isSingle?: boolean;
-  singleModule?: IModule;
-  selectedModules: IModule[];
+  singleStudent?: IStudent;
+  selectedStudents: IStudent[];
   open: boolean;
   onClose: () => void;
+  refresh: () => void;
 }) {
   const [loading, setLoading] = useState(false);
   const { request } = useAuthRequest();
+  const { moduleId } = useParams<{ moduleId: string }>();
   const router = useRouter();
   const handleDelete = async () => {
     setLoading(true);
     try {
       //throw Error("Not implemented");
-      const params = new URLSearchParams(document.location.search);
       const response = await (deleteAll
-        ? request.delete(`modules/all`)
+        ? request.delete(`students/all`)
         : isSingle
-        ? request.delete(`/modules/${singleModule?._id}`)
-        : request.delete(`/modules/`, {
+        ? request.delete(`/students/${singleStudent?.email}`, {
+            params: { module: moduleId },
+          })
+        : request.delete(`/students/`, {
             params: {
-              modules: selectedModules.map(({ _id }) => _id).join(","),
+              modules: selectedStudents.map(({ email }) => email).join(","),
             },
           }));
       if (response) {
         toast.success(response?.data?.message);
         onClose();
-        router.push(`/admin/module?${params.toString()}`);
-        router.refresh();
+        refresh();
       }
     } catch (error) {
       if (error instanceof XiorError) {
@@ -101,20 +105,20 @@ export default function DeleteModuleModal({
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
                       {deleteAll
-                        ? "Delete All Modules"
-                        : singleModule?.title
-                        ? "Delete Module"
-                        : "Delete Selected Modules"}
+                        ? "Delete All Students"
+                        : singleStudent?.email
+                        ? "Delete Student"
+                        : "Delete Selected Students"}
                     </DialogTitle>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         {`Are you sure you want to ${
                           deleteAll
-                            ? "delete all modules"
-                            : singleModule?.title
-                            ? `delete "${singleModule?.title}" module`
-                            : "delete selected modules"
-                        }? This action cannot be undone.`}
+                            ? "delete all students"
+                            : singleStudent?.email
+                            ? `delete "${singleStudent?.email}"`
+                            : "delete selected students"
+                        } ? This action cannot be undone.`}
                       </p>
                     </div>
                   </div>

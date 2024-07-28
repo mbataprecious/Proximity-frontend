@@ -7,7 +7,7 @@ import { yupResolver } from "@/utils/helpers";
 import SvgIconStyle from "../SvgIconStyle";
 import { object, string } from "yup";
 import useAuthRequest from "@/hooks/useAuthRequest";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { XiorError } from "xior";
 
@@ -27,7 +27,7 @@ const ForgotForm = () => {
   });
 
   const {
-    formState: { isSubmitting, },
+    formState: { isSubmitting },
   } = methods;
   const onSubmit = async (data: typeof defaultValues) => {
     try {
@@ -84,7 +84,9 @@ const ForgotForm = () => {
             <Button
               loading={isSubmitting}
               disabled={isSubmitting}
-              className="w-full" type="submit">
+              className="w-full"
+              type="submit"
+            >
               Recover Password
             </Button>
           </form>

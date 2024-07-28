@@ -5,8 +5,8 @@ import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import SortDropdown from "@/components/SortDropdown";
 import SessionStatsCard from "@/components/session/SessionStatsCard";
+import useAuthRequest from "@/hooks/useAuthRequest";
 import { classNames } from "@/utils/helpers";
-import { modules, people } from "@/utils/mocks";
 import {
   Menu,
   MenuButton,
@@ -16,7 +16,12 @@ import {
 } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { capitalCase } from "change-case";
-import React, { useRef, useState } from "react";
+import { format, parseISO } from "date-fns";
+import { useRouter } from "next-nprogress-bar";
+import { usePathname, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { XiorError } from "xior";
 
 const colorMap = {
   present: "#11A75C",
@@ -25,63 +30,167 @@ const colorMap = {
 };
 const sortOptions = ["present", "absent", "flagged"];
 const headers = ["First Name", "Last Name ", "Email", "Attenders  Status"];
-const peopleStatus = people.map((person) => {
-  return {
-    ...person,
-    status: sortOptions[Math.floor(Math.random() * sortOptions.length)],
-  };
-});
-export default function () {
-  const checkbox = useRef<HTMLInputElement | null>(null);
 
-  const [sort, setSort] = useState("present");
+interface Props {
+  moduleData: IModule;
+  sessionData: ISession;
+  sessionAttendance: IAttendanceList;
+}
+
+export default function ({
+  moduleData,
+  sessionData,
+  sessionAttendance,
+}: Props) {
+  const { request } = useAuthRequest();
+  const searchParams = useSearchParams();
+
+  const pathname = usePathname();
+  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+  const [filterBy, setFilterBy] = useState(
+    searchParams.get("filterBy") || "none"
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    setKeyword(searchParams.get("keyword") || "");
+    setFilterBy(searchParams.get("filterBy") || "none");
+  }, [moduleData, sessionData, sessionAttendance]);
+
+  const handleStatusUpdate = async (studentId: string, status: string) => {
+    const data =
+      status === "present"
+        ? { present: true }
+        : status === "absent"
+        ? { present: false }
+        : { flagged: true };
+
+    try {
+      const response = await request.put(
+        "attendance/students/" + studentId,
+        data,
+        {
+          params: {
+            session: sessionData._id,
+          },
+        }
+      );
+      if (response) {
+        router.refresh();
+        toast.success("status updated successfully");
+      }
+    } catch (error) {
+      if (error instanceof XiorError) {
+        toast.error(error?.response?.data.message as string);
+      } else {
+        toast.error((error as { message: string })?.message);
+      }
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <div className=" p-[36px] flex justify-between items-center border-b">
         <div>
-          <p
-            className={
-              " py-1 px-2 flex items-center text-xs bg-[#11A75C] rounded-[6px] leading-[20px] font-medium text-white w-fit"
-            }
-          >
-            <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" /> Active
-          </p>
+          {parseISO(sessionData.endTime).getTime() > Date.now() ? (
+            <p
+              className={
+                " py-1 px-2 flex items-center text-xs bg-[#11A75C] rounded-[6px] leading-[20px] font-medium text-white w-fit"
+              }
+            >
+              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />{" "}
+              Active
+            </p>
+          ) : (
+            <p
+              className={
+                " py-1 px-2 flex items-center text-xs bg-[#096DD9] rounded-[6px] leading-[20px] font-medium text-white w-fit"
+              }
+            >
+              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />{" "}
+              Completed
+            </p>
+          )}
           <h2 className=" text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px] line-clamp-2 leading-[54px]">
-            Introduction to computer science
+            {moduleData.title}
           </h2>
 
           <div className=" mt-[.5rem]">
             <p className=" text-[#667185] font-semibold">
               Session Code: &nbsp;
-              <span className=" font-bold text-primary"> 4096 </span>
+              <span className=" font-bold text-primary">
+                {sessionData.code}
+              </span>
             </p>
             <p className=" text-[#667185] font-semibold mt-4">
               Time: &nbsp;
-              <span className=" font-medium"> 10:30 AM - 12:30 PM </span>
+              <span className=" font-medium">
+                {" "}
+                {format(parseISO(sessionData.createdAt), "hh:mm a")} -{" "}
+                {format(parseISO(sessionData.endTime), "hh:mm a")}{" "}
+              </span>
             </p>
           </div>
         </div>
 
-        <ModuleDetailBox details={{ _id: "sample_id", ...modules[0] }} />
+        <ModuleDetailBox details={moduleData} />
       </div>
       <div className="p-[36px] flex justify-between ">
         <div className=" flex flex-col md:flex-row items-center space-y-3 md:space-y-0  md:space-x-6">
-          {sortOptions.map((status, index) => (
+          {sortOptions.map((status) => (
             <SessionStatsCard
               key={status}
               type={status}
-              value={(index % 4) * 5}
+              value={
+                sessionData[
+                  status.toLowerCase() as keyof typeof sessionData
+                ] as number
+              }
             />
           ))}
         </div>
         <div className=" flex items-end space-x-2">
           <SortDropdown
-            options={sortOptions}
-            value={sort}
-            onChange={(val) => setSort(val)}
+            options={["none", ...sortOptions]}
+            value={filterBy}
+            prefixText="filter by"
+            onChange={(val) => {
+              const current = new URLSearchParams(
+                Array.from(searchParams.entries())
+              );
+              current.set("page", "1");
+              if (val !== "none") {
+                current.set("filterBy", val);
+              } else {
+                current.delete("filterBy");
+              }
+              current.delete("keyword");
+              router.push(`${pathname}?${current.toString()}`);
+              setFilterBy(val);
+            }}
           />
 
-          <SearchInput />
+          <SearchInput
+            value={keyword}
+            onSearchClick={() => {
+              if (keyword) {
+                const current = new URLSearchParams(
+                  Array.from(searchParams.entries())
+                );
+                current.set("page", "1");
+                current.set("keyword", keyword);
+                if (filterBy !== "none") {
+                  current.set("filterBy", filterBy);
+                } else {
+                  current.delete("filterBy");
+                }
+                router.push(`${pathname}?${current.toString()}`);
+                router.refresh();
+              }
+            }}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
         </div>
       </div>
       <table className="min-w-full table-fixed divide-y divide-gray-300">
@@ -106,105 +215,130 @@ export default function () {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {peopleStatus.map((person, index) => (
-            <tr key={index} className={"hover:bg-blue-50"}>
-              <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
-                {person.firstName}
-              </td>
-              <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
-                {person.lastName}
-              </td>
-              <td
-                title={person.email}
-                className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
-              >
-                {person.email}
-              </td>
-              <td
-                // title={person.status}
-                className="whitespace-nowrap px-3 py-5 text-sm text-gray-700"
-              >
-                <Label
-                  variant={
-                    person.status === "present"
-                      ? "success"
-                      : person.status === "absent"
-                      ? "danger"
-                      : "warning"
-                  }
-                >
-                  {capitalCase(person.status)}{" "}
-                </Label>
-              </td>
-              <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                      <span className="sr-only">Open options</span>
-                      <EllipsisHorizontalIcon
-                        className="h-6 w-6"
-                        aria-hidden="true"
-                      />
-                    </MenuButton>
-                  </div>
+          {sessionAttendance.attendance.map((person, index) => {
+            const studentStatus = person.flagged
+              ? "flagged"
+              : person.present
+              ? "present"
+              : "absent";
 
-                  <Transition
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
+            return (
+              <tr key={person.userId} className={"hover:bg-blue-50"}>
+                <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
+                  {person.firstName}
+                </td>
+                <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
+                  {person.lastName}
+                </td>
+                <td
+                  title={person.email}
+                  className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
+                >
+                  {person.email}
+                </td>
+                <td
+                  // title={person.status}
+                  className="whitespace-nowrap px-3 py-5 text-sm text-gray-700"
+                >
+                  <Label
+                    variant={
+                      person.flagged
+                        ? "warning"
+                        : person.present
+                        ? "success"
+                        : "danger"
+                    }
                   >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        {sortOptions
-                          .filter((opt) => opt !== person.status)
-                          .map((status) => (
-                            <MenuItem key={status}>
-                              {({ focus }) => (
-                                <div
-                                  className={classNames(
-                                    "flex items-center  cursor-pointer",
-                                    focus
-                                      ? "bg-gray-50 text-gray-900"
-                                      : "text-gray-700",
-                                    "block px-4 py-2 text-sm"
-                                  )}
-                                >
-                                  <span
-                                    className={`w-2 h-2 rounded-full mr-2 `}
-                                    style={{
-                                      background:
-                                        colorMap[
-                                          status as keyof typeof colorMap
-                                        ],
-                                    }}
-                                  ></span>
-                                  {capitalCase(status)}
-                                </div>
-                              )}
-                            </MenuItem>
-                          ))}
-                      </div>
-                    </MenuItems>
-                  </Transition>
-                </Menu>
-              </td>
-            </tr>
-          ))}
+                    {capitalCase(
+                      person.flagged
+                        ? "flagged"
+                        : person.present
+                        ? "present"
+                        : "absent"
+                    )}
+                  </Label>
+                </td>
+                <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                      <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                        <span className="sr-only">Open options</span>
+                        <EllipsisHorizontalIcon
+                          className="h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      </MenuButton>
+                    </div>
+
+                    <Transition
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                          {sortOptions
+                            .filter((opt) => opt !== studentStatus)
+                            .map((status) => (
+                              <MenuItem key={status}>
+                                {({ focus }) => (
+                                  <div
+                                    onClick={() =>
+                                      handleStatusUpdate(person.userId, status)
+                                    }
+                                    className={classNames(
+                                      "flex items-center  cursor-pointer",
+                                      focus
+                                        ? "bg-gray-50 text-gray-900"
+                                        : "text-gray-700",
+                                      "block px-4 py-2 text-sm"
+                                    )}
+                                  >
+                                    <span
+                                      className={`w-2 h-2 rounded-full mr-2 `}
+                                      style={{
+                                        background:
+                                          colorMap[
+                                            status as keyof typeof colorMap
+                                          ],
+                                      }}
+                                    ></span>
+                                    {capitalCase(status)}
+                                  </div>
+                                )}
+                              </MenuItem>
+                            ))}
+                        </div>
+                      </MenuItems>
+                    </Transition>
+                  </Menu>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <div
         className={`flex justify-center mt-14 pb-10 ${
-          people.length < 5 && "mt-28"
+          sessionAttendance.attendance.length < 5 && "mt-28"
         }`}
       >
         <Pagination
-          pageCount={20}
-          pageRangeDisplayed={5}
+          pageCount={sessionAttendance?.metaData?.totalPages}
+          pageRangeDisplayed={3}
+          currentPage={sessionAttendance?.metaData?.currentPage}
           marginPagesDisplayed={2}
-          onPageChange={() => {}}
+          onPageChange={(page) => {
+            const current = new URLSearchParams(
+              Array.from(searchParams.entries())
+            );
+            current.set("page", page.toString());
+            router.push(`${pathname}?${current.toString()}`);
+            router.refresh();
+          }}
         />
       </div>
     </div>
