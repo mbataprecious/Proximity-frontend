@@ -9,8 +9,8 @@ import CreateSessionModal from "../session/CreateSessionModal";
 import SessionSuccessModal from "../session/SessionSuccessModal";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getStudentsAndSessionsByMetadata } from "@/data/fetchers/clientFetchers";
-import { format, parseISO } from "date-fns";
 import { useRouter } from "next-nprogress-bar";
+import ClientTimeText from "../ClientTimeText";
 
 const headers = ["Session ID", "Date", "Start Time", "End Time", "Geo fencing"];
 
@@ -129,13 +129,22 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
                     {session._id.substring(0, 5) + "...."}
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
-                    {format(parseISO(session.createdAt), "MM/dd/yyyy")}
+                    <ClientTimeText
+                      ISOstring={session.createdAt}
+                      format="MM/dd/yyyy"
+                    />
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
-                    {format(parseISO(session.createdAt), "hh:mm a")}
+                    <ClientTimeText
+                      ISOstring={session.createdAt}
+                      format="hh:mm a"
+                    />
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
-                    {format(parseISO(session.endTime), "hh:mm a")}
+                    <ClientTimeText
+                      ISOstring={session.endTime}
+                      format="hh:mm a"
+                    />
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700 flex justify-center">
                     {session.geofencing ? (

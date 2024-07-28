@@ -1,4 +1,5 @@
 "use client";
+import ClientTimeText from "@/components/ClientTimeText";
 import Label from "@/components/Label";
 import ModuleDetailBox from "@/components/ModuleDetailBox";
 import Pagination from "@/components/Pagination";
@@ -16,7 +17,7 @@ import {
 } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { capitalCase } from "change-case";
-import { format, parseISO } from "date-fns";
+import { parseISO } from "date-fns";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -121,9 +122,15 @@ export default function ({
             <p className=" text-[#667185] font-semibold mt-4">
               Time: &nbsp;
               <span className=" font-medium">
-                {" "}
-                {format(parseISO(sessionData.createdAt), "hh:mm a")} -{" "}
-                {format(parseISO(sessionData.endTime), "hh:mm a")}{" "}
+                <ClientTimeText
+                  ISOstring={sessionData.createdAt}
+                  format="hh:mm a"
+                />{" "}
+                -
+                <ClientTimeText
+                  ISOstring={sessionData.endTime}
+                  format="hh:mm a"
+                />
               </span>
             </p>
           </div>

@@ -31,6 +31,7 @@ export default function () {
         lattitude: latitude,
       });
       if (response) {
+        setOtp("");
         if (response?.data?.message.includes("flagged")) {
           setStatus("flagged");
           setStatusOpen(true);

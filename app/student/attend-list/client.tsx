@@ -1,5 +1,5 @@
 import React from "react";
-import { format, parseISO } from "date-fns";
+import ClientTimeText from "@/components/ClientTimeText";
 
 const headers = ["Module Title", "Module code", "Time"];
 
@@ -39,7 +39,7 @@ export default function ({ attendList }: { attendList: IAttendanceList }) {
                   {session.code}
                 </td>
                 <td className="whitespace-nowrap px-3 py-5 text-center text-sm text-gray-700">
-                  {format(parseISO(session.date), "hh:mm a")}
+                  <ClientTimeText ISOstring={session.date} format="hh:mm a" />
                 </td>
               </tr>
             ))}
