@@ -40,13 +40,6 @@ export default function AddStudentModal({ open, setOpen }: Props) {
 
   const onClose = () => {
     setOpen(false);
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
-    current.delete("addState");
-    // cast to string
-    const search = current.toString();
-    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
-    const query = search ? `?${search}` : "";
-    router.push(`${pathname}${query}`);
   };
 
   useEffect(() => {

@@ -30,7 +30,7 @@ const colorMap = {
   flagged: "#D8A800",
 };
 const sortOptions = ["present", "absent", "flagged"];
-const headers = ["First Name", "Last Name ", "Email", "Attenders  Status"];
+const headers = ["First Name", "Last Name ", "Email", "Attendance Status"];
 
 interface Props {
   moduleData: IModule;

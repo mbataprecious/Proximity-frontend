@@ -7,9 +7,15 @@ import { InputHTMLAttributes } from "react";
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onSearchClick?: React.MouseEventHandler<HTMLButtonElement>;
   onClear?: () => void;
+  isClearable?: boolean;
 }
 
-const SearchInput = ({ onSearchClick, onClear, ...rest }: SearchInputProps) => {
+const SearchInput = ({
+  onSearchClick,
+  isClearable,
+  onClear,
+  ...rest
+}: SearchInputProps) => {
   return (
     <div className="relative rounded-md shadow-sm">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -25,7 +31,7 @@ const SearchInput = ({ onSearchClick, onClear, ...rest }: SearchInputProps) => {
         {...rest}
         value={rest.value}
       />
-      {!rest.value ? (
+      {!isClearable ? (
         <Button
           onClick={onSearchClick}
           className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-2"

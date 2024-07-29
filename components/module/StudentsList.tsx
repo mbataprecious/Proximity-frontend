@@ -46,6 +46,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
   const [search, setSearch] = useState("");
   const [addStudent, setAddStudent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isClearable, setIsClearable] = useState(false);
   const [students, setStudents] = useState(studentsList?.students ?? []);
   const [checked, setChecked] = useState(false);
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -165,12 +166,17 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                     value={search}
                     onSearchClick={() => {
                       handleFetch({ page: 1, search });
-                      setSearch("");
+                      setIsClearable(true);
                     }}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      if (e.target.value === "") setIsClearable(false);
+                    }}
+                    isClearable={isClearable}
                     onClear={() => {
                       handleFetch({ page: 1 });
                       setSearch("");
+                      setIsClearable(false);
                     }}
                   />
                 </>
@@ -205,7 +211,11 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                 </Button>
               </Link>
 
-              <Button size={"sm"} className=" mx-3 flex items-center">
+              <Button
+                size={"sm"}
+                onClick={() => setAddStudent(true)}
+                className=" mx-3 flex items-center"
+              >
                 <SvgIconStyle
                   src="/Assets/svg/plus-Icons.svg"
                   className=" mr-1"
@@ -355,12 +365,12 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                 handleFetch({ page, sort });
               }}
             />
+            <AddStudentModal open={addStudent} setOpen={setAddStudent} />
           </div>
         </div>
       ) : (
         Empty
       )}
-      <AddStudentModal open={addStudent} setOpen={setAddStudent} />
     </>
   );
 };
