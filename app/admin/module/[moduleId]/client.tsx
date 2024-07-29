@@ -2,7 +2,6 @@
 import Button from "@/components/Button";
 import ModuleDetailBox from "@/components/ModuleDetailBox";
 import SvgIconStyle from "@/components/SvgIconStyle";
-import AddStudentModal from "@/components/module/AddStudentModal";
 import SessionList from "@/components/module/SessionList";
 import StudentsList from "@/components/module/StudentsList";
 import { getSearchParamsObject } from "@/utils/helpers";
