@@ -1,6 +1,6 @@
 import LecturerLayout from "@/components/Layouts/LecturerLayout";
 import React from "react";
-import Client, { AddStudentButton } from "./client";
+import Client from "./client";
 import { getSingleModule, getStudentAndSession } from "@/data/fetchers";
 
 export default async function ({ params }: { params: { moduleId: string } }) {
@@ -10,7 +10,7 @@ export default async function ({ params }: { params: { moduleId: string } }) {
   );
   console.log({ studentsList, sessionsList });
   return (
-    <LecturerLayout sideContent={<AddStudentButton />}>
+    <LecturerLayout>
       <Client
         moduleDetails={data}
         studentsList={studentsList}

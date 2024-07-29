@@ -6,6 +6,7 @@ import {
   getSingleModule,
   getSingleSession,
 } from "@/data/fetchers";
+import { ExportAttendanceButton } from "@/components/ExportAttendanceButton";
 
 const page = async ({
   params,
@@ -23,7 +24,14 @@ const page = async ({
     page: searchParams?.page ? parseInt(searchParams?.page as string) : 1,
   });
   return (
-    <LecturerLayout>
+    <LecturerLayout
+      sideContent={
+        <ExportAttendanceButton
+          moduleData={moduleData}
+          sessionData={sessionData}
+        />
+      }
+    >
       <Client
         moduleData={moduleData}
         sessionData={sessionData}

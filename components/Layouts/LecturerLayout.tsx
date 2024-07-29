@@ -28,7 +28,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
   const pathname = usePathname();
   return (
     <div className="">
-      <div className=" bg-white mb-[1.875rem]">
+      <div className=" bg-white mb-[0.875rem]">
         <Container className="max-w-[85rem] flex justify-between">
           <div className=" flex pt-4">
             {navItems.map(({ title, href, icon }) => {

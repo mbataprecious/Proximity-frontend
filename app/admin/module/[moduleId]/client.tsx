@@ -7,11 +7,7 @@ import SessionList from "@/components/module/SessionList";
 import StudentsList from "@/components/module/StudentsList";
 import { getSearchParamsObject } from "@/utils/helpers";
 import Link from "next/link";
-import {
-  useParams,
-  usePathname,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const tabList = [
@@ -29,7 +25,9 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [open, setOpen] = useState(searchParams.get("addState") === "true");
-  const [totalStudents, setTotalStudents] = useState(studentsList?.metadata?.totalDocuments)
+  const [totalStudents, setTotalStudents] = useState(
+    studentsList?.metadata?.totalDocuments
+  );
   const tab = searchParams.get("tab") ?? tabList[0].value;
 
   useEffect(() => {
@@ -62,10 +60,11 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
                   query: { tab: value },
                 }}
                 key={label}
-                className={`pb-4 w-[160px] cursor-pointer -my-0.5 border-b-2 ${tab === value
-                  ? "border-b-[#0D5CC7] font-medium text-[#0D5CC7]"
-                  : " border-b-transparent text-[#4A4A4A]"
-                  } `}
+                className={`pb-4 w-[160px] cursor-pointer -my-0.5 border-b-2 ${
+                  tab === value
+                    ? "border-b-[#0D5CC7] font-medium text-[#0D5CC7]"
+                    : " border-b-transparent text-[#4A4A4A]"
+                } `}
               >
                 <div className="flex justify-center items-center">
                   <span className=" ml-0.5">{label}</span>
@@ -80,7 +79,6 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
       ) : tab === "session" ? (
         <SessionList sessionsList={sessionsList} />
       ) : null}
-      <AddStudentModal open={open} setOpen={setOpen} />
     </div>
   );
 }
@@ -102,7 +100,7 @@ export const AddStudentButton = () => {
             },
           }}
         >
-          <Button size={"sm"} className=" mx-3 my-2.5 flex items-center">
+          <Button size={"sm"} className=" mx-3 flex items-center">
             <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
             Add Student
           </Button>

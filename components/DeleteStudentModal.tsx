@@ -43,12 +43,13 @@ export default function DeletStudentModal({
       const response = await (deleteAll
         ? request.delete(`students/all`)
         : isSingle
-        ? request.delete(`/students/${singleStudent?.email}`, {
-            params: { module: moduleId },
+        ? request.delete("/students/", {
+            params: { module: moduleId, students: singleStudent?.email },
           })
         : request.delete(`/students/`, {
             params: {
-              modules: selectedStudents.map(({ email }) => email).join(","),
+              module: moduleId,
+              students: selectedStudents.map(({ email }) => email).join(","),
             },
           }));
       if (response) {
@@ -133,10 +134,10 @@ export default function DeletStudentModal({
                     onClick={() => handleDelete()}
                   >
                     {deleteAll
-                      ? "Delete modules"
+                      ? "Delete students"
                       : isSingle
-                      ? "Delete module"
-                      : "Delete modules"}
+                      ? "Delete student"
+                      : "Delete students"}
                   </Button>
                   <button
                     type="button"

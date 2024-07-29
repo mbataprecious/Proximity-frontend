@@ -12,7 +12,11 @@ import Button from "../Button";
 import SortDropdown from "../SortDropdown";
 import SearchInput from "../SearchInput";
 import SvgIconStyle from "../SvgIconStyle";
-import { EllipsisHorizontalIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  EllipsisHorizontalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 import { classNames } from "@/utils/helpers";
 import Pagination from "../Pagination";
 import Link from "next/link";
@@ -20,6 +24,7 @@ import { useParams, usePathname } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getStudentsAndSessionsByMetadata } from "@/data/fetchers/clientFetchers";
 import DeletStudentModal from "../DeleteStudentModal";
+import AddStudentModal from "./AddStudentModal";
 
 const headers = ["First Name", "Last Name ", "Email"];
 const sortMap = {
@@ -29,8 +34,8 @@ const sortMap = {
 const sortOptions = ["Newest", "Oldest", "Alphabetical"];
 
 interface Props {
-  setTotal: React.Dispatch<React.SetStateAction<number>>
-  studentsList: IStudentList
+  setTotal: React.Dispatch<React.SetStateAction<number>>;
+  studentsList: IStudentList;
 }
 
 const StudentsList = ({ studentsList, setTotal }: Props) => {
@@ -39,6 +44,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
   const pathname = usePathname();
   const [sort, setSort] = useState("Newest");
   const [search, setSearch] = useState("");
+  const [addStudent, setAddStudent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState(studentsList?.students ?? []);
   const [checked, setChecked] = useState(false);
@@ -50,9 +56,17 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
   const [select, setSelect] = useState<IStudent>();
   const [selectOne, setSelectOne] = useState(false);
   const [deleteSelected, setDeleteSelected] = useState(false);
-  const [deleteAll, setDeleteAll] = useState(false);
+  const [deleteAll] = useState(false);
   console.log(studentsList);
-  const handleFetch = async ({ page, sort, search }: { page: number, sort?: string, search?: string }) => {
+  const handleFetch = async ({
+    page,
+    sort,
+    search,
+  }: {
+    page: number;
+    sort?: string;
+    search?: string;
+  }) => {
     setLoading(true);
     const data = await getStudentsAndSessionsByMetadata({
       request,
@@ -60,9 +74,9 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
       moduleId,
       page,
       sort,
-      keyword: search
+      keyword: search,
     }).finally(() => {
-      setLoading(false)
+      setLoading(false);
     });
     console.log(data);
     setStudents((data as IStudentList).students);
@@ -75,12 +89,12 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
     setDeleteSelected(false);
   };
   useEffect(() => {
-    setStudents(studentsList?.students ?? [])
-    setMetadata(studentsList?.metadata ?? {})
-    setPage(studentsList?.metadata?.currentPage ?? 1)
-    setTotal(studentsList?.metadata?.totalDocuments ?? 0)
+    setStudents(studentsList?.students ?? []);
+    setMetadata(studentsList?.metadata ?? {});
+    setPage(studentsList?.metadata?.currentPage ?? 1);
+    setTotal(studentsList?.metadata?.totalDocuments ?? 0);
     setSearch("");
-  }, [studentsList])
+  }, [studentsList]);
 
   useLayoutEffect(() => {
     const isIndeterminate =
@@ -98,7 +112,6 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
     setIndeterminate(false);
   }
 
-
   const Empty = (
     <div className="flex justify-center items-center min-h-[70vh]">
       <div className="  ">
@@ -112,18 +125,9 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
           />
         </div>
         <div className="">
-          <Link
-            href={{
-              pathname,
-              query: {
-                addState: "true",
-              },
-            }}
-          >
-            <Button shadow className=" mt-9">
-              Add New Student
-            </Button>
-          </Link>
+          <Button onClick={() => setAddStudent(true)} shadow className=" mt-9">
+            Add New Student
+          </Button>
         </div>
       </div>
     </div>
@@ -133,9 +137,13 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
     <>
       {students.length ? (
         <div className=" relative">
-          {loading && <div className="absolute inset-0 flex justify-center items-center">
-            <div className="p-4 bg-blue-500 text-white italic">Loading...</div>
-          </div>}
+          {loading && (
+            <div className="absolute inset-0 flex justify-center items-center">
+              <div className="p-4 bg-blue-500 text-white italic">
+                Loading...
+              </div>
+            </div>
+          )}
           <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9">
             <div className=" flex items-center space-x-2">
               {!selectedStudents.length ? (
@@ -145,20 +153,26 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                     value={sort}
                     onChange={(val) => {
                       setSort(val);
-                      handleFetch({ page: 1, sort: sortMap[val as keyof typeof sortMap], });
+                      handleFetch({
+                        page: 1,
+                        sort: sortMap[val as keyof typeof sortMap],
+                      });
                       setSearch("");
-                    }
-                    }
+                    }}
                   />
 
                   <SearchInput
                     value={search}
                     onSearchClick={() => {
-                      if (search) {
-                        handleFetch({ page: 1, search })
-                      }
+                      handleFetch({ page: 1, search });
+                      setSearch("");
                     }}
-                    onChange={(e) => setSearch(e.target.value)} />
+                    onChange={(e) => setSearch(e.target.value)}
+                    onClear={() => {
+                      handleFetch({ page: 1 });
+                      setSearch("");
+                    }}
+                  />
                 </>
               ) : (
                 <>
@@ -168,50 +182,35 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                     className=" flex items-center"
                     onClick={() => {
                       setDeleteSelected(true);
-                      setSelectOne(false)
-                      setSelect(undefined)
+                      setSelectOne(false);
+                      setSelect(undefined);
                     }}
                   >
                     <TrashIcon className=" w-6 mr-2" />
                     Delete Selected
                   </Button>
-                  {metadata?.totalDocuments > 1 && selectedStudents.length === students.length && !deleteAll && (
-                    <Button
-                      size={"sm"}
-                      isOutlined
-                      onClick={() => setDeleteAll(true)}
-                      className=" border-none !bg-blue-100"
-                    >
-                      Select All {metadata?.totalDocuments} modules
-                    </Button>
-                  )}
                 </>
               )}
             </div>
             <div className=" space-x-3 flex items-center">
-              <Button
-                variant={"info"}
-                isOutlined
-                size={"sm"}
-                className=" flex items-center space-x-1"
-              >
+              <Link href={`/admin/module/${moduleId}/edit`}>
+                <Button
+                  variant={"info"}
+                  isOutlined
+                  size={"sm"}
+                  className=" flex items-center space-x-1"
+                >
+                  <PencilIcon className=" w-4 mr-1" />
+                  Edit
+                </Button>
+              </Link>
+
+              <Button size={"sm"} className=" mx-3 flex items-center">
                 <SvgIconStyle
-                  src="/Assets/svg/download-icon.svg"
+                  src="/Assets/svg/plus-Icons.svg"
                   className=" mr-1"
                 />
-                Download Template
-              </Button>
-              <Button
-                variant={"info"}
-                isOutlined
-                size={"sm"}
-                className=" flex items-center space-x-1"
-              >
-                <SvgIconStyle
-                  src="/Assets/svg/export-icon.svg"
-                  className=" mr-1"
-                />
-                Import
+                Add Student
               </Button>
             </div>
           </div>
@@ -246,8 +245,9 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               {students.map((person, index) => (
                 <tr
                   key={index}
-                  className={`${selectedStudents.includes(person) ? "bg-blue-50" : undefined
-                    } hover:bg-blue-50`}
+                  className={`${
+                    selectedStudents.includes(person) ? "bg-blue-50" : undefined
+                  } hover:bg-blue-50`}
                 >
                   <td className="relative px-7 sm:w-32 sm:px-12">
                     {selectedStudents.includes(person) && (
@@ -331,8 +331,9 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
             </tbody>
           </table>
           <div
-            className={`flex justify-center mt-14 pb-10 ${students.length < 5 && "mt-28"
-              }`}
+            className={`flex justify-center mt-14 pb-10 ${
+              students.length < 5 && "mt-28"
+            }`}
           >
             <Pagination
               pageCount={metadata?.totalPages}
@@ -359,6 +360,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
       ) : (
         Empty
       )}
+      <AddStudentModal open={addStudent} setOpen={setAddStudent} />
     </>
   );
 };
