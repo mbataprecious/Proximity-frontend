@@ -76,7 +76,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
   return (
     <>
       {sessions.length > 0 ? (
-        <div className="relative">
+        <div className="relative overflow-auto">
           {loading && (
             <div className="absolute inset-0 flex justify-center items-center">
               <div className="p-4 bg-blue-500 text-white italic">

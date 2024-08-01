@@ -34,7 +34,7 @@ const SearchInput = ({
       {!isClearable ? (
         <Button
           onClick={onSearchClick}
-          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-2"
+          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-2 max-[700px]:w-max"
         >
           Search
         </Button>

@@ -78,10 +78,10 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
     setDeleteSelected(false);
   };
   return (
-    <div>
-      <div className=" p-[36px] flex justify-between items-center">
+    <div className="w-full overflow-auto" >
+      <div className=" p-[36px] flex flex-col lg:flex-row lg:justify-between lg:items-center overflow-auto">
         <h2 className=" text-4xl font-bold">Modules</h2>
-        <div className=" flex space-x-4 items-start">
+        <div className=" flex lg:space-x-4 items-start flex-col lg:flex-row lg:items-center max-[700px]:gap-5 max-[700px]:mt-4">
           {!selectedPeople.length ? (
             <>
               <SortDropdown
@@ -147,7 +147,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
         </div>
       </div>
       {/* module list table */}
-      <table className="min-w-full table-fixed divide-y divide-gray-300">
+      <table className="min-w-full table-fixed divide-y divide-gray-300 overflow-auto">
         <thead className=" bg-[#017FED]">
           <tr>
             <th scope="col" className="relative px-7 sm:w-32 sm:px-12">

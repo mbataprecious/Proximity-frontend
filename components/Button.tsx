@@ -78,7 +78,7 @@ const Button = ({
         size,
       })} ${loading ? " inline-flex items-center justify-center" : ""} ${
         !!props?.disabled && " opacity-85 cursor-not-allowed"
-      } ${className}`}
+      } ${className} max-[700px]:w-full`}
       {...props}
     >
       {loading && (

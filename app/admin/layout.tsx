@@ -73,7 +73,7 @@ const layout = ({
   return (
     <div className="relative min-h-screen bg-[#EEF2F8] pb-[150px]">
       <div className=" bg-primary py-[18px] text-white">
-        <Container className="max-w-[85rem] flex justify-between items-center">
+        <Container className="max-w-[85rem] flex justify-between gap-5 lg:gap-0 items-center">
           <Image
             src={"/Assets/svg/Proximity.svg"}
             alt="logo"
@@ -81,7 +81,7 @@ const layout = ({
             height={36.62}
           />
           <div className="flex items-center">
-            <div className="relative w-[43.12px] h-[43.12px] flex items-center justify-center">
+            <div className="relative w-[43.12px] h-[43.12px] flex items-center justify-center ">
               <span className="absolute bg-[#58BD7D] h-[12.9px] w-[12.9px] rounded-full top-0 right-0" />
               <SvgIconStyle
                 src="/Assets/svg/bell.svg"
@@ -94,7 +94,7 @@ const layout = ({
       </div>
       {children}
       <div className=" absolute bottom-0 left-0 w-full bg-white pt-[40px] pb-[30px]">
-        <Container className="max-w-[90rem]  flex justify-between items-center">
+        <Container className="max-w-[90rem]  flex justify-between items-center max-[700px]:flex-col max-[700px]:gap-5">
           <p className="text-[#9E9E9E]">©2024, Proximity. All Right Reserved</p>
           <div className="flex">
             {socials.map((item) => (

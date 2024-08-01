@@ -151,7 +151,7 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
           className=" grid grid-cols-1 gap-y-3"
           onSubmit={methods.handleSubmit(onSubmit)}
         >
-          <div className="w-full flex space-x-5 mb-2">
+          <div className="w-full flex lg:space-x-5 mb-2 max-[700px]:flex-col">
             <div className=" flex-1">
               <Input
                 type="text"
@@ -232,18 +232,18 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
             </div>
           </div>
 
-          <div className=" flex justify-between items-center mt-[50px] mb-24">
+          <div className=" flex justify-between items-center lg:mt-[50px] mb-24 max-[700px]:flex-col">
             <a
               href="/Assets/sample-students-sheets.csv"
-              className=" text-primary font-medium hover:underline text-sm"
+              className=" text-primary font-medium hover:underline text-sm max-[700px]:mb-7"
               download
             >
               Download Template
             </a>
 
-            <div className=" space-x-2 ">
+            <div className=" lg:space-x-2 max-[700px]:space-y-2">
               <Link href={"/admin/module/"}>
-                <Button type="button" variant={"info"} isOutlined>
+                <Button type="button" variant={"info"} className="bg-red-500" isOutlined>
                   Cancel
                 </Button>
               </Link>

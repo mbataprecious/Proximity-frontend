@@ -44,9 +44,15 @@ const Module = async ({
     <LecturerLayout
       sideContent={
         <Link href={"module/create"}>
-          <Button size={"sm"} className=" my-2.5 flex items-center">
+          <Button size={"sm"} className=" my-2.5 lg:flex items-center hidden lg:visible">
             <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
             Create New Module
+      
+          </Button>
+          <Button size={"sm"} className=" my-2.5 flex items-center visible lg:hidden">
+            <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
+            {/* Create New Module */}
+            Add
           </Button>
         </Link>
       }
