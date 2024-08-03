@@ -72,7 +72,7 @@ export const ExportAttendanceButton = ({ moduleData, sessionData }: Props) => {
           disabled={loading}
           size={"sm"}
           onClick={handleExport}
-          className=" mx-3 flex items-center my-2"
+          className="md:mx-3 flex items-center my-2"
         >
           {!loading ? (
             <SvgIconStyle
@@ -100,7 +100,7 @@ export const ExportAttendanceButton = ({ moduleData, sessionData }: Props) => {
               </svg>
             </span>
           )}
-          Export
+         <p className="hidden md:flex"> Export</p>
         </Button>
       }
     </div>
