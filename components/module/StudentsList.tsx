@@ -137,7 +137,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
   return (
     <>
       {students.length ? (
-        <div className=" relative max-[700px]:overflow-auto">
+        <div className=" relative">
           {loading && (
             <div className="absolute inset-0 flex justify-center items-center">
               <div className="p-4 bg-blue-500 text-white italic">
@@ -145,7 +145,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               </div>
             </div>
           )}
-          <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9  max-[700px]:flex-col max-[700px]:justify-start max-[700px]:pl-0 max-[700px]:pr-0 max-[700px]:gap-4 max-[700px]:p-3 ">
+          <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9  max-[700px]:flex-col max-[700px]:justify-start max-[700px]:pl-0 max-[700px]:pr-0  max-[700px]:p-3 ">
             <div className=" flex items-center space-x-2  max-[700px]:w-full max-[700px]:p-3">
               {!selectedStudents.length ? (
                 <>
@@ -224,6 +224,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               </Button>
             </div>
           </div>
+          <div className="w-full overflow-auto hide-scrollbar">
           <table className="min-w-full table-fixed divide-y divide-gray-300">
             <thead className=" bg-[#017FED]">
               <tr>
@@ -340,6 +341,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               ))}
             </tbody>
           </table>
+          </div>
           <div
             className={`flex justify-center mt-14 pb-10 ${
               students.length < 5 && "mt-28"

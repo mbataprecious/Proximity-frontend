@@ -42,7 +42,7 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
           <p className=" py-1 px-2 text-xs bg-[#F0F3F9] rounded-[6px] inline leading-[20px] font-medium text-[rgba(74,74,74,0.8)] ">
             {totalStudents} Students
           </p>
-          <h2 className=" text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px]">
+          <h2 className="text-2xl lg:text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px]">
             {moduleDetails.title}
           </h2>
         </div>

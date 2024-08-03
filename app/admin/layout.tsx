@@ -72,14 +72,24 @@ const layout = ({
 }>) => {
   return (
     <div className="relative min-h-screen bg-[#EEF2F8] pb-[150px]">
-      <div className=" bg-primary py-[18px] text-white">
+      <div className=" bg-primary lg:py-[18px] text-white py-[10px] ">
         <Container className="max-w-[85rem] flex justify-between gap-5 lg:gap-0 items-center">
+          <div className="lg:w-[50%]  w-[80px] ">
           <Image
             src={"/Assets/svg/Proximity.svg"}
             alt="logo"
+            className="lg:w-[176.5px] lg:h-[36.62px] w-[100px] h-6 hidden lg:flex"
             width={176.5}
             height={36.62}
           />
+          <Image
+            src={"/Assets/prox-logo.png"}
+            alt="logo"
+            className="lg:w-[100%] lg:h-[100%] w-[100px] h-6 flex lg:hidden object-contain"
+            width={100}
+            height={36.62}
+          />
+          </div>
           <div className="flex items-center">
             <div className="relative w-[43.12px] h-[43.12px] flex items-center justify-center ">
               <span className="absolute bg-[#58BD7D] h-[12.9px] w-[12.9px] rounded-full top-0 right-0" />

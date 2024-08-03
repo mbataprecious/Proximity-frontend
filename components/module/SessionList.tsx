@@ -99,6 +99,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
               <span>Start Session</span>
             </Button>
           </div>
+          <div className="w-full overflow-auto hide-scrollbar">
           <table className="min-w-full table-fixed divide-y divide-gray-300">
             <thead className=" bg-[#017FED]">
               <tr>
@@ -157,6 +158,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
               ))}
             </tbody>
           </table>
+          </div>
           <div
             className={`flex justify-center mt-14 pb-10 ${
               sessions.length < 5 && "mt-28"

@@ -81,3 +81,12 @@ input[type="number"] {
 .rotation-animation-reverse {
   animation: rotation 15s infinite reverse linear;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

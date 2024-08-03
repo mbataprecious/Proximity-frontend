@@ -18,7 +18,7 @@ const UserDropdownView = () => {
   return (
     <Menu as="div" className={"relative inline-block"}>
       <MenuButton className="flex items-center ml-0 lg:ml-4">
-        <p className=" font-semibold text-[17px] lg:ml-4">
+        <p className=" font-semibold lg:text-[17px] lg:ml-4 text-[12px]">
           {session?.user?.firstName
             ? `Hello, ${session.user.firstName}`
             : ""}
