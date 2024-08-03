@@ -54,7 +54,7 @@ const SortDropdown = ({ options = [], onChange, value = "", prefixText }: Props)
                       "block px-4 py-2 text-sm"
                     )}
                   >
-                    {option}1
+                    {option}
                   </p>
                 )}
               </MenuItem>
