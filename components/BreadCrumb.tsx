@@ -46,7 +46,7 @@ const NextBreadcrumb = ({
   }, [pathNames]);
 
   return (
-    <div>
+    <div className="w-full overflow-auto hide-scrollbar">
       <ul className={containerClasses}>
         <li
           onClick={() => router.back()}

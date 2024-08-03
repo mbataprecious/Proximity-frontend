@@ -87,7 +87,7 @@ export default function ({
 
   return (
     <div>
-      <div className=" p-[36px] flex justify-between items-center border-b">
+      <div className=" lg:p-[36px] p-[10px] flex justify-between items-start lg:items-center border-b flex-col gap-2 lg:gap-2 lg:flex-row">
         <div>
           {parseISO(sessionData.endTime).getTime() > Date.now() ? (
             <p
@@ -108,7 +108,7 @@ export default function ({
               Completed
             </p>
           )}
-          <h2 className=" text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px] line-clamp-2 leading-[54px]">
+          <h2 className="text-2xl lg:text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px] line-clamp-2 leading-[54px]">
             {moduleData.title}
           </h2>
 
@@ -138,8 +138,8 @@ export default function ({
 
         <ModuleDetailBox details={moduleData} />
       </div>
-      <div className="p-[36px] flex justify-between ">
-        <div className=" flex flex-col md:flex-row items-center space-y-3 md:space-y-0  md:space-x-6">
+      <div className="p-[10px] md:p-[36px] flex flex-col lg:flex-row lg:justify-between gap-3 lg:gap-0">
+        <div className=" flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0  md:space-x-6">
           {sortOptions.map((status) => (
             <SessionStatsCard
               key={status}
@@ -195,6 +195,7 @@ export default function ({
           />
         </div>
       </div>
+      <div className="w-full overflow-auto hide-scrollbar">
       <table className="min-w-full table-fixed divide-y divide-gray-300">
         <thead className=" bg-[#017FED]">
           <tr>
@@ -312,6 +313,7 @@ export default function ({
           })}
         </tbody>
       </table>
+      </div>
       <div
         className={`flex justify-center mt-14 pb-10 ${
           sessionAttendance.attendance.length < 5 && "mt-28"
