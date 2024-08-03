@@ -87,7 +87,7 @@ export default function ({
 
   return (
     <div>
-      <div className=" lg:p-[36px] p-[10px] flex justify-between items-start lg:items-center border-b flex-col gap-2 lg:gap-2 lg:flex-row">
+      <div className=" lg:p-[36px] p-5 flex justify-between items-start lg:items-center border-b flex-col gap-2 lg:gap-2 lg:flex-row">
         <div>
           {parseISO(sessionData.endTime).getTime() > Date.now() ? (
             <p
@@ -196,123 +196,126 @@ export default function ({
         </div>
       </div>
       <div className="w-full overflow-auto hide-scrollbar">
-      <table className="min-w-full table-fixed divide-y divide-gray-300">
-        <thead className=" bg-[#017FED]">
-          <tr>
-            {headers.map((title, index) => (
-              <th
-                key={title}
-                scope="col"
-                className={
-                  "px-3 py-3.5 text-left text-sm font-semibold text-white " +
-                  (index < 2 ? " text-center" : "")
-                }
-              >
-                {title}
+        <table className="min-w-full table-fixed divide-y divide-gray-300">
+          <thead className=" bg-[#017FED]">
+            <tr>
+              {headers.map((title, index) => (
+                <th
+                  key={title}
+                  scope="col"
+                  className={
+                    "px-3 py-3.5 text-left text-sm font-semibold text-white " +
+                    (index < 2 ? " text-center" : "")
+                  }
+                >
+                  {title}
+                </th>
+              ))}
+
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
+                <span className="sr-only">Edit</span>
               </th>
-            ))}
-
-            <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
-              <span className="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {sessionAttendance.attendance.map((person) => {
-            return (
-              <tr key={person.userId} className={"hover:bg-blue-50"}>
-                <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
-                  {person.firstName}
-                </td>
-                <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
-                  {person.lastName}
-                </td>
-                <td
-                  title={person.email}
-                  className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
-                >
-                  {person.email}
-                </td>
-                <td
-                  // title={person.status}
-                  className="whitespace-nowrap px-3 py-5 text-sm text-gray-700"
-                >
-                  <Label
-                    variant={
-                      person.status === "flagged"
-                        ? "warning"
-                        : person.status === "present"
-                        ? "success"
-                        : "danger"
-                    }
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {sessionAttendance.attendance.map((person) => {
+              return (
+                <tr key={person.userId} className={"hover:bg-blue-50"}>
+                  <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
+                    {person.firstName}
+                  </td>
+                  <td className="whitespace-nowrap px-3 text-center py-5 text-sm text-gray-700">
+                    {person.lastName}
+                  </td>
+                  <td
+                    title={person.email}
+                    className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
                   >
-                    {capitalCase(person?.status as string)}
-                  </Label>
-                </td>
-                <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <Menu as="div" className="relative inline-block text-left">
-                    <div>
-                      <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                        <span className="sr-only">Open options</span>
-                        <EllipsisHorizontalIcon
-                          className="h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      </MenuButton>
-                    </div>
-
-                    <Transition
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
+                    {person.email}
+                  </td>
+                  <td
+                    // title={person.status}
+                    className="whitespace-nowrap px-3 py-5 text-sm text-gray-700"
+                  >
+                    <Label
+                      variant={
+                        person.status === "flagged"
+                          ? "warning"
+                          : person.status === "present"
+                          ? "success"
+                          : "danger"
+                      }
                     >
-                      <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
-                          {sortOptions
-                            .filter((opt) => opt !== person.status)
-                            .filter((opt) => opt !== "flagged")
-                            .map((status) => (
-                              <MenuItem key={status}>
-                                {({ focus }) => (
-                                  <div
-                                    onClick={() =>
-                                      handleStatusUpdate(person.userId, status)
-                                    }
-                                    className={classNames(
-                                      "flex items-center  cursor-pointer",
-                                      focus
-                                        ? "bg-gray-50 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
-                                  >
-                                    <span
-                                      className={`w-2 h-2 rounded-full mr-2 `}
-                                      style={{
-                                        background:
-                                          colorMap[
-                                            status as keyof typeof colorMap
-                                          ],
-                                      }}
-                                    ></span>
-                                    {capitalCase(status)}
-                                  </div>
-                                )}
-                              </MenuItem>
-                            ))}
-                        </div>
-                      </MenuItems>
-                    </Transition>
-                  </Menu>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                      {capitalCase(person?.status as string)}
+                    </Label>
+                  </td>
+                  <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <Menu as="div" className="relative inline-block text-left">
+                      <div>
+                        <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                          <span className="sr-only">Open options</span>
+                          <EllipsisHorizontalIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        </MenuButton>
+                      </div>
+
+                      <Transition
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            {sortOptions
+                              .filter((opt) => opt !== person.status)
+                              .filter((opt) => opt !== "flagged")
+                              .map((status) => (
+                                <MenuItem key={status}>
+                                  {({ focus }) => (
+                                    <div
+                                      onClick={() =>
+                                        handleStatusUpdate(
+                                          person.userId,
+                                          status
+                                        )
+                                      }
+                                      className={classNames(
+                                        "flex items-center  cursor-pointer",
+                                        focus
+                                          ? "bg-gray-50 text-gray-900"
+                                          : "text-gray-700",
+                                        "block px-4 py-2 text-sm"
+                                      )}
+                                    >
+                                      <span
+                                        className={`w-2 h-2 rounded-full mr-2 `}
+                                        style={{
+                                          background:
+                                            colorMap[
+                                              status as keyof typeof colorMap
+                                            ],
+                                        }}
+                                      ></span>
+                                      {capitalCase(status)}
+                                    </div>
+                                  )}
+                                </MenuItem>
+                              ))}
+                          </div>
+                        </MenuItems>
+                      </Transition>
+                    </Menu>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
       <div
         className={`flex justify-center mt-14 pb-10 ${

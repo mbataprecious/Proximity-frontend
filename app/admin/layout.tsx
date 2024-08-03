@@ -72,7 +72,7 @@ const layout = ({
 }>) => {
   return (
     <div className="relative min-h-screen bg-[#EEF2F8] pb-[150px]">
-      <div className=" bg-primary py-[4px]  lg:py-[18px] text-white ">
+      <div className=" bg-primary py-[12px]  lg:py-[18px] text-white ">
         <Container className="max-w-[85rem] flex justify-between gap-5 lg:gap-0 items-center">
           <div className=" ">
             <Image

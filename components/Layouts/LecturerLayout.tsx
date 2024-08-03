@@ -59,13 +59,13 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
           separator={<span className=" text-[#98A2B3]"> / </span>}
           activeClasses=" text-[#096DD9] font-medium"
           containerClasses="flex items-center lg:py-6 py-2"
-          listClasses="hover:underline mx-2 text-sm text-[#98A2B3]"
+          listClasses="hover:underline mx-2 text-sm text-[#98A2B3] text-nowrap"
           capitalizeLinks
         />
       </Container>
 
       <div>
-        <Container className="max-w-[85rem] px-0 sm:px-0">
+        <Container className="max-w-[85rem] max-md:px-0 sm:px-0">
           <div className=" bg-white min-h-[70vh]">{children}</div>
         </Container>
       </div>
