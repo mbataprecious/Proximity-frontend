@@ -8,7 +8,7 @@ interface Props {
 }
 const SessionStatsCard = ({ type, value }: Props) => {
   return (
-    <div className="bg-[#F9FAFB] border w-[193px] text-[#4A4A4A] border-[#D1D5DB] px-[18.65px] py-[10.5px] rounded-[6px]">
+    <div className="bg-[#F9FAFB] border w-full md:w-[193px] text-[#4A4A4A] border-[#D1D5DB] px-[18.65px] py-[10.5px] rounded-[6px]">
       <h5 className=" text-xl">{capitalCase(type)}</h5>
       <div className=" flex justify-between items-end">
         <p className=" font-semibold">{value}</p>
