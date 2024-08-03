@@ -126,7 +126,13 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
           />
         </div>
         <div className="">
-          <Button onClick={() => setAddStudent(true)} shadow className=" mt-9">
+          <Button
+            onClick={() => {
+              setAddStudent(true);
+            }}
+            shadow
+            className=" mt-9"
+          >
             Add New Student
           </Button>
         </div>
@@ -214,7 +220,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               <Button
                 size={"sm"}
                 onClick={() => setAddStudent(true)}
-                className=" mx-3 flex items-center max-[700px]:w-max"
+                className=" mx-3 flex items-center justify-center flex-grow lg:flex-grow-0 max-[700px]:w-max"
               >
                 <SvgIconStyle
                   src="/Assets/svg/plus-Icons.svg"
@@ -225,122 +231,128 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
             </div>
           </div>
           <div className="w-full overflow-auto hide-scrollbar">
-          <table className="min-w-full table-fixed divide-y divide-gray-300">
-            <thead className=" bg-[#017FED]">
-              <tr>
-                <th scope="col" className="relative px-7 sm:w-32 sm:px-12">
-                  <input
-                    type="checkbox"
-                    className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
-                    ref={checkbox}
-                    checked={checked}
-                    onChange={toggleAll}
-                  />
-                </th>
-                {headers.map((title) => (
-                  <th
-                    key={title}
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-white max-[700px]:w-max"
-                  >
-                    {title}
-                  </th>
-                ))}
-
-                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
-                  <span className="sr-only">Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
-              {students.map((person, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    selectedStudents.includes(person) ? "bg-blue-50" : undefined
-                  } hover:bg-blue-50`}
-                >
-                  <td className="relative px-7 sm:w-32 sm:px-12">
-                    {selectedStudents.includes(person) && (
-                      <div className="absolute inset-y-0 left-0 w-0.5 bg-blue-600" />
-                    )}
+            <table className="min-w-full table-fixed divide-y divide-gray-300">
+              <thead className=" bg-[#017FED]">
+                <tr>
+                  <th scope="col" className="relative px-7 sm:w-32 sm:px-12">
                     <input
                       type="checkbox"
                       className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
-                      value={person.email}
-                      checked={selectedStudents.includes(person)}
-                      onChange={(e) =>
-                        setSelectedStudents(
-                          e.target.checked
-                            ? [...selectedStudents, person]
-                            : selectedStudents.filter((p) => p !== person)
-                        )
-                      }
+                      ref={checkbox}
+                      checked={checked}
+                      onChange={toggleAll}
                     />
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
-                    {person.firstName}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
-                    {person.lastName}
-                  </td>
-                  <td
-                    title={person.email}
-                    className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
-                  >
-                    {person.email}
-                  </td>
-                  <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <Menu as="div" className="relative inline-block text-left">
-                      <div>
-                        <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                          <span className="sr-only">Open options</span>
-                          <EllipsisHorizontalIcon
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        </MenuButton>
-                      </div>
+                  </th>
+                  {headers.map((title) => (
+                    <th
+                      key={title}
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-white max-[700px]:w-max"
+                    >
+                      {title}
+                    </th>
+                  ))}
 
-                      <Transition
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="py-1">
-                            <MenuItem>
-                              {({ focus }) => (
-                                <div
-                                  className={classNames(
-                                    "flex items-center cursor-pointer",
-                                    focus
-                                      ? "bg-gray-100 text-gray-900"
-                                      : "text-gray-700",
-                                    "block px-4 py-2 text-sm"
-                                  )}
-                                  onClick={() => {
-                                    setSelect(person);
-                                    setSelectOne(true);
-                                    setDeleteSelected(false);
-                                  }}
-                                >
-                                  <TrashIcon className=" w-6 h-6 mr-2" /> Remove
-                                </div>
-                              )}
-                            </MenuItem>
-                          </div>
-                        </MenuItems>
-                      </Transition>
-                    </Menu>
-                  </td>
+                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
+                    <span className="sr-only">Edit</span>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {students.map((person, index) => (
+                  <tr
+                    key={index}
+                    className={`${
+                      selectedStudents.includes(person)
+                        ? "bg-blue-50"
+                        : undefined
+                    } hover:bg-blue-50`}
+                  >
+                    <td className="relative px-7 sm:w-32 sm:px-12">
+                      {selectedStudents.includes(person) && (
+                        <div className="absolute inset-y-0 left-0 w-0.5 bg-blue-600" />
+                      )}
+                      <input
+                        type="checkbox"
+                        className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+                        value={person.email}
+                        checked={selectedStudents.includes(person)}
+                        onChange={(e) =>
+                          setSelectedStudents(
+                            e.target.checked
+                              ? [...selectedStudents, person]
+                              : selectedStudents.filter((p) => p !== person)
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
+                      {person.firstName}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
+                      {person.lastName}
+                    </td>
+                    <td
+                      title={person.email}
+                      className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
+                    >
+                      {person.email}
+                    </td>
+                    <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <Menu
+                        as="div"
+                        className="relative inline-block text-left"
+                      >
+                        <div>
+                          <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                            <span className="sr-only">Open options</span>
+                            <EllipsisHorizontalIcon
+                              className="h-6 w-6"
+                              aria-hidden="true"
+                            />
+                          </MenuButton>
+                        </div>
+
+                        <Transition
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1">
+                              <MenuItem>
+                                {({ focus }) => (
+                                  <div
+                                    className={classNames(
+                                      "flex items-center cursor-pointer",
+                                      focus
+                                        ? "bg-gray-100 text-gray-900"
+                                        : "text-gray-700",
+                                      "block px-4 py-2 text-sm"
+                                    )}
+                                    onClick={() => {
+                                      setSelect(person);
+                                      setSelectOne(true);
+                                      setDeleteSelected(false);
+                                    }}
+                                  >
+                                    <TrashIcon className=" w-6 h-6 mr-2" />{" "}
+                                    Remove
+                                  </div>
+                                )}
+                              </MenuItem>
+                            </div>
+                          </MenuItems>
+                        </Transition>
+                      </Menu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
           <div
             className={`flex justify-center mt-14 pb-10 ${
@@ -367,12 +379,12 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                 handleFetch({ page, sort });
               }}
             />
-            <AddStudentModal open={addStudent} setOpen={setAddStudent} />
           </div>
         </div>
       ) : (
         Empty
       )}
+      <AddStudentModal open={addStudent} setOpen={setAddStudent} />
     </>
   );
 };

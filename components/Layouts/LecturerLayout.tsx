@@ -37,7 +37,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
                 <Link
                   href={href}
                   key={title}
-                  className={` px-4 pb-[23px] border-b-4 ${
+                  className={` px-2 pb-4 md:px-4 md:pb-[23px] border-b-4 ${
                     active
                       ? "border-b-[#0D5CC7] text-[#0D5CC7]"
                       : " border-b-transparent text-[#777E90]"
@@ -65,7 +65,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
       </Container>
 
       <div>
-        <Container className="max-w-[85rem]">
+        <Container className="max-w-[85rem] px-0 sm:px-0">
           <div className=" bg-white min-h-[70vh]">{children}</div>
         </Container>
       </div>

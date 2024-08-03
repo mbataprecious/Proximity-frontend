@@ -7,12 +7,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import Link from "next/link";
 import { InformationCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  AddEmailsSchemaType,
-  addEmailsSchema,
-} from "@/validations/moduleSchema";
 import {
   classNames,
   getErrObject,
@@ -31,7 +26,6 @@ import { XiorError } from "xior";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
 import { useRouter } from "next-nprogress-bar";
-import { set } from "date-fns";
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -219,7 +213,7 @@ const CreateSessionModal = ({
           </TransitionChild>
 
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div className="flex min-h-full justify-center p-4 text-center items-center sm:p-0">
               <TransitionChild
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"

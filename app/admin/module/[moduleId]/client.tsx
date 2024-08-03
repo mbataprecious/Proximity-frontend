@@ -37,7 +37,7 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
   //   const [tab, setTab] = useState(tabList[0].value);
   return (
     <div>
-      <div className=" p-[36px] flex justify-between items-center max-[700px]:flex-col max-[700px]:gap-5">
+      <div className="p-5 md:p-[36px] flex justify-between items-center max-[700px]:flex-col max-[700px]:gap-5">
         <div>
           <p className=" py-1 px-2 text-xs bg-[#F0F3F9] rounded-[6px] inline leading-[20px] font-medium text-[rgba(74,74,74,0.8)] ">
             {totalStudents} Students
@@ -50,7 +50,7 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
         <ModuleDetailBox details={moduleDetails} />
       </div>
       <div className=" px-2">
-        <div className="pl-[98px] flex pt-4 border-b-2 border-[#E5E7EB]">
+        <div className="m:pl-[98px] flex justify-center md:justify-start pt-4 border-b-2 border-[#E5E7EB]">
           {tabList.map(({ label, value }) => {
             return (
               <Link
@@ -88,7 +88,7 @@ export const AddStudentButton = () => {
   const searchObject = getSearchParamsObject(searchParams);
 
   return (
-    <div >
+    <div>
       {searchObject?.["tab"] !== "session" && (
         <Link
           href={{

@@ -16,11 +16,14 @@ import useClientSession from "@/hooks/useClientSession";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import toast from "react-hot-toast";
 import { setSession } from "@/utils/authsession";
+import { usePathname } from "next/navigation";
 
 export default function () {
   const { logout, session } = useClientSession();
+  const pathname = usePathname();
   const router = useRouter();
   const { request } = useAuthRequest();
+  const inAdmin = pathname.includes("admin");
   const methodsName = useForm({
     mode: "onChange",
     resolver: yupResolver
@@ -45,7 +48,7 @@ export default function () {
     formState: { isSubmitting: loadingProfile },
   } = methodsName;
   const {
-    reset: resetPass,
+    // reset: resetPass,
     formState: { isSubmitting: loadingPass },
   } = methodsPass;
 
@@ -102,8 +105,16 @@ export default function () {
   };
 
   return (
-    <div className=" flex flex-col items-center md:justify-center min-h-screen md:min-h-[70vh] px-6 m-auto max-w-[325px]">
-      <div className=" flex md:hidden text-[#4A4A4A] w-full justify-center p-5 mb-16">
+    <div
+      className={`flex flex-col items-center ${
+        inAdmin ? "pt-9" : ""
+      } md:justify-center min-h-screen md:min-h-[70vh] px-6 m-auto max-w-[325px]`}
+    >
+      <div
+        className={`flex md:hidden ${
+          inAdmin ? "hidden" : "block"
+        } text-[#4A4A4A] w-full justify-center p-5 mb-16`}
+      >
         {/* <ArrowLeftIcon
           className=" w-6 h-6 cursor-pointer"
           onClick={() => router.back()}

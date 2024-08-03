@@ -3,18 +3,65 @@ import Button from "@/components/Button";
 import StudentStatusModal from "@/components/student/StudentStatusModal";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getGeoLocation } from "@/utils/helpers";
-import { time } from "console";
-import React, { useState } from "react";
+import { ExclamationCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import OtpInput from "react-otp-input";
 import { XiorError } from "xior";
 
 export default function () {
   const { request } = useAuthRequest();
+  const mounted = useRef(true);
   const [statusOpen, setStatusOpen] = useState(false);
   const [status, setStatus] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
+  useEffect(() => {
+    if (mounted.current) {
+      toast(
+        (t) => (
+          <div>
+            <div className=" relative sm:inline-flex sm:items-start bg-white rounded-lg">
+              <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
+                <ExclamationCircleIcon
+                  aria-hidden="true"
+                  className="h-6 w-6 text-orange-600"
+                />
+              </div>
+              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3 className="text-base font-semibold leading-6 text-gray-900">
+                  Location Info
+                </h3>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Please ensure your device's location services are enabled.
+                    For the most accurate results, we recommend using a mobile
+                    device for generating and recording location-based
+                    attendance.
+                  </p>
+                </div>
+              </div>
+              <div className="absolute right-0 top-0 sm:block">
+                <button
+                  type="button"
+                  className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={() => toast.dismiss(t.id)}
+                >
+                  <span className="sr-only">Close</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ),
+        {
+          duration: 6000,
+          position: "top-center",
+        }
+      );
+    }
+    mounted.current = false;
+  }, []);
 
   const handleTakeAttendance = async ({
     longitude,

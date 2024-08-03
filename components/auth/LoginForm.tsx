@@ -132,6 +132,11 @@ const LoginForm = () => {
             Sign up
           </Link>
         </p>
+        <p className="text-orange-500 bg-orange-100 text-center text-balance text-xs mt-9 rounded-lg py-2">
+          Please ensure your device's location services are enabled. For the
+          most accurate results, we recommend using a mobile device for
+          generating and recording location-based attendance.
+        </p>
       </div>
     </div>
   );

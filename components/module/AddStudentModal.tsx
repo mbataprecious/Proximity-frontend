@@ -119,7 +119,7 @@ export default function AddStudentModal({ open, setOpen }: Props) {
           </TransitionChild>
 
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div className="flex min-h-full justify-center p-4 text-center items-center sm:p-0">
               <TransitionChild
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -167,8 +167,8 @@ export default function AddStudentModal({ open, setOpen }: Props) {
                       <div className=" w-full bg-white flex justify-end p-[30px] border-t border-t-[#E5E7EB]">
                         <Button
                           loading={isSubmitting}
-                          disabled={isSubmitting}
-                          variant={"info"}
+                          disabled={isSubmitting || !emails?.length}
+                          variant={emails?.length ? "primary" : "info"}
                           size={"sm"}
                           className=""
                         >
