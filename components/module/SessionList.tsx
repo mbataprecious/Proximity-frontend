@@ -92,10 +92,10 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
                         </h3>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500">
-                            Please ensure your device's location services are
-                            enabled. For the most accurate results, we recommend
-                            using a mobile device for generating and recording
-                            location-based attendance.
+                            Please ensure your device&apos;s location services
+                            are enabled. For the most accurate results, we
+                            recommend using a mobile device for generating and
+                            recording location-based attendance.
                           </p>
                         </div>
                       </div>
