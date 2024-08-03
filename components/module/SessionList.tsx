@@ -76,7 +76,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
   return (
     <>
       {sessions.length > 0 ? (
-        <div className="relative">
+        <div className="relative overflow-auto">
           {loading && (
             <div className="absolute inset-0 flex justify-center items-center">
               <div className="p-4 bg-blue-500 text-white italic">
@@ -99,6 +99,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
               <span>Start Session</span>
             </Button>
           </div>
+          <div className="w-full overflow-auto hide-scrollbar">
           <table className="min-w-full table-fixed divide-y divide-gray-300">
             <thead className=" bg-[#017FED]">
               <tr>
@@ -157,6 +158,7 @@ const SessionList = ({ sessionsList }: { sessionsList: ISessionList }) => {
               ))}
             </tbody>
           </table>
+          </div>
           <div
             className={`flex justify-center mt-14 pb-10 ${
               sessions.length < 5 && "mt-28"

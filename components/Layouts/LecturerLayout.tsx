@@ -58,7 +58,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
         <NextBreadcrumb
           separator={<span className=" text-[#98A2B3]"> / </span>}
           activeClasses=" text-[#096DD9] font-medium"
-          containerClasses="flex items-center py-6"
+          containerClasses="flex items-center lg:py-6 py-2"
           listClasses="hover:underline mx-2 text-sm text-[#98A2B3]"
           capitalizeLinks
         />

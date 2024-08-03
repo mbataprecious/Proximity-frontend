@@ -145,8 +145,8 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               </div>
             </div>
           )}
-          <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9">
-            <div className=" flex items-center space-x-2">
+          <div className=" pl-[98px] pt-[60px] pb-[42px] flex justify-between pr-9  max-[700px]:flex-col max-[700px]:justify-start max-[700px]:pl-0 max-[700px]:pr-0  max-[700px]:p-3 ">
+            <div className=" flex items-center space-x-2  max-[700px]:w-full max-[700px]:p-3">
               {!selectedStudents.length ? (
                 <>
                   <SortDropdown
@@ -198,7 +198,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                 </>
               )}
             </div>
-            <div className=" space-x-3 flex items-center">
+            <div className=" space-x-3 flex items-center max-[700px]:p-3">
               <Link href={`/admin/module/${moduleId}/edit`}>
                 <Button
                   variant={"info"}
@@ -214,7 +214,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               <Button
                 size={"sm"}
                 onClick={() => setAddStudent(true)}
-                className=" mx-3 flex items-center"
+                className=" mx-3 flex items-center max-[700px]:w-max"
               >
                 <SvgIconStyle
                   src="/Assets/svg/plus-Icons.svg"
@@ -224,6 +224,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               </Button>
             </div>
           </div>
+          <div className="w-full overflow-auto hide-scrollbar">
           <table className="min-w-full table-fixed divide-y divide-gray-300">
             <thead className=" bg-[#017FED]">
               <tr>
@@ -240,7 +241,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
                   <th
                     key={title}
                     scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-white"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-white max-[700px]:w-max"
                   >
                     {title}
                   </th>
@@ -340,6 +341,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               ))}
             </tbody>
           </table>
+          </div>
           <div
             className={`flex justify-center mt-14 pb-10 ${
               students.length < 5 && "mt-28"

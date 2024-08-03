@@ -37,12 +37,12 @@ export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
   //   const [tab, setTab] = useState(tabList[0].value);
   return (
     <div>
-      <div className=" p-[36px] flex justify-between items-center">
+      <div className=" p-[36px] flex justify-between items-center max-[700px]:flex-col max-[700px]:gap-5">
         <div>
           <p className=" py-1 px-2 text-xs bg-[#F0F3F9] rounded-[6px] inline leading-[20px] font-medium text-[rgba(74,74,74,0.8)] ">
             {totalStudents} Students
           </p>
-          <h2 className=" text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px]">
+          <h2 className="text-2xl lg:text-4xl font-bold text-[#4A4A4A] mt-3 max-w-[541px]">
             {moduleDetails.title}
           </h2>
         </div>
@@ -88,7 +88,7 @@ export const AddStudentButton = () => {
   const searchObject = getSearchParamsObject(searchParams);
 
   return (
-    <div>
+    <div >
       {searchObject?.["tab"] !== "session" && (
         <Link
           href={{
