@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import SvgIconStyle from "./SvgIconStyle";
 import Link from "next/link";
-import { ArrowLeftIcon, Bars3Icon } from "@heroicons/react/24/solid";
+import { Bars3Icon } from "@heroicons/react/24/solid";
 import useClientSession from "@/hooks/useClientSession";
 import { useRouter } from "next-nprogress-bar";
 
@@ -55,10 +55,13 @@ export default function SideBar({ navItems }: Props) {
                 <div className="flex h-full flex-col justify-between overflow-y-auto bg-[#017FED] py-6 shadow-xl">
                   <div>
                     <div className="px-5 py-3">
-                      <ArrowLeftIcon
-                        className=" w-6 h-6 text-white cursor-pointer"
-                        onClick={() => router.back()}
-                      />
+                      <div
+                        className=" flex space-x-4 items-center text-white cursor-pointer"
+                        onClick={() => setOpen(false)}
+                      >
+                        <XMarkIcon className=" w-6 h-6 " />
+                        <span className=" font-semibold text-xl">Close</span>
+                      </div>
                     </div>
                     <div className="relative mt-6 flex-1 px-2">
                       <div className=" space-y-5 pt-4">
@@ -70,6 +73,9 @@ export default function SideBar({ navItems }: Props) {
                             <Link
                               href={href}
                               key={title}
+                              onClick={() => {
+                                setOpen(false);
+                              }}
                               className={`rounded-md overflow-hidden block px-3 py-1.5 ${
                                 active
                                   ? " bg-white text-[#0D5CC7] "
@@ -104,13 +110,13 @@ export default function SideBar({ navItems }: Props) {
                     </div>
                   </div>
                   <div className="px-5 py-3">
-                    <div
+                    {/* <div
                       className=" flex space-x-4 text-white cursor-pointer"
                       onClick={() => setOpen(false)}
                     >
                       <XMarkIcon className=" w-6 h-6 " />
                       <span className=" font-semibold text-xl">Close</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </DialogPanel>
