@@ -38,6 +38,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
   );
   const [checked, setChecked] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [isClearable, setIsClearable] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [select, setSelect] = useState<IModule>();
   const [selectOne, setSelectOne] = useState(false);
@@ -100,6 +101,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
 
               <SearchInput
                 value={keyword}
+                isClearable={isClearable}
                 onSearchClick={() => {
                   if (keyword) {
                     router.push(
@@ -111,6 +113,18 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                     );
                     router.refresh();
                   }
+                }}
+                onClear={() => {
+                  router.push(
+                    `/admin/module?page=1&${
+                      sort
+                        ? `sort=${sortMap[sort as keyof typeof sortMap]}`
+                        : ``
+                    }`
+                  );
+                  router.refresh();
+                  setKeyword("");
+                  setIsClearable(false);
                 }}
                 onChange={(e) => setKeyword(e.target.value)}
               />

@@ -45,7 +45,7 @@ export default function ({
 }: Props) {
   const { request } = useAuthRequest();
   const searchParams = useSearchParams();
-
+  const [isClearable, setIsClearable] = useState(false);
   const pathname = usePathname();
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
   const [filterBy, setFilterBy] = useState(
@@ -175,6 +175,7 @@ export default function ({
 
           <SearchInput
             value={keyword}
+            isClearable={isClearable}
             onSearchClick={() => {
               if (keyword) {
                 const current = new URLSearchParams(
@@ -192,6 +193,21 @@ export default function ({
               }
             }}
             onChange={(e) => setKeyword(e.target.value)}
+            onClear={() => {
+              const current = new URLSearchParams(
+                Array.from(searchParams.entries())
+              );
+              current.delete("keyword");
+              current.set("page", "1");
+              if (filterBy !== "none") {
+                current.set("filterBy", filterBy);
+              } else {
+                current.delete("filterBy");
+              }
+              router.push(`${pathname}?${current.toString()}`);
+              setKeyword("");
+              setIsClearable(false);
+            }}
           />
         </div>
       </div>
