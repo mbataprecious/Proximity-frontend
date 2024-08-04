@@ -23,18 +23,11 @@ interface Props {
 export default function ({ moduleDetails, studentsList, sessionsList }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [open, setOpen] = useState(searchParams.get("addState") === "true");
   const [totalStudents, setTotalStudents] = useState(
     studentsList?.metadata?.totalDocuments
   );
   const tab = searchParams.get("tab") ?? tabList[0].value;
 
-  useEffect(() => {
-    const addState = searchParams.get("addState");
-    setOpen(addState === "true");
-  }, [pathname, searchParams]);
-
-  //   const [tab, setTab] = useState(tabList[0].value);
   return (
     <div>
       <div className="p-5 md:p-[36px] flex justify-between items-center max-[700px]:flex-col max-[700px]:gap-5">

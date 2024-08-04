@@ -230,7 +230,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
               </Button>
             </div>
           </div>
-          <div className="w-full overflow-auto hide-scrollbar">
+          <div className="w-full overflow-auto hide-scrollbar pb-14">
             <table className="min-w-full table-fixed divide-y divide-gray-300">
               <thead className=" bg-[#017FED]">
                 <tr>
@@ -355,7 +355,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
             </table>
           </div>
           <div
-            className={`flex justify-center mt-14 pb-10 ${
+            className={`flex justify-center pb-10 ${
               students.length < 5 && "mt-28"
             }`}
           >

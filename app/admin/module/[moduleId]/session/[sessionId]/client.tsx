@@ -95,7 +95,7 @@ export default function ({
                 " py-1 px-2 flex items-center text-xs bg-[#11A75C] rounded-[6px] leading-[20px] font-medium text-white w-fit"
               }
             >
-              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />{" "}
+              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />
               Active
             </p>
           ) : (
@@ -104,7 +104,7 @@ export default function ({
                 " py-1 px-2 flex items-center text-xs bg-[#096DD9] rounded-[6px] leading-[20px] font-medium text-white w-fit"
               }
             >
-              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />{" "}
+              <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />
               Completed
             </p>
           )}
@@ -125,7 +125,7 @@ export default function ({
                 <ClientTimeText
                   ISOstring={sessionData.createdAt}
                   format="hh:mm a"
-                />{" "}
+                />
                 -
                 <ClientTimeText
                   ISOstring={sessionData.endTime}
@@ -195,7 +195,7 @@ export default function ({
           />
         </div>
       </div>
-      <div className="w-full overflow-auto hide-scrollbar">
+      <div className="w-full overflow-auto hide-scrollbar pb-[70px]">
         <table className="min-w-full table-fixed divide-y divide-gray-300">
           <thead className=" bg-[#017FED]">
             <tr>
@@ -318,7 +318,7 @@ export default function ({
         </table>
       </div>
       <div
-        className={`flex justify-center mt-14 pb-10 ${
+        className={`flex justify-center mt-0 pb-10 ${
           sessionAttendance.attendance.length < 5 && "mt-28"
         }`}
       >

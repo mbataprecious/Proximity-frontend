@@ -78,7 +78,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
     setDeleteSelected(false);
   };
   return (
-    <div className="w-full" >
+    <div className="w-full">
       <div className=" p-3 lg:p-[36px] flex flex-col lg:flex-row lg:justify-between lg:items-center">
         <h2 className="lg:text-4xl font-bold text-2xl">Modules</h2>
         <div className=" flex lg:space-x-4 items-start  lg:flex-row lg:items-center max-[700px]:gap-5 max-[700px]:mt-4">
@@ -147,161 +147,161 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
         </div>
       </div>
       {/* module list table */}
-      <div className="w-full overflow-auto hide-scrollbar">
-      <table className="min-w-full table-fixed divide-y divide-gray-300 ">
-        <thead className=" bg-[#017FED]">
-          <tr>
-            <th scope="col" className="relative px-7 sm:w-32 sm:px-12">
-              <input
-                type="checkbox"
-                className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
-                ref={checkbox}
-                checked={checked}
-                onChange={toggleAll}
-              />
-            </th>
-            {headers.map((title) => (
-              <th
-                key={title}
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-white"
-              >
-                {title}
-              </th>
-            ))}
-
-            <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
-              <span className="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {modules.map((module, index) => (
-            <tr
-              key={index}
-              className={`${
-                selectedPeople.includes(module) ? "bg-blue-50" : undefined
-              } hover:bg-blue-50`}
-            >
-              <td className="relative px-7 sm:w-32 sm:px-12">
-                {selectedPeople.includes(module) && (
-                  <div className="absolute inset-y-0 left-0 w-0.5 bg-blue-600" />
-                )}
+      <div className="w-full overflow-x-auto overflow-y-hidden hide-scrollbar pb-[120px]">
+        <table className="min-w-full table-fixed divide-y divide-gray-300 ">
+          <thead className=" bg-[#017FED]">
+            <tr>
+              <th scope="col" className="relative px-7 sm:w-32 sm:px-12">
                 <input
                   type="checkbox"
                   className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
-                  value={module.title}
-                  checked={selectedPeople.includes(module)}
-                  onChange={(e) =>
-                    setSelectedPeople(
-                      e.target.checked
-                        ? [...selectedPeople, module]
-                        : selectedPeople.filter((p) => p !== module)
-                    )
-                  }
+                  ref={checkbox}
+                  checked={checked}
+                  onChange={toggleAll}
                 />
-              </td>
-              <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
-                {module.title}
-              </td>
-              <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
-                {module.code}
-              </td>
-              <td
-                title={module.description}
-                className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
-              >
-                {module.description}
-              </td>
-              <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                      <span className="sr-only">Open options</span>
-                      <EllipsisHorizontalIcon
-                        className="h-6 w-6"
-                        aria-hidden="true"
-                      />
-                    </MenuButton>
-                  </div>
+              </th>
+              {headers.map((title) => (
+                <th
+                  key={title}
+                  scope="col"
+                  className="px-3 py-3.5 text-left text-sm font-semibold text-white"
+                >
+                  {title}
+                </th>
+              ))}
 
-                  <Transition
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        <MenuItem>
-                          {({ focus }) => (
-                            <Link
-                              prefetch={false}
-                              href={`module/${module._id}`}
-                              className={classNames(
-                                "flex items-center cursor-pointer",
-                                focus
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-gray-700",
-                                "block px-4 py-2 text-sm"
-                              )}
-                            >
-                              <ArrowTopRightOnSquareIcon className=" w-6 h-6 mr-2" />
-                              View
-                            </Link>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ focus }) => (
-                            <Link
-                              href={`module/${module._id}/edit`}
-                              className={classNames(
-                                "flex items-center cursor-pointer",
-                                focus
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-gray-700",
-                                "block px-4 py-2 text-sm"
-                              )}
-                            >
-                              <PencilSquareIcon className=" w-6 h-6 mr-2" />
-                              Edit
-                            </Link>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ focus }) => (
-                            <div
-                              className={classNames(
-                                "flex items-center cursor-pointer",
-                                focus
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-gray-700",
-                                "block px-4 py-2 text-sm"
-                              )}
-                              onClick={() => {
-                                setSelect(module);
-                                setSelectOne(true);
-                                setDeleteSelected(false);
-                              }}
-                            >
-                              <TrashIcon className=" w-6 h-6 mr-2" /> Delete
-                            </div>
-                          )}
-                        </MenuItem>
-                      </div>
-                    </MenuItems>
-                  </Transition>
-                </Menu>
-              </td>
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
+                <span className="sr-only">Edit</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {modules.map((module, index) => (
+              <tr
+                key={index}
+                className={`${
+                  selectedPeople.includes(module) ? "bg-blue-50" : undefined
+                } hover:bg-blue-50`}
+              >
+                <td className="relative px-7 sm:w-32 sm:px-12">
+                  {selectedPeople.includes(module) && (
+                    <div className="absolute inset-y-0 left-0 w-0.5 bg-blue-600" />
+                  )}
+                  <input
+                    type="checkbox"
+                    className="absolute left-4 sm:left-10 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+                    value={module.title}
+                    checked={selectedPeople.includes(module)}
+                    onChange={(e) =>
+                      setSelectedPeople(
+                        e.target.checked
+                          ? [...selectedPeople, module]
+                          : selectedPeople.filter((p) => p !== module)
+                      )
+                    }
+                  />
+                </td>
+                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
+                  {module.title}
+                </td>
+                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-700">
+                  {module.code}
+                </td>
+                <td
+                  title={module.description}
+                  className="whitespace-nowrap px-3 py-5 text-sm text-gray-700 line-clamp-1"
+                >
+                  {module.description}
+                </td>
+                <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                      <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                        <span className="sr-only">Open options</span>
+                        <EllipsisHorizontalIcon
+                          className="h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      </MenuButton>
+                    </div>
+
+                    <Transition
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <MenuItems className="absolute right-0 z-[200] mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                          <MenuItem>
+                            {({ focus }) => (
+                              <Link
+                                prefetch={false}
+                                href={`module/${module._id}`}
+                                className={classNames(
+                                  "flex items-center cursor-pointer",
+                                  focus
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm"
+                                )}
+                              >
+                                <ArrowTopRightOnSquareIcon className=" w-6 h-6 mr-2" />
+                                View
+                              </Link>
+                            )}
+                          </MenuItem>
+                          <MenuItem>
+                            {({ focus }) => (
+                              <Link
+                                href={`module/${module._id}/edit`}
+                                className={classNames(
+                                  "flex items-center cursor-pointer",
+                                  focus
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm"
+                                )}
+                              >
+                                <PencilSquareIcon className=" w-6 h-6 mr-2" />
+                                Edit
+                              </Link>
+                            )}
+                          </MenuItem>
+                          <MenuItem>
+                            {({ focus }) => (
+                              <div
+                                className={classNames(
+                                  "flex items-center cursor-pointer",
+                                  focus
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm"
+                                )}
+                                onClick={() => {
+                                  setSelect(module);
+                                  setSelectOne(true);
+                                  setDeleteSelected(false);
+                                }}
+                              >
+                                <TrashIcon className=" w-6 h-6 mr-2" /> Delete
+                              </div>
+                            )}
+                          </MenuItem>
+                        </div>
+                      </MenuItems>
+                    </Transition>
+                  </Menu>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div
-        className={`flex justify-center mt-14 pb-10 ${
+        className={`flex justify-center mt-0 pb-10 ${
           modules.length < 5 && "mt-28"
         }`}
       >
