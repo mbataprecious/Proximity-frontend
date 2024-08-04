@@ -20,7 +20,7 @@ import {
 import { classNames } from "@/utils/helpers";
 import Pagination from "../Pagination";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { getStudentsAndSessionsByMetadata } from "@/data/fetchers/clientFetchers";
 import DeletStudentModal from "../DeleteStudentModal";
@@ -31,7 +31,6 @@ const sortMap = {
   Newest: "DSC",
   Oldest: "ASC",
 };
-const sortOptions = ["Newest", "Oldest", "Alphabetical"];
 
 interface Props {
   setTotal: React.Dispatch<React.SetStateAction<number>>;
@@ -41,7 +40,6 @@ interface Props {
 const StudentsList = ({ studentsList, setTotal }: Props) => {
   const checkbox = useRef<HTMLInputElement | null>(null);
   const { request } = useAuthRequest();
-  const pathname = usePathname();
   const [sort, setSort] = useState("Newest");
   const [search, setSearch] = useState("");
   const [addStudent, setAddStudent] = useState(false);
@@ -142,7 +140,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
 
   return (
     <>
-      {students.length ? (
+      {metadata?.totalDocuments > 0 ? (
         <div className=" relative">
           {loading && (
             <div className="absolute inset-0 flex justify-center items-center">

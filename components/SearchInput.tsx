@@ -41,7 +41,7 @@ const SearchInput = ({
       ) : (
         <Button
           onClick={onClear}
-          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-4"
+          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-4 max-[700px]:w-max"
         >
           Clear
         </Button>
