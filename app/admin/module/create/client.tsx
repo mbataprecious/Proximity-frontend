@@ -132,7 +132,11 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
             ? "Module updated successfully"
             : "Module created successfully"
         );
-        router.push("/admin/module");
+        router.push(
+          moduleDetail?._id
+            ? `/admin/module/${moduleDetail?._id}`
+            : "/admin/module"
+        );
       }
     } catch (error) {
       if (error instanceof XiorError) {
@@ -243,7 +247,12 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
 
             <div className=" lg:space-x-2 max-[700px]:space-y-2">
               <Link href={"/admin/module/"}>
-                <Button type="button" variant={"info"} className="bg-red-500" isOutlined>
+                <Button
+                  type="button"
+                  variant={"info"}
+                  className="bg-red-500"
+                  isOutlined
+                >
                   Cancel
                 </Button>
               </Link>
