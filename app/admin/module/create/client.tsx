@@ -246,7 +246,13 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
             </a>
 
             <div className=" lg:space-x-2 max-[700px]:space-y-2">
-              <Link href={"/admin/module/"}>
+              <Link
+                href={
+                  moduleDetail?._id
+                    ? `/admin/module/${moduleDetail?._id}`
+                    : "/admin/module"
+                }
+              >
                 <Button
                   type="button"
                   variant={"info"}
