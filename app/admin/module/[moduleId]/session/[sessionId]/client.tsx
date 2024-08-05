@@ -178,6 +178,7 @@ export default function ({
             isClearable={isClearable}
             onSearchClick={() => {
               if (keyword) {
+                setIsClearable(true);
                 const current = new URLSearchParams(
                   Array.from(searchParams.entries())
                 );

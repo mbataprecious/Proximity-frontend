@@ -7,7 +7,7 @@ interface Props {
 
 const ModuleDetailBox = ({ details }: Props) => {
   return (
-    <div className=" bg-[#E2F1FE] border border-[#096DD9] rounded-[10px] p-4 md:p-5 space-y-2 md:space-y-4 md:max-w-[431px]">
+    <div className=" bg-[#E2F1FE] border border-[#096DD9] rounded-[10px] p-4 md:p-5 space-y-2 md:space-y-4 md:max-w-[431px] lg:min-w-[400px]">
       <p className=" text-[#202224]">
         <span className=" font-semibold  text-nowrap">
           Module Code : &nbsp;

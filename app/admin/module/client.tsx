@@ -104,6 +104,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                 isClearable={isClearable}
                 onSearchClick={() => {
                   if (keyword) {
+                    setIsClearable(true);
                     router.push(
                       `/admin/module?page=1&${
                         sort

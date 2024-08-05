@@ -120,7 +120,8 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
   const onSubmit = async (data: ModuleType) => {
     const submitData = {
       ...data,
-      ...(students.length > 0 && { students }),
+      // ...(students.length > 0 && { students }),
+      students,
     };
     try {
       const response = moduleDetail?._id
