@@ -120,7 +120,7 @@ export const getAttendanceBySession = async ({
   const request = authRequest();
   try {
     const { data } = await request.get<{ data: IAttendanceList }>(
-      "attendance/sessions/" + sessionId,
+      "attendance/sessions/" + sessionId + (keyword ? "/search" : ""),
       {
         params: { limit, page, ...searchObj },
         cache: "no-store",

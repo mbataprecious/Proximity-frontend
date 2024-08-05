@@ -87,6 +87,7 @@ export default function AddStudentModal({ open, setOpen }: Props) {
         }
       );
       if (response) {
+        router.refresh();
         onClose();
         reset();
         toast.success("added successfully");

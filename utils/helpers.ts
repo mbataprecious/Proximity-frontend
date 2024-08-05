@@ -168,7 +168,6 @@ export const copyTextToClipboard = async (text: string) => {
   if (navigator.clipboard) {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Text copied to clipboard");
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
