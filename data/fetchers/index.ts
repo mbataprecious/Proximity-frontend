@@ -35,8 +35,11 @@ export const getModuleList = async ({
     const { data } = await request.get<{ data: IModuleList }>(
       keyword ? "/modules/search" : "/modules",
       {
-        params: { limit, page, ...searchObj },
+        params: { limit, page, timestamp: new Date().getTime(), ...searchObj },
         cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
       }
     );
     return data.data;
