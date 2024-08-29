@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode, useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
@@ -25,9 +25,9 @@ const NextBreadcrumb = ({
 }: TBreadCrumbProps) => {
   const paths = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const searchValueArray = Object.values(getSearchParamsObject(searchParams));
-  console;
+  const params = useParams<{ [key: string]: string }>();
+  const searchValueArray = Object.values(params);
+  console.log({ searchValueArray });
   const { request } = useAuthRequest();
   const pathNames = paths.split("/").filter((path) => path);
   const [moduleTitle, setModuleTitle] = useState<string>("");
@@ -51,7 +51,7 @@ const NextBreadcrumb = ({
 
       getSingleModule(pathNames[2]);
     }
-  }, [pathNames, searchParams]);
+  }, [pathNames]);
 
   return (
     <div className="w-full overflow-auto hide-scrollbar">
