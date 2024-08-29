@@ -6,6 +6,8 @@ import SvgIconStyle from "@/components/SvgIconStyle";
 import Link from "next/link";
 import Client from "./client";
 import { getModuleList } from "@/data/fetchers";
+
+export const dynamic = "force-dynamic";
 const Module = async ({
   searchParams,
 }: {
@@ -15,7 +17,7 @@ const Module = async ({
     limit: 10,
     page: searchParams?.page ? parseInt(searchParams?.page as string) : 1,
     sort: searchParams?.sort as string,
-    keyword: searchParams?.keyword as string
+    keyword: searchParams?.keyword as string,
   });
   console.log({ moduleListDetails, searchParams });
   const Empty = (
@@ -44,12 +46,17 @@ const Module = async ({
     <LecturerLayout
       sideContent={
         <Link href={"module/create"}>
-          <Button size={"sm"} className=" my-2.5 lg:flex items-center hidden lg:visible">
+          <Button
+            size={"sm"}
+            className=" my-2.5 lg:flex items-center hidden lg:visible"
+          >
             <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
             Create New Module
-      
           </Button>
-          <Button size={"sm"} className=" my-2.5 flex items-center visible lg:hidden">
+          <Button
+            size={"sm"}
+            className=" my-2.5 flex items-center visible lg:hidden"
+          >
             <SvgIconStyle src="/Assets/svg/plus-Icons.svg" className=" mr-1" />
             {/* Create New Module */}
             Add
