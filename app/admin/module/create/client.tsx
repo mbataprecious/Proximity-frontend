@@ -136,8 +136,9 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
         router.push(
           moduleDetail?._id
             ? `/admin/module/${moduleDetail?._id}`
-            : "/admin/module?page=1"
+            : "/admin/module"
         );
+        router.refresh();
       }
     } catch (error) {
       if (error instanceof XiorError) {
