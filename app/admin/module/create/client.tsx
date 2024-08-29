@@ -136,7 +136,7 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
         router.push(
           moduleDetail?._id
             ? `/admin/module/${moduleDetail?._id}`
-            : "/admin/module"
+            : "/admin/module?page=1"
         );
       }
     } catch (error) {

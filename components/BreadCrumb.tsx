@@ -1,11 +1,12 @@
 "use client";
 
 import React, { ReactNode, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import useAuthRequest from "@/hooks/useAuthRequest";
 import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next-nprogress-bar";
+import { getSearchParamsObject } from "@/utils/helpers";
 
 type TBreadCrumbProps = {
   separator: ReactNode;
@@ -24,12 +25,19 @@ const NextBreadcrumb = ({
 }: TBreadCrumbProps) => {
   const paths = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchValueArray = Object.values(getSearchParamsObject(searchParams));
+  console;
   const { request } = useAuthRequest();
   const pathNames = paths.split("/").filter((path) => path);
   const [moduleTitle, setModuleTitle] = useState<string>("");
   const linkExceptions = ["admin", "student", "session"];
   useEffect(() => {
-    if (pathNames[0] === "admin" && pathNames[1] === "module" && pathNames[2]) {
+    if (
+      pathNames[0] === "admin" &&
+      pathNames[1] === "module" &&
+      searchValueArray.includes(pathNames?.[2])
+    ) {
       const getSingleModule = async (id: string) => {
         try {
           const { data } = await request.get<{ data: { module: IModule } }>(
@@ -43,7 +51,7 @@ const NextBreadcrumb = ({
 
       getSingleModule(pathNames[2]);
     }
-  }, [pathNames]);
+  }, [pathNames, searchParams]);
 
   return (
     <div className="w-full overflow-auto hide-scrollbar">
