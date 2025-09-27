@@ -24,7 +24,7 @@ export const HeroHeader = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <header className=" inset-x-0 top-0 z-50">
+    <header className="absolute inset-x-0 top-0 z-50">
       <nav
         data-state={menuState && "active"}
         className="fixed z-20 w-full px-2"
