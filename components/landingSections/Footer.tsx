@@ -65,7 +65,7 @@ function FooterSection() {
               </div>
             ))}
             <div className="space-y-4 text-sm">
-              <span className="block font-medium"> Join Us</span>
+              <span className="block font-medium"> Contact Us</span>
 
               <p>
                 Email:{" "}
