@@ -251,7 +251,7 @@ const CreateSessionModal = ({
                         <div className=" w-full">
                           <div className=" flex space-x-3.5 mt-2">
                             <div className="flex-1">
-                              <div className="relative rounded-md shadow-sm">
+                              <div className="relative rounded-md shadow-xs">
                                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                   <SvgIconStyle
                                     src="/Assets/svg/time-icons.svg"
@@ -261,7 +261,7 @@ const CreateSessionModal = ({
                                 <input
                                   type="number"
                                   {...register("hour")}
-                                  className="block w-full bg-[#F9FAFB] border border-[#DFE1E6] pl-10 pr-12 text-[#354052] focus:ring-1 ring-inset ring-[#D1D5DB] placeholder:text-[#7A869A] focus:outline-none focus:ring-inset focus:ring-blue-400"
+                                  className="block w-full bg-[#F9FAFB] border border-[#DFE1E6] pl-10 pr-12 text-[#354052] focus:ring-1 ring-inset ring-[#D1D5DB] placeholder:text-[#7A869A] focus:outline-hidden focus:ring-inset focus:ring-blue-400"
                                   placeholder="00"
                                 />
                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -304,7 +304,7 @@ const CreateSessionModal = ({
                                       options={minutesOptions}
                                       isClearable={false}
                                       isSearchable={false}
-                                      className={`myselect bg-[#F9FAFB]  w-full focus:outline-none focus:ring focus:border-blue-300
+                                      className={`myselect bg-[#F9FAFB]  w-full focus:outline-hidden focus:ring-3 focus:border-blue-300
                             ${errors?.["minute"] && "errorControl"}`}
                                       onBlur={onBlur}
                                       value={
@@ -363,7 +363,7 @@ const CreateSessionModal = ({
                                       loadOptions={loadOptions}
                                       isClearable={false}
                                       isSearchable={true}
-                                      className={`myselect-2 w-[85%] bg-[#F9FAFB] focus:outline-none focus:ring focus:border-blue-300
+                                      className={`myselect-2 w-[85%] bg-[#F9FAFB] focus:outline-hidden focus:ring-3 focus:border-blue-300
                             ${errors?.["location"] && "errorControl"}`}
                                       onBlur={onBlur}
                                       value={
@@ -384,7 +384,7 @@ const CreateSessionModal = ({
                                 <button
                                   type="button"
                                   onClick={handleLocation}
-                                  className="relative w-[15%] -ml-px bg-[#096DD9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#096DD9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 focus:z-10 rounded-r-[8px]"
+                                  className="relative w-[15%] -ml-px bg-[#096DD9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#096DD9] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 focus:z-10 rounded-r-[8px]"
                                 >
                                   <SvgIconStyle
                                     src="/Assets/svg/location-icons.svg"
@@ -417,7 +417,7 @@ const CreateSessionModal = ({
                                     onBlur={onBlur}
                                     className={classNames(
                                       value ? "bg-[#096DD9]" : "bg-gray-200",
-                                      "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                      "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                     )}
                                   >
                                     <span className="sr-only">Use setting</span>
@@ -427,7 +427,7 @@ const CreateSessionModal = ({
                                         value
                                           ? "translate-x-5"
                                           : "translate-x-0",
-                                        "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                        "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out"
                                       )}
                                     />
                                   </Switch>

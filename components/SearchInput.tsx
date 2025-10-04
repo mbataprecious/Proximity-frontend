@@ -17,7 +17,7 @@ const SearchInput = ({
   ...rest
 }: SearchInputProps) => {
   return (
-    <div className="relative rounded-md shadow-sm">
+    <div className="relative rounded-md shadow-xs">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         <MagnifyingGlassIcon
           className="h-5 w-5 text-gray-400"
@@ -34,14 +34,14 @@ const SearchInput = ({
       {!isClearable ? (
         <Button
           onClick={onSearchClick}
-          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-2 max-[700px]:w-max"
+          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs rounded-[4px]! py-2 px-2! max-[700px]:w-max"
         >
           Search
         </Button>
       ) : (
         <Button
           onClick={onClear}
-          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs !rounded-[4px] py-[0.5rem] !px-4 max-[700px]:w-max"
+          className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-xs rounded-[4px]! py-2 px-4! max-[700px]:w-max"
         >
           Clear
         </Button>

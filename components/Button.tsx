@@ -23,7 +23,7 @@ const buttonStyles = cva("py-[10px] rounded-lg font-semibold transition-all", {
       true: "light-shade",
     },
     isOutlined: {
-      true: "!border-2 bg-transparent hover:bg-transparent",
+      true: "border-2! bg-transparent hover:bg-transparent",
     },
     size: {
       lg: " px-[62.25px] ",
@@ -38,17 +38,17 @@ const buttonStyles = cva("py-[10px] rounded-lg font-semibold transition-all", {
     {
       variant: "primary",
       isOutlined: true,
-      class: "!text-primary border-primary",
+      class: "text-primary! border-primary",
     },
     {
       variant: "secondary",
       isOutlined: true,
-      class: "!text-secondary border-secondary",
+      class: "text-secondary! border-secondary",
     },
     {
       variant: "info",
       isOutlined: true,
-      class: "!text-[#1F304C] border-[##E1E3EA] ",
+      class: "text-[#1F304C]! border-[##E1E3EA] ",
     },
     {
       variant: "danger",

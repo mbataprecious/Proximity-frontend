@@ -56,7 +56,7 @@ const CustomSelect = ({
             isMulti={isMulti}
             isClearable={isClearable}
             isSearchable={isSearchable}
-            className={`border-0 w-full focus:outline-none focus:ring focus:border-blue-300
+            className={`border-0 w-full focus:outline-hidden focus:ring-3 focus:border-blue-300
                             ${formState.errors[name] && "errorControl"}`}
             onBlur={onBlur}
             value={value?.length || value?.value ? value : null}

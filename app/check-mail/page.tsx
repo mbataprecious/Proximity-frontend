@@ -31,7 +31,7 @@ const CheckMail = ({
             <Button
               isOutlined
               variant={"info"}
-              className=" mt-4 w-full !text-white"
+              className=" mt-4 w-full text-white!"
             >
               Back to Login
             </Button>

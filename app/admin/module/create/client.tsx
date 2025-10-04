@@ -190,7 +190,7 @@ const ModuleForm = ({ moduleDetail }: { moduleDetail?: IModule }) => {
           <div className="w-full mt-1">
             <div
               {...getRootProps()}
-              className="border-dashed border-2 border-gray-300 p-6 rounded-md cursor-pointer focus:outline-none bg-[#F9FAFB]"
+              className="border-dashed border-2 border-gray-300 p-6 rounded-md cursor-pointer focus:outline-hidden bg-[#F9FAFB]"
             >
               <input {...getInputProps()} />
               <div className=" w-full p-6">

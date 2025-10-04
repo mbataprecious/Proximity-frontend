@@ -1,6 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --stroke-width-*: initial;
+  --stroke-width-0: 0;
+  --stroke-width-1: 1;
+  --stroke-width-2: 2;
+  --stroke-width-3: 3;
+  --stroke-width-4: 4;
+  --stroke-width-5: 5;
+  --stroke-width-6: 6;
+  --stroke-width-7: 7;
+  --stroke-width-8: 8;
+  --stroke-width-9: 9;
+  --stroke-width-10: 10;
+
+  --font-sans: Inter, sans-serif;
+
+  --color-primary: #096dd9;
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: #f7931e;
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-mariner-50: #edfaff;
+  --color-mariner-100: #d7f2ff;
+  --color-mariner-200: #b9e9ff;
+  --color-mariner-300: #88deff;
+  --color-mariner-400: #50c9ff;
+  --color-mariner-500: #28acff;
+  --color-mariner-600: #118fff;
+  --color-mariner-700: #096dd9;
+  --color-mariner-800: #0f5ebe;
+  --color-mariner-900: #135195;
+  --color-mariner-950: #11325a;
+
+  --shadow-custom-purple: 0 8px 16px #7b68ee66;
+  --shadow-light-shade: 0 6px 12px 0 rgba(27, 105, 253, 0.27);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@theme inline {
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+}
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility label {
+  @apply block text-base py-2;
+}
+@utility control {
+  @apply block my-1;
+}
+@utility errorControl {
+  @apply border-[#DC4437] border border-solid;
+}
+@utility errorText {
+  @apply text-[#DC4437] text-sm leading-5 items-center mt-1;
+}
+@utility selected {
+  @apply border-2 border-[#0E64E6] bg-[#EEF5FF];
+}
+@utility notSelected {
+  @apply border border-[#DADEE4] bg-white;
+}
 
 @layer base {
   [type="text"],
@@ -17,76 +138,163 @@
   [multiple],
   textarea,
   select {
-    @apply w-full text-[#354052] py-[.875rem] px-[1.25rem] leading-6 bg-white rounded-[0.50rem] border border-[#DFE1E6] focus:outline-none focus:ring-1 focus:border-[#008DFB] placeholder:text-[#7A869A] placeholder:font-normal placeholder:text-sm;
+    @apply w-full text-[#354052] py-[.875rem] px-5 leading-6 bg-white rounded-[0.50rem] border border-[#DFE1E6] focus:outline-hidden focus:ring-1 focus:border-[#008DFB] placeholder:text-[#7A869A] placeholder:font-normal placeholder:text-sm;
   }
-}
-@layer components {
-  .label {
-    @apply block text-base py-2;
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
   }
-  .control {
-    @apply block my-1;
-  }
-  .errorControl {
-    @apply border-[#DC4437] border border-solid;
-  }
-  .errorText {
-    @apply text-[#DC4437] text-sm leading-5 items-center mt-1;
-  }
-  .selected {
-    @apply border-2 border-[#0E64E6] bg-[#EEF5FF];
-  }
-  .notSelected {
-    @apply border border-[#DADEE4] bg-white;
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+@layer utilities {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  [type="tel"].PhoneInputInput {
+    @apply w-full p-[0.4rem] rounded-none! border-none! focus:outline-hidden focus:ring-0 focus:border-none placeholder:text-[#7A869A] text-[1rem]! leading-6;
+  }
+  [type="text"].custom-select__input {
+    @apply p-0 rounded-none! border-none! focus:outline-hidden focus:ring-0 focus:border-none placeholder:text-[#7A869A] text-[1rem]! leading-6;
+  }
+  .custom-select__indicator-separator {
+    @apply hidden;
+  }
+
+  .custom-select__placeholder {
+    @apply text-[#7A869A]!;
+  }
+  .myselect .custom-select__value-container {
+    @apply pl-9 pr-6;
+  }
+  .myselect .custom-select__control {
+    @apply bg-[#F9FAFB];
+  }
+  .myselect-2 .custom-select__control {
+    @apply rounded-r-none bg-[#F9FAFB];
+  }
+  .rotation-animation {
+    animation: rotation 15s infinite linear;
+  }
+
+  .rotation-animation-reverse {
+    animation: rotation 15s infinite reverse linear;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-[type="tel"].PhoneInputInput {
-  @apply w-full p-[0.4rem] !rounded-none !border-none focus:outline-none focus:ring-0 focus:border-none placeholder:text-[#7A869A] !text-[1rem] leading-6;
-}
-[type="text"].custom-select__input {
-  @apply p-0 !rounded-none !border-none focus:outline-none focus:ring-0 focus:border-none placeholder:text-[#7A869A] !text-[1rem] leading-6;
-}
-.custom-select__indicator-separator {
-  @apply hidden;
+/*
+  ---break---
+*/
+
+@theme inline {
+  --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+    0% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
+    }
+    25% {
+      background-position: 50% 100%;
+      transform: rotate(5deg) scale(1.1);
+    }
+    50% {
+      background-position: 100% 50%;
+      transform: rotate(-3deg) scale(0.95);
+    }
+    75% {
+      background-position: 50% 0%;
+      transform: rotate(3deg) scale(1.05);
+    }
+    100% {
+      background-position: 0% 50%;
+      transform: rotate(-5deg) scale(0.9);
+    }
+  }
 }
 
-.custom-select__placeholder {
-  @apply !text-[#7A869A];
-}
-.myselect .custom-select__value-container {
-  @apply pl-9 pr-6;
-}
-.myselect .custom-select__control {
-  @apply bg-[#F9FAFB];
-}
-.myselect-2 .custom-select__control {
-  @apply rounded-r-none bg-[#F9FAFB];
-}
-.rotation-animation {
-  animation: rotation 15s infinite linear;
-}
+/*
+  ---break---
+*/
 
-.rotation-animation-reverse {
-  animation: rotation 15s infinite reverse linear;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

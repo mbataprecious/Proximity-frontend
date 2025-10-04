@@ -42,7 +42,7 @@ export default function SideBar({ navItems }: Props) {
       >
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-closed:opacity-0"
         />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -50,7 +50,7 @@ export default function SideBar({ navItems }: Props) {
             <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full">
               <DialogPanel
                 transition
-                className="pointer-events-auto relative w-screen max-w-[273px] transform transition duration-500 ease-in-out data-[closed]:-translate-x-full sm:duration-700"
+                className="pointer-events-auto relative w-screen max-w-[273px] transform transition duration-500 ease-in-out data-closed:-translate-x-full sm:duration-700"
               >
                 <div className="flex h-full flex-col justify-between overflow-y-auto bg-[#017FED] py-6 shadow-xl">
                   <div>

@@ -90,7 +90,7 @@ const Input = ({
       {icon && (
         <span
           className={`absolute cursor-pointer left-2 ${
-            topClass ? topClass : "top-[0.875rem]"
+            topClass ? topClass : "top-3.5"
           }`}
         >
           {icon}

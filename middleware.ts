@@ -16,9 +16,9 @@ export function middleware(req: NextRequest) {
   });
   const session: IAuthData = getSession({ res, req }) || {};
   console.log({ session });
-  if (req.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+  // if (req.nextUrl.pathname === "/") {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
 
   // check for session validation
   if (!isValidSession(session) || Date.now() > session?.expires) {
@@ -57,5 +57,5 @@ export function middleware(req: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/login", "/admin/:path*", "/student/:path*"],
+  matcher: ["/login", "/admin/:path*", "/student/:path*"],
 };

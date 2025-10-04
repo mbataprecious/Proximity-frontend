@@ -48,7 +48,7 @@ const CustomSearchSelect = ({
             placeholder={placeholder}
             isMulti={isMulti}
             defaultOptions={options}
-            className={`border-0 w-full  my-0.5 focus:outline-none focus:ring focus:border-blue-300 shadow-none
+            className={`border-0 w-full  my-0.5 focus:outline-hidden focus:ring-3 focus:border-blue-300 shadow-none
                             ${formState.errors[name] && "errorControl"}`}
             onBlur={onBlur}
             value={value}

@@ -28,8 +28,8 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
   const pathname = usePathname();
   return (
     <div className="">
-      <div className=" bg-white mb-[0.875rem]">
-        <Container className="max-w-[85rem] flex justify-between">
+      <div className=" bg-white mb-3.5">
+        <Container className="max-w-340 flex justify-between">
           <div className=" flex pt-4">
             {navItems.map(({ title, href, icon }) => {
               const active = pathname.includes(href);
@@ -54,7 +54,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
           <div>{sideContent}</div>
         </Container>
       </div>
-      <Container className="max-w-[85rem] flex justify-between">
+      <Container className="max-w-340 flex justify-between">
         <NextBreadcrumb
           separator={<span className=" text-[#98A2B3]"> / </span>}
           activeClasses=" text-[#096DD9] font-medium"
@@ -65,7 +65,7 @@ const LecturerLayout = ({ children, sideContent }: Props) => {
       </Container>
 
       <div>
-        <Container className="max-w-[85rem] max-md:px-0 sm:px-0">
+        <Container className="max-w-340 max-md:px-0 sm:px-0">
           <div className=" bg-white min-h-[70vh]">{children}</div>
         </Container>
       </div>

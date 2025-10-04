@@ -39,7 +39,7 @@ const PhoneNumberInput = ({
             <i className="text-xs font-semibold text-[#0275D8]">*</i>
           ) : null}
           {miniLabel && (
-            <span className="text-xs text-yellow-500 !font-normal">
+            <span className="text-xs text-yellow-500 font-normal!">
               &nbsp; {miniLabel}
             </span>
           )}
@@ -62,7 +62,7 @@ const PhoneNumberInput = ({
               onBlur && onBlur();
             }}
             className={`border border-[#DFE1E6] placeholder:font-normal placeholder:text-sm rounded-[0.250rem] px-[0.35rem] ${
-              isFocused ? "outline-none ring-1 border-blue-300" : ""
+              isFocused ? "outline-hidden ring-1 border-blue-300" : ""
             } `}
             onFocus={() => {
               setIsFocused(true);
