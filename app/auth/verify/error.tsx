@@ -24,7 +24,7 @@ export default function Error({
             Verification Failed or Expired
           </h3>
           <Link href={"/login"}>
-            <Button variant={"danger"} className=" mt-4 w-full !text-white">
+            <Button variant={"danger"} className=" mt-4 w-full text-white!">
               Back to Login
             </Button>
           </Link>

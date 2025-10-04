@@ -36,7 +36,7 @@ const UserDropdownView = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute z-10 mt-1 w-full origin-top rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute z-10 mt-1 w-full origin-top rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden">
           <div className="py-1">
             <MenuItem as="div" className={"cursor-pointer"} onClick={logout}>
               {({ focus }) => (

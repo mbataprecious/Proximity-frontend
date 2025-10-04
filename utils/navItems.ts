@@ -15,3 +15,10 @@ export const studentNavItems = [
     href: "/student/profile",
   },
 ];
+
+export const menuItems = [
+  { name: "Home", href: "#" },
+  { name: "Why Proximity", href: "#features" },
+  { name: "Use Cases", href: "#use-cases" },
+  { name: "FAQs", href: "#faq" },
+];

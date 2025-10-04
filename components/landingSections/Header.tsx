@@ -1,16 +1,11 @@
 "use client";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
-import Button from "../Button";
-
-const menuItems = [
-  { name: "Features", href: "#link" },
-  { name: "Solution", href: "#link" },
-  { name: "Pricing", href: "#link" },
-  { name: "About", href: "#link" },
-];
+import Image from "next/image";
+import { menuItems } from "@/utils/navItems";
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
@@ -24,16 +19,16 @@ export const HeroHeader = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header>
       <nav
         data-state={menuState && "active"}
         className="fixed z-20 w-full px-2"
       >
         <div
           className={cn(
-            "mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12",
+            "mx-auto mt-2 max-w-7xl px-6 transition-all duration-300 lg:px-12",
             isScrolled &&
-              "bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5"
+              "bg-background/50 max-w-5xl rounded-2xl border backdrop-blur-lg lg:px-5"
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
@@ -43,19 +38,35 @@ export const HeroHeader = () => {
                 aria-label="home"
                 className="flex items-center space-x-2"
               >
-                <img
-                  alt=""
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                  className="h-8 w-auto"
+                <Image
+                  className={cn("mx-auto h-9", { hidden: !isScrolled })}
+                  src="/Assets/svg/proximity-blue.svg"
+                  alt="logo"
+                  width={105}
+                  height={105}
+                />
+                <Image
+                  className={cn("mx-auto h-9", { hidden: isScrolled })}
+                  src="/Assets/svg/Proximity.svg"
+                  alt="logo"
+                  width={105}
+                  height={105}
                 />
               </Link>
 
               <button
                 onClick={() => setMenuState(!menuState)}
                 aria-label={menuState == true ? "Close Menu" : "Open Menu"}
-                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                className={cn(
+                  "relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden",
+                  { " text-white": !isScrolled }
+                )}
               >
-                <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
+                <Menu
+                  className={
+                    "in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200"
+                  }
+                />
                 <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
               </button>
             </div>
@@ -66,7 +77,11 @@ export const HeroHeader = () => {
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                      scroll={true}
+                      className={cn(
+                        "text-gray-700 hover:text-gray-600 block duration-150",
+                        { " text-white hover:text-mariner-200": !isScrolled }
+                      )}
                     >
                       <span>{item.name}</span>
                     </Link>
@@ -82,7 +97,11 @@ export const HeroHeader = () => {
                     <li key={index}>
                       <Link
                         href={item.href}
-                        className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                        scroll={true}
+                        className={cn(
+                          "text-muted-foreground hover:text-accent-foreground block duration-150"
+                          // { " text-white ": isScrolled }
+                        )}
                       >
                         <span>{item.name}</span>
                       </Link>
@@ -92,24 +111,32 @@ export const HeroHeader = () => {
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 <Button
-                  isOutlined
+                  asChild
+                  variant="outline"
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                 >
-                  <Link href="#">
+                  <Link href="/login">
                     <span>Login</span>
                   </Link>
                 </Button>
-                <Button size="sm" className={cn(isScrolled && "lg:hidden")}>
-                  <Link href="#">
+                <Button
+                  asChild
+                  size="sm"
+                  variant={"primary-light"}
+                  className={cn(isScrolled && "lg:hidden")}
+                >
+                  <Link href="/signup">
                     <span>Sign Up</span>
                   </Link>
                 </Button>
+
                 <Button
+                  asChild
                   size="sm"
                   className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
                 >
-                  <Link href="#">
+                  <Link href="/signup">
                     <span>Get Started</span>
                   </Link>
                 </Button>

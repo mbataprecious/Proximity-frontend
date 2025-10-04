@@ -44,7 +44,7 @@ const Pagination: React.FC<PaginationProps> = ({
       aria-current={selected === index ? "page" : undefined}
       className={`relative inline-flex items-center px-4 py-3 text-sm font-semibold ring-1 ring-inset ring-gray-300 ${
         selected === index
-          ? "z-10 bg-blue-100 text-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          ? "z-10 bg-blue-100 text-blue-500 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           : "text-gray-900  hover:bg-gray-50 focus:z-20 focus:outline-offset-0 cursor-pointer"
       }`}
       onClick={() => handlePageClick(index)}
@@ -120,7 +120,7 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div>
       <nav
-        className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+        className="isolate inline-flex -space-x-px rounded-md shadow-xs"
         aria-label="Pagination"
       >
         <span

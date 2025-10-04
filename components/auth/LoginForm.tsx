@@ -53,7 +53,7 @@ const LoginForm = () => {
               (t) => (
                 <div>
                   <div className=" relative sm:inline-flex sm:items-start bg-white rounded-lg">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <div className="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
                       <ExclamationCircleIcon
                         aria-hidden="true"
                         className="h-6 w-6 text-orange-600"
@@ -75,7 +75,7 @@ const LoginForm = () => {
                     <div className="absolute right-0 top-0 sm:block">
                       <button
                         type="button"
-                        className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         onClick={() => toast.dismiss(t.id)}
                       >
                         <span className="sr-only">Close</span>

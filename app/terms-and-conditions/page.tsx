@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Terms() {
   return (
     <div>
-      <Container className=" text-[#5C5C5C] text-sm md:text-base pt-[12.75rem] mb-56">
+      <Container className=" text-[#5C5C5C] text-sm md:text-base pt-51 mb-56">
         <div>
           <h1 className="py-16 font-semibold text-3xl md:text-5xl text-center text-[#272727]">
             Privacy Policy

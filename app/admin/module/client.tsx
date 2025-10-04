@@ -139,7 +139,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                     size={"sm"}
                     isOutlined
                     onClick={() => setDeleteAll(true)}
-                    className=" border-none !bg-blue-100"
+                    className=" border-none bg-blue-100!"
                   >
                     Select All {moduleList?.metadata?.totalDocuments} modules
                   </Button>
@@ -231,7 +231,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                 <td className="whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
-                      <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                      <MenuButton className="flex items-center rounded-full text-gray-700 hover:text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100">
                         <span className="sr-only">Open options</span>
                         <EllipsisHorizontalIcon
                           className="h-6 w-6"
@@ -248,7 +248,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <MenuItems className="absolute right-0 z-[200] mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <MenuItems className="absolute right-0 z-200 mt-2 w-[143px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden">
                         <div className="py-1">
                           <MenuItem>
                             {({ focus }) => (

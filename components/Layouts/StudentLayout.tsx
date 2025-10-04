@@ -15,8 +15,8 @@ const StudentLayout = ({ children, sideContent }: Props) => {
   const pathname = usePathname();
   return (
     <div className="">
-      <div className="hidden md:block bg-white mb-[3.875rem]">
-        <Container className="max-w-[85rem] flex justify-between">
+      <div className="hidden md:block bg-white mb-15.5">
+        <Container className="max-w-340 flex justify-between">
           <div className=" flex pt-4">
             {studentNavItems.map(({ title, href, icon }, index) => {
               const active = index
@@ -45,7 +45,7 @@ const StudentLayout = ({ children, sideContent }: Props) => {
         </Container>
       </div>
       <div>
-        <Container className=" !px-0 sm:px-0 md:!px-4 md:max-w-[85rem]">
+        <Container className=" px-0! sm:px-0 md:px-4! md:max-w-340">
           <div className=" bg-white min-h-screen  md:min-h-[70vh]">
             {children}
           </div>
