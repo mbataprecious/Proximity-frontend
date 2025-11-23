@@ -53,7 +53,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
   useEffect(() => {
     setModules(moduleList?.modules ?? []);
     setKeyword(searchParams.get("keyword") || "");
-  }, [moduleList]);
+  }, [moduleList, searchParams]);
 
   useLayoutEffect(() => {
     const isIndeterminate =
@@ -66,7 +66,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
     if (checkbox.current) {
       checkbox.current.indeterminate = isIndeterminate;
     }
-  }, [selectedPeople]);
+  }, [selectedPeople, modules.length]);
 
   function toggleAll() {
     setSelectedPeople(checked || indeterminate ? [] : modules);
@@ -80,7 +80,7 @@ export default function ({ moduleList }: { moduleList: IModuleList }) {
   };
   return (
     <div className="w-full">
-      <div className=" p-3 lg:p-[36px] flex flex-col lg:flex-row lg:justify-between lg:items-center">
+      <div className=" p-3 lg:p-9 flex flex-col lg:flex-row lg:justify-between lg:items-center">
         <h2 className="lg:text-4xl font-bold text-2xl">Modules</h2>
         <div className=" flex lg:space-x-4 items-start  lg:flex-row lg:items-center max-[700px]:gap-5 max-[700px]:mt-4">
           {!selectedPeople.length ? (

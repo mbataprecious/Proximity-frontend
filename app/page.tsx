@@ -4,6 +4,8 @@ import FeatureSection2 from "@/components/landingSections/FeatureSection2";
 import FooterSection from "@/components/landingSections/Footer";
 import HeroSection from "@/components/landingSections/HeroSection";
 import UseCaseSection from "@/components/landingSections/UseCaseSection";
+import TestimonialSection from "@/components/landingSections/TestimonialSection";
+import AboutUsSection from "@/components/landingSections/AboutUsSection";
 
 export default function Home() {
   return (
@@ -11,6 +13,8 @@ export default function Home() {
       <HeroSection />
       <FeatureSection2 />
       <UseCaseSection />
+      <TestimonialSection />
+      <AboutUsSection />
       <FAQs />
       <Cta />
       <FooterSection />

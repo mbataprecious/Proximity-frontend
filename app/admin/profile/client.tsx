@@ -57,7 +57,7 @@ export default function () {
       first_name: session.user.firstName ?? "",
       last_name: session.user.lastName ?? "",
     });
-  }, [session]);
+  }, [session, resetName]);
 
   const onSubmitName = async (
     data: Pick<SignupSchemaType, "first_name" | "last_name">

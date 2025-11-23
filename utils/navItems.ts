@@ -21,4 +21,6 @@ export const menuItems = [
   { name: "Why Proximity", href: "#features" },
   { name: "Use Cases", href: "#use-cases" },
   { name: "FAQs", href: "#faq" },
+  { name: "Testimonials", href: "#testimonials" },
+  { name: "About Us", href: "#about-us" },
 ];
