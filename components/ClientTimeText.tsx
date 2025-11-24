@@ -20,7 +20,7 @@ const ClientTimeText: React.FC<ClientTimeTextProps> = ({
 
   useEffect(() => {
     setDateString(formatDate(parseISO(ISOstring), format));
-  }, [ISOstring]);
+  }, [ISOstring, format]);
 
   return <>{dateString}</>;
 };

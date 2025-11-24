@@ -5,6 +5,22 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV !== "development", // Remove console.log in production
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "html.tailus.io",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 import withPWA from "next-pwa";

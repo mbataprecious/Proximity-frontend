@@ -40,7 +40,9 @@ export function AnimatedGridPattern({
   const id = useId();
   const containerRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [squares, setSquares] = useState(() => generateSquares(numSquares));
+  const [squares, setSquares] = useState(
+    () => [] as { id: number; pos: number[] }[]
+  );
 
   function getPos() {
     return [
@@ -49,13 +51,9 @@ export function AnimatedGridPattern({
     ];
   }
 
-  // Adjust the generateSquares function to return objects with an id, x, and y
-  function generateSquares(count: number) {
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      pos: getPos(),
-    }));
-  }
+  // generateSquares memoized so it can be safely used in effects
+  const generateSquares = (count: number) =>
+    Array.from({ length: count }, (_, i) => ({ id: i, pos: getPos() }));
 
   // Function to update a single square's position
   const updateSquarePosition = (id: number) => {
@@ -76,10 +74,13 @@ export function AnimatedGridPattern({
     if (dimensions.width && dimensions.height) {
       setSquares(generateSquares(numSquares));
     }
-  }, [dimensions, numSquares]);
+    // generateSquares reads dimensions, width, height implicitly
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dimensions, numSquares, width, height]);
 
   // Resize observer to update container dimensions
   useEffect(() => {
+    const el = containerRef.current as Element | null;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setDimensions({
@@ -89,16 +90,18 @@ export function AnimatedGridPattern({
       }
     });
 
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
+    if (el) {
+      resizeObserver.observe(el);
     }
 
     return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
+      if (el) {
+        resizeObserver.unobserve(el);
       }
     };
-  }, [containerRef]);
+    // containerRef.current is read into local `el` above
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <svg

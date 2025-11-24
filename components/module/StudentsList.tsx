@@ -93,7 +93,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
     setPage(studentsList?.metadata?.currentPage ?? 1);
     setTotal(studentsList?.metadata?.totalDocuments ?? 0);
     setSearch("");
-  }, [studentsList]);
+  }, [studentsList, setTotal]);
 
   useLayoutEffect(() => {
     const isIndeterminate =
@@ -103,7 +103,7 @@ const StudentsList = ({ studentsList, setTotal }: Props) => {
     if (checkbox.current) {
       checkbox.current.indeterminate = isIndeterminate;
     }
-  }, [selectedStudents]);
+  }, [selectedStudents, students.length]);
 
   function toggleAll() {
     setSelectedStudents(checked || indeterminate ? [] : students);

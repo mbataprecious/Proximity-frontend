@@ -51,7 +51,7 @@ const NextBreadcrumb = ({
 
       getSingleModule(pathNames[2]);
     }
-  }, [pathNames]);
+  }, [pathNames, request, searchValueArray]);
 
   return (
     <div className="w-full overflow-auto hide-scrollbar">

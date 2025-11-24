@@ -56,7 +56,7 @@ export default function ({
   useEffect(() => {
     setKeyword(searchParams.get("keyword") || "");
     setFilterBy(searchParams.get("filterBy") || "none");
-  }, [moduleData, sessionData, sessionAttendance]);
+  }, [moduleData, sessionData, sessionAttendance, searchParams]);
 
   const handleStatusUpdate = async (studentId: string, status: string) => {
     try {
@@ -87,12 +87,12 @@ export default function ({
 
   return (
     <div>
-      <div className=" lg:p-[36px] p-5 flex justify-between items-start lg:items-center border-b flex-col gap-2 lg:gap-2 lg:flex-row">
+      <div className=" lg:p-9 p-5 flex justify-between items-start lg:items-center border-b flex-col gap-2 lg:gap-2 lg:flex-row">
         <div>
           {parseISO(sessionData.endTime).getTime() > Date.now() ? (
             <p
               className={
-                " py-1 px-2 flex items-center text-xs bg-[#11A75C] rounded-[6px] leading-[20px] font-medium text-white w-fit"
+                " py-1 px-2 flex items-center text-xs bg-[#11A75C] rounded-md leading-5 font-medium text-white w-fit"
               }
             >
               <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />
@@ -101,7 +101,7 @@ export default function ({
           ) : (
             <p
               className={
-                " py-1 px-2 flex items-center text-xs bg-[#096DD9] rounded-[6px] leading-[20px] font-medium text-white w-fit"
+                " py-1 px-2 flex items-center text-xs bg-[#096DD9] rounded-md leading-5 font-medium text-white w-fit"
               }
             >
               <span className=" w-2 h-2 rounded-full bg-[#ffffff] mr-2" />
@@ -112,7 +112,7 @@ export default function ({
             {moduleData.title}
           </h2>
 
-          <div className=" mt-[.5rem]">
+          <div className=" mt-2">
             <p className=" text-[#667185] font-semibold">
               Session Code: &nbsp;
               <span className=" font-bold text-primary">
