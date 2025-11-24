@@ -138,7 +138,7 @@ export default function ({
 
         <ModuleDetailBox details={moduleData} />
       </div>
-      <div className="p-[10px] md:p-[36px] flex flex-col lg:flex-row lg:justify-between gap-3 lg:gap-0">
+      <div className="p-2.5 md:p-9 flex flex-col lg:flex-row lg:justify-between gap-3 lg:gap-0">
         <div className=" flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0  md:space-x-6">
           {sortOptions.map((status) => (
             <SessionStatsCard
