@@ -39,7 +39,7 @@ function TestimonialSection() {
             Words from teams who trust{" "}
             <span className="text-primary">Proximity</span>
           </p>
-        </div>
+        </div> 
 
         <div className="relative mt-12">
           <div className="overflow-hidden">
