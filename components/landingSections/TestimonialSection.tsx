@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import testimonials from "./testimonialsData";
+import VentureTabsLogo from "@/public/Assets/images/testimonial/Venture_Tabs.svg";
+import TechskillLogo from "@/public/Assets/images/testimonial/Techskill_UK.png";
 
 function TestimonialSection() {
   const [index, setIndex] = useState(0);
@@ -49,12 +51,20 @@ function TestimonialSection() {
                 <div key={t.id} className="min-w-full px-4">
                   <div className="mx-auto max-w-2xl rounded-xl bg-white p-6 shadow-sm">
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 shrink-0">
+                      <div
+                        className={
+                          "shrink-0" +
+                          (t.logo === VentureTabsLogo ||
+                          t.logo === TechskillLogo
+                            ? " bg-gray-600"
+                            : "")
+                        }
+                      >
                         <Image
                           src={t.logo}
                           alt={`${t.company} logo`}
-                          width={48}
-                          height={48}
+                          width={100}
+                          height={100}
                           className="object-contain"
                         />
                       </div>
