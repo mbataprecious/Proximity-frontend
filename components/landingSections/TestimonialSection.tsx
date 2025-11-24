@@ -35,11 +35,11 @@ function TestimonialSection() {
           <h2 className="text-base/7 font-semibold text-mariner-600">
             Testimonials
           </h2>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
+          <p className="capitalize mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
             Words from teams who trust{" "}
             <span className="text-primary">Proximity</span>
           </p>
-        </div>
+        </div> 
 
         <div className="relative mt-12">
           <div className="overflow-hidden">
